@@ -1,0 +1,59 @@
+body {
+    background-image: url("../static/educ0.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 15px 0;
+    vertical-align: baseline;
+}
+
+.inner_box {
+    text-align: center; 
+    color: white;
+}
+
+.inner_box h1 {
+    font-size: 20px;
+    text-align: center;
+    margin: 100px 0;
+}
+
+#features {
+    color: white;
+}
+
+#features img {
+    width: 50px ;
+    height: 50px;
+}
+
+.title {
+    color: white;
+    margin: 50px 0; 
+}
+
+.box {
+    background-color: #d9e8f3;
+    margin: 16px;
+    padding: 20px 0;
+    border-radius: 5px;
+    opacity: 0.7;
+    transition: all .3s ease;
+}
+
+.box p {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.box:hover {
+    opacity: 1;
+}
+
