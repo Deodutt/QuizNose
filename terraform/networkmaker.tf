@@ -2,7 +2,7 @@ resource "aws_vpc" "Quizlette_VPC" {
     cidr_block = "192.168.0.0/16"
 
     tags = {
-        Name = "QuizLette VPC"
+        Name = "Quizlette VPC"
     }
 }
 
