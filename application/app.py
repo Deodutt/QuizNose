@@ -2,10 +2,29 @@ from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
 from sqlalchemy.sql.sqltypes import VARCHAR
+from functools import wraps
 
-app = Flask(__name__)
+
+app = Flask(__name__, template_folder="templates")
 metadata = MetaData()
 # db = SQLAlchemy()
+
+@app.route('/')
+def index():
+	return render_template('index.html')
+
+
+def is_logged(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			flash('Unauthorized, Please login','danger')
+			return redirect(url_for('login'))
+	return wrap
+##This is a function for checking login. This function is invokved at every point of something requiring login
+
 
 
 # Connect to database
