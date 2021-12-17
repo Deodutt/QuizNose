@@ -1,4 +1,5 @@
-terraform/.terraform
+terraform/terraform*
+terraform/.terraform*
 terraform/.terraform.lock.hcl
 venv/
 __pycache__/
