@@ -22,3 +22,16 @@ CREATE TABLE `choices` (
   `d` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `grade` float DEFAULT NULL
   );
+
+INSERT INTO `quizes` VALUES ("quiz1");
+
+INSERT INTO `questions` VALUES ("quiz1", "q1","What is 2+2?","4");
+INSERT INTO `questions` VALUES ("quiz1", "q2","What belongs to AWS?","EC2");
+
+INSERT INTO `choices` VALUES ("q1","4");
+INSERT INTO `choices` VALUES ("q1","5");
+INSERT INTO `choices` VALUES ("q1","6");
+
+INSERT INTO `choices` VALUES ("q2","S33");
+INSERT INTO `choices` VALUES ("q2","Google");
+INSERT INTO `choices` VALUES ("q2","EC2");
