@@ -1,3 +1,198 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
+
+body {
+	min-height: 100vh;
+}
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+h3 {
+	color: #999; 
+}
+
+.btn {
+	background: gray;
+	color: white;
+	padding: 5px 10px;
+	text-align: center;
+}
+
+.btn:hover {
+	color: blueviolet;
+	background: white;
+	padding: 3px 8px;
+	border: 2px solid blue;
+}
+
+.title {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	padding: 15px 10px;
+	border-bottom: 2px solid #999;
+}
+
+.side-menu {
+	position: fixed;
+	background:  rgb(75, 75, 230);
+	width: 20vw;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	color: white;
+}
+
+.brand-name{
+	height: 10vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.side-menu ul {
+	max-width: 80%;
+	margin: 0 auto;
+}
+
+.side-menu li {
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	margin: 20px 0;
+}
+
+.side-menu img {
+	width: 30px;
+	height: 30px;
+}
+
+.side-menu li:hover{
+	background: white;
+	color: rgb(162, 162, 191);
+}
+
+.container {
+	position: absolute;
+	right: 0;
+	width: 80vw;
+	height: 100vh;
+
+}
+
+.header {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 80vw;
+	height: 10vh;
+	background: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+}
+
+.header .nav {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	margin: 0 auto;
+}
+
+.search {
+	width: 200px;
+	display: flex;
+}
+
+.submit-btn {
+	width: 10%;
+}
+
+.search button {
+	width: 40px;
+	height: 40px;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.search input {
+	width: 100%;
+}
+
+.user {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.content {
+	margin-top: 10vh;
+	min-height: 90vh;
+}
+
+.content {
+	margin-left: 20vw;
+	padding: 20px 15px;
+}
+
+.cards .card {
+	background: white;
+	margin: 20px 10px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.3), 0 6px 20px 0 rgba(0,0,0,0.3);
+}
+
+.content .content-2 {
+	min-height: 60vh;
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+.content .content-2 .students-score {
+	min-height: 50vh;
+	flex: 5;
+	background: white;
+	margin: 0 25px 25px 25px;
+}
+
+.content .content-2 .new-students {
+	flex: 2;
+	background: white;
+	margin: 0 25px;
+	min-height: 50vh;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.3), 0 6px 20px 0 rgba(0,0,0,0.3);
+}
+
+.submit-btn img {
+	width: 20px;
+	height: 20px;
+}
+
+.user img {
+	width: 40px;
+	height: 40px;
+}
+
+
+
+
+
+/* 
 img {
 	display: block;
 	margin-bottom: 10%;
@@ -11,7 +206,7 @@ img {
 	border-radius: 7%;
 }
 */
-.mysec img{
+/* .mysec img{
 	margin: 0 auto;
 	display: block;
 	width: 60%;
@@ -47,4 +242,4 @@ img {
 }
 .btn-primary:hover {
 	background-color: #6a63dd;
-}
+}  */
