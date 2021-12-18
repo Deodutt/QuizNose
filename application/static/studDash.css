@@ -88,7 +88,7 @@ h3 {
 	right: 0;
 	width: 80vw;
 	height: 10vh;
-    background-image: url("static/educ1.jpeg");
+    background-image: url("../static/educ1.jpeg");
 	z-index: 1;
 
 }
@@ -150,7 +150,7 @@ h3 {
 .content {
 	margin-top: 10vh;
 	min-height: 90vh;
-    background-image: url("static/quiz.test.jpeg");
+    background-image: url("../static/quiz.test.jpeg");
 }
 
 .content {
