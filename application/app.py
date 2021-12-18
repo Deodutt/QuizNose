@@ -1,5 +1,7 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
+from passlib.hash import sha256_crypt
 # from functools import wraps
+from flask_mysqldb import MySQL
 from classes import RegisterForm
 import db
 
@@ -9,10 +11,15 @@ app = Flask(__name__, template_folder="templates", static_url_path='/static')
 
 # metadata = MetaData()
 # db = SQLAlchemy()
+mysql = MySQL(app)
 
 @app.route('/')
 def index():
 	return render_template('index.html')
+
+@app.route('/')
+def login():
+	return render_template('login.html')
 
 @app.route('/register')
 def register():
@@ -22,17 +29,17 @@ def register():
 		email = form.email.data
 
 		#email verifier	
-		data = client.get(email)
-		if str(data.smtp_check) == 'False':
-			flash('Invalid email, please provide a valid email address','danger')
-			return render_template('register.html', form=form)
+		# data = client.get(email) ##commented out for now
+		# if str(data.smtp_check) == 'False': ##commented out for now
+			# flash('Invalid email, please provide a valid email address','danger')
+			# return render_template('register.html', form=form)
 
 		# send_confirmation_email(email) ##not neaded yet.
 
 		username = form.username.data
 		password = sha256_crypt.encrypt(str(form.password.data))
 		cur = mysql.connection.cursor()
-		cur.execute('INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)', (username,name, email, password))
+		cur.execute('INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)', (username, username, username, password))
 		mysql.connection.commit()
 		cur.close()
 		flash('Thanks for registering!  Please check your email to confirm your email address.', 'success')

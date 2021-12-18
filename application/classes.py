@@ -1,3 +1,5 @@
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators, DateTimeField, BooleanField, IntegerField
+
 class RegisterForm(Form):
 	name = StringField('Name', [validators.Length(min=3, max=50)])
 	username = StringField('Username', [validators.Length(min=4,max=25)])
