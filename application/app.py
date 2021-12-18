@@ -1,42 +1,15 @@
 from flask import Flask, request, jsonify, render_template
-# from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
-# from sqlalchemy.sql.sqltypes import VARCHAR
+import MySQLdb
 # from functools import wraps
 
+# connection
+db = MySQLdb.connect(
+    host="database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
+    user="admin",  # your username
+    passwd="KuraLabs#123",  # your password
+    db="final",
+)  # name of the data base
 
-app = Flask(__name__, template_folder="templates", static_url_path='/static')
-
-# metadata = MetaData()
-# db = SQLAlchemy()
-
-@app.route('/')
-def index():
-	return render_template('index.html')
-
-@app.route('/register')
-def register():
-	return render_template('register.html')
-
-@app.route('/studDash.html')
-def studDash():
-	return render_template('studDash.html')
-
-@app.route('/quiz')
-def quiz():
-	return render_template('quiz.html')
-
-
-
-# def is_logged(f):
-# 	@wraps(f)
-# 	def wrap(*args, **kwargs):
-# 		if 'logged_in' in session:
-# 			return f(*args, **kwargs)
-# 		else:
-# 			flash('Unauthorized, Please login','danger')
-# 			return redirect(url_for('login'))
-# 	return wrap
 ##This is a function for checking login. This function is invokved at every point of something requiring login
 
 
@@ -55,58 +28,69 @@ def quiz():
 # 		std_ans[request.form['$question num']] = request.form['$choice'].value 
 # 		return redirect(url_for('quiz_page',question=question+1))
 
+app = Flask(__name__, template_folder="templates", static_url_path='/static')
 
-# Connect to database
-# engine = create_engine(
-#     "mysql+pymysql://admin:KuraLabs#123@database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com:3306/final",
-# )
+def is_logged(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			flash('Unauthorized, Please login','danger')
+			return redirect(url_for('login'))
+	return wrap
 
+@app.route('/')
+def index():
+	return render_template('index.html')
 
-# def list_tables():
-#     list_of_tables = engine.table_names()
-#     return list_of_tables
+@app.route('/register')
+def register():
+	return render_template('register.html')
 
+@app.route('/studDash.html')
+def studDash():
+	return render_template('studDash.html')
 
-# def create_table():
-#     # checking the table list
-#     list_of_tables = engine.table_names()
-#     table_name = "user_info"
-
-#     if table_name in list_of_tables:
-#         print(f"The table '{table_name}' is inside the database!")
-
-#     else:
-#         user_info = Table(
-#             table_name,
-#             metadata,
-#             Column("username", VARCHAR(20), primary_key=True),
-#             Column("password", VARCHAR(20)),
-#             Column("email", VARCHAR(20)),
-#         )
-#         metadata.create_all(engine)
-#         print(f"The table '{table_name}' was successfully created!")
-#     return
+@app.route('/quiz')
+def quiz():
+	return render_template('quiz.html')
 
 
-# def delete_table():
-#     # checking the table list
-#     list_of_tables = engine.table_names()
-#     table_name = "users"
-
-#     if table_name in list_of_tables:
-#         print(f"The table '{table_name}'  was deleted from the database!")
-
-#     else:
-#         print(f"The table '{table_name}'  is not inside the database!")
-
-#     return
+def list_tables(db_table):
+    cur = db.cursor()
+    cur.execute(f"SHOW TABLES FROM {db_table};")
+    result = cur.fetchall()
+    return result
 
 
-# print(f"Original List: {list_tables()}\n")
-# create_table()
-# print(f"New List: {list_tables()}\n")
-# # delete_table()
+def create_table(new_name):
+    cur = db.cursor()
+    cur.execute(
+        f"CREATE TABLE IF NOT EXISTS {new_name} (quiz_id VARCHAR(20) NOT NULL, question_number INT NOT NULL, choice_a TEXT NOT NULL, choice_b TEXT NOT NULL, choice_c TEXT NOT NULL, choice_d TEXT NOT NULL);"
+    )
 
+    result = cur.fetchall()
+    return print(f"The table '{new_name}' was successfully created!")
+
+
+def delete_table(target):
+    cur = db.cursor()
+    cur.execute(f"DROP TABLE {target};")
+    result = cur.fetchall()
+    return print(f"The table '{target}' was successfully deleted!")
+
+
+# This list all the tables inside the database final
+print(f"Original List: {list_tables(db_table = 'final')}\n")
+
+# This creates a table named <var>
+create_table(new_name="testing_purpose")
+print(f"New List: {list_tables(db_table = 'final')}\n")
+
+# This deletes a table named <var>
+delete_table(target="testing_purpose")
+print(f"New List: {list_tables(db_table = 'final')}\n")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
