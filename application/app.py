@@ -1,64 +1,51 @@
 from flask import Flask, request, jsonify, render_template
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
-from sqlalchemy.sql.sqltypes import VARCHAR
+import MySQLdb
 
 app = Flask(__name__)
-metadata = MetaData()
-# db = SQLAlchemy()
+
+# connection
+db = MySQLdb.connect(
+    host="database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
+    user="admin",  # your username
+    passwd="KuraLabs#123",  # your password
+    db="final",
+)  # name of the data base
 
 
-# Connect to database
-engine = create_engine(
-    "mysql+pymysql://admin:KuraLabs#123@database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com:3306/final",
-)
+def list_tables(db_table):
+    cur = db.cursor()
+    cur.execute(f"SHOW TABLES FROM {db_table};")
+    result = cur.fetchall()
+    return result
 
 
-def list_tables():
-    list_of_tables = engine.table_names()
-    return list_of_tables
+def create_table(new_name):
+    cur = db.cursor()
+    cur.execute(
+        f"CREATE TABLE IF NOT EXISTS {new_name} (quiz_id VARCHAR(20) NOT NULL, question_number INT NOT NULL, choice_a TEXT NOT NULL, choice_b TEXT NOT NULL, choice_c TEXT NOT NULL, choice_d TEXT NOT NULL);"
+    )
+
+    result = cur.fetchall()
+    return print(f"The table '{new_name}' was successfully created!")
 
 
-def create_table():
-    # checking the table list
-    list_of_tables = engine.table_names()
-    table_name = "user_info"
-
-    if table_name in list_of_tables:
-        print(f"The table '{table_name}' is inside the database!")
-
-    else:
-        user_info = Table(
-            table_name,
-            metadata,
-            Column("username", VARCHAR(20), primary_key=True),
-            Column("password", VARCHAR(20)),
-            Column("email", VARCHAR(20)),
-        )
-        metadata.create_all(engine)
-        print(f"The table '{table_name}' was successfully created!")
-    return
+def delete_table(target):
+    cur = db.cursor()
+    cur.execute(f"DROP TABLE {target};")
+    result = cur.fetchall()
+    return print(f"The table '{target}' was successfully deleted!")
 
 
-# def delete_table():
-#     # checking the table list
-#     list_of_tables = engine.table_names()
-#     table_name = "users"
+# This list all the tables inside the database final
+print(f"Original List: {list_tables(db_table = 'final')}\n")
 
-#     if table_name in list_of_tables:
-#         print(f"The table '{table_name}'  was deleted from the database!")
+# This creates a table named <var>
+create_table(new_name="testing_purpose")
+print(f"New List: {list_tables(db_table = 'final')}\n")
 
-#     else:
-#         print(f"The table '{table_name}'  is not inside the database!")
-
-#     return
-
-
-print(f"Original List: {list_tables()}\n")
-create_table()
-print(f"New List: {list_tables()}\n")
-# delete_table()
-
+# This deletes a table named <var>
+delete_table(target="testing_purpose")
+print(f"New List: {list_tables(db_table = 'final')}\n")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
