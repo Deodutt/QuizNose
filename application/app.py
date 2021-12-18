@@ -26,6 +26,21 @@ def is_logged(f):
 ##This is a function for checking login. This function is invokved at every point of something requiring login
 
 
+#Barebones for API Calls
+#refs
+#https://pythonbasics.org/flask-http-methods/
+#https://stackoverflow.com/questions/40963401/flask-dynamic-data-update-without-reload-page/40964086
+
+# @app.route('/', methods = ["POST"])
+# def quiz_page():
+# 	if question == max:
+# 		if request.method == "POST":
+# 			return redirect(url_for('results_page')
+
+# 	if request.method == "POST":
+# 		std_ans[request.form['$question num']] = request.form['$choice'].value 
+# 		return redirect(url_for('quiz_page',question=question+1))
+
 
 # Connect to database
 engine = create_engine(
