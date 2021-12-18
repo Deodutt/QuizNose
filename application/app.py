@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import MySQLdb
+# from functools import wraps
 
 # connection
 db = MySQLdb.connect(
@@ -27,7 +28,7 @@ db = MySQLdb.connect(
 # 		std_ans[request.form['$question num']] = request.form['$choice'].value 
 # 		return redirect(url_for('quiz_page',question=question+1))
 
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="templates", static_url_path='/static')
 
 def is_logged(f):
 	@wraps(f)
@@ -42,6 +43,19 @@ def is_logged(f):
 @app.route('/')
 def index():
 	return render_template('index.html')
+
+@app.route('/register')
+def register():
+	return render_template('register.html')
+
+@app.route('/studDash.html')
+def studDash():
+	return render_template('studDash.html')
+
+@app.route('/quiz')
+def quiz():
+	return render_template('quiz.html')
+
 
 def list_tables(db_table):
     cur = db.cursor()
