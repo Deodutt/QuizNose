@@ -1,7 +1,7 @@
 CREATE TABLE `quizes` (
   `quiz_id` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 );
-CREATE TABLE `questions` (
+CREATE TABLE `final.questions` (
   `quiz_id` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `question_id` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `question` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
