@@ -1,11 +1,11 @@
 resource "aws_db_instance" "mydb" {
   allocated_storage    = 20
   engine               = "mysql"
-  instance_class       = "db.t3.micro"
+  instance_class       = "db.t2.micro"
   multi_az             = true
   name                 = "mydb"
-  username             = "testr" ##add your own
-  password             = "tst" #add your own
+  username             = "testtest" ##add your own
+  password             = "testtest" #add your own
   skip_final_snapshot  = true
   vpc_security_group_ids = [aws_security_group.DB_PUBLIC.id]
   db_subnet_group_name   = aws_db_subnet_group.mysqlsubnet.id
@@ -21,7 +21,7 @@ resource "aws_db_subnet_group" "mysqlsubnet" {
 }
 
 resource "aws_security_group" "DB_PUBLIC" {
-  name        = "DBtoEC"
+  name        = "DBtoPublic"
   description = "Allow all to DB"
   vpc_id      = aws_vpc.Quizlette_VPC.id
 

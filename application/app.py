@@ -1,8 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import MySQLdb
 
-app = Flask(__name__)
-
 # connection
 db = MySQLdb.connect(
     host="database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
@@ -11,6 +9,39 @@ db = MySQLdb.connect(
     db="final",
 )  # name of the data base
 
+##This is a function for checking login. This function is invokved at every point of something requiring login
+
+
+#Barebones for API Calls
+#refs
+#https://pythonbasics.org/flask-http-methods/
+#https://stackoverflow.com/questions/40963401/flask-dynamic-data-update-without-reload-page/40964086
+
+# @app.route('/', methods = ["POST"])
+# def quiz_page():
+# 	if question == max:
+# 		if request.method == "POST":
+# 			return redirect(url_for('results_page')
+
+# 	if request.method == "POST":
+# 		std_ans[request.form['$question num']] = request.form['$choice'].value 
+# 		return redirect(url_for('quiz_page',question=question+1))
+
+app = Flask(__name__, template_folder="templates")
+
+def is_logged(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			flash('Unauthorized, Please login','danger')
+			return redirect(url_for('login'))
+	return wrap
+
+@app.route('/')
+def index():
+	return render_template('index.html')
 
 def list_tables(db_table):
     cur = db.cursor()

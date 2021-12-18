@@ -6,7 +6,11 @@
 }
 
 body {
-	min-height: 100vh;
+    /* min-height: 100vh; */
+    background-image: url("../static/educ3.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 a {
@@ -83,7 +87,9 @@ h3 {
 	position: absolute;
 	right: 0;
 	width: 80vw;
-	height: 100vh;
+	height: 10vh;
+    background-image: url("../static/educ1.jpeg");
+	z-index: 1;
 
 }
 
@@ -144,6 +150,7 @@ h3 {
 .content {
 	margin-top: 10vh;
 	min-height: 90vh;
+    background-image: url("../static/quiz.test.jpeg");
 }
 
 .content {
@@ -163,10 +170,11 @@ h3 {
 	height: 175px;
 }
 
-.cards .card {
+.card {
 	background: white;
 	margin: 20px 10px;
 	box-shadow: 0 4px 8px rgba(0,0,0,0.3), 0 6px 20px 0 rgba(0,0,0,0.3);
+	cursor: pointer;
 }
 
 .content .content-2 {
@@ -212,59 +220,3 @@ h3 {
 	width: 40px;
 	height: 40px;
 }
-
-
-
-
-
-/* 
-img {
-	display: block;
-	margin-bottom: 10%;
-}
-
-/*
-.card {
-	align-items: center;
-	margin: 0 10%;
-	background-color: white;
-	border-radius: 7%;
-}
-*/
-/* .mysec img{
-	margin: 0 auto;
-	display: block;
-	width: 60%;
-}
-.mysec .col-3 img{
-	width: 80%;
-}
-.mysec .col-3{
-	padding: 30px;
-	border-radius: none;
-}
-
-.mybtn{
-	color: #fff;
-	box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-	text-align: center;
-	border:none;
-	border-radius: 100px !important;
-	padding: 10px 20px;
-	margin-top: 15px;
-
-}
-#teacher-section {
-	margin-top: 5%;
-}
-
-#student-section {
-	margin-top: 5%;
-}
-
-.btn-primary {
-	border-radius: 20%;
-}
-.btn-primary:hover {
-	background-color: #6a63dd;
-}  */

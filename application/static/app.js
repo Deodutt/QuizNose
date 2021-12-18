@@ -267,7 +267,16 @@ var make_array = function() {
         data[parseInt(key)+1].status = SUBMITTED;
     }
 }
+const header = document.querySelector("#header");
+    console.log(typeof header);
+
 
 window.addEventListener('blur', function() { 
     window.location.replace('/dashboard');
  });
+
+ window.addEventListener('scroll', function() {
+    header.classList.add('red');
+    window.location.replace('/dashboard');
+ });
+
