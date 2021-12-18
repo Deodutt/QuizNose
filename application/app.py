@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 # from functools import wraps
 from classes import RegisterForm
+import db
 
+# from functools import wraps
 
 app = Flask(__name__, template_folder="templates", static_url_path='/static')
 
@@ -61,10 +63,10 @@ def quiz():
 ##This is a function for checking login. This function is invokved at every point of something requiring login
 
 
-#Barebones for API Calls
-#refs
-#https://pythonbasics.org/flask-http-methods/
-#https://stackoverflow.com/questions/40963401/flask-dynamic-data-update-without-reload-page/40964086
+# Barebones for API Calls
+# refs
+# https://pythonbasics.org/flask-http-methods/
+# https://stackoverflow.com/questions/40963401/flask-dynamic-data-update-without-reload-page/40964086
 
 # @app.route('/', methods = ["POST"])
 # def quiz_page():
@@ -73,60 +75,52 @@ def quiz():
 # 			return redirect(url_for('results_page')
 
 # 	if request.method == "POST":
-# 		std_ans[request.form['$question num']] = request.form['$choice'].value 
+# 		std_ans[request.form['$question num']] = request.form['$choice'].value
 # 		return redirect(url_for('quiz_page',question=question+1))
 
+app = Flask(__name__, template_folder="templates", static_url_path="/static")
 
-# Connect to database
-# engine = create_engine(
-#     "mysql+pymysql://admin:KuraLabs#123@database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com:3306/final",
-# )
-
-
-# def list_tables():
-#     list_of_tables = engine.table_names()
-#     return list_of_tables
-
-
-# def create_table():
-#     # checking the table list
-#     list_of_tables = engine.table_names()
-#     table_name = "user_info"
-
-#     if table_name in list_of_tables:
-#         print(f"The table '{table_name}' is inside the database!")
-
-#     else:
-#         user_info = Table(
-#             table_name,
-#             metadata,
-#             Column("username", VARCHAR(20), primary_key=True),
-#             Column("password", VARCHAR(20)),
-#             Column("email", VARCHAR(20)),
-#         )
-#         metadata.create_all(engine)
-#         print(f"The table '{table_name}' was successfully created!")
-#     return
+# def is_logged(f):
+# 	@wraps(f)
+# 	def wrap(*args, **kwargs):
+# 		if 'logged_in' in session:
+# 			return f(*args, **kwargs)
+# 		else:
+# 			flash('Unauthorized, Please login','danger')
+# 			return redirect(url_for('login'))
+# 	return wrap
 
 
-# def delete_table():
-#     # checking the table list
-#     list_of_tables = engine.table_names()
-#     table_name = "users"
-
-#     if table_name in list_of_tables:
-#         print(f"The table '{table_name}'  was deleted from the database!")
-
-#     else:
-#         print(f"The table '{table_name}'  is not inside the database!")
-
-#     return
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
-# print(f"Original List: {list_tables()}\n")
-# create_table()
-# print(f"New List: {list_tables()}\n")
-# # delete_table()
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+
+@app.route("/studDash.html")
+def studDash():
+    return render_template("studDash.html")
+
+
+@app.route("/quiz")
+def quiz():
+    return render_template("quiz.html")
+
+
+# This list all the tables inside the database final
+print(f"Original List: {db.list_tables(db_table = 'final')}\n")
+
+# This creates a table named <var>
+db.create_table(new_name="testing_purpose")
+print(f"New List: {db.list_tables(db_table = 'final')}\n")
+
+# This deletes a table named <var>
+db.delete_table(target="testing_purpose")
+print(f"New List: {db.list_tables(db_table = 'final')}\n")
 
 
 if __name__ == "__main__":
