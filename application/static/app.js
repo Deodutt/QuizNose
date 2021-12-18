@@ -279,4 +279,3 @@ window.addEventListener('blur', function() {
     header.classList.add('red');
     window.location.replace('/dashboard');
  });
-
