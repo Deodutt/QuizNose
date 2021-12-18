@@ -1,7 +1,11 @@
 body {
    background-image: url("../static/educ0.jpg");
-  
-   
+
+
+}
+
+#login {
+   margin-bottom: 10px;
 }
 
 .login-form {
@@ -12,10 +16,10 @@ body {
    position: absolute;
    color: #fff;
    /* border: 1px solid black;
-   border-radius: 5px; 
-   height: 360px;
-   text-align: center;
-   padding: 20px 0;
+border-radius: 5px; 
+height: 360px;
+text-align: center;
+padding: 20px 0;
 } */
 }
 
@@ -42,6 +46,10 @@ body {
    border-radius: 5px;
 }
 
+.newAccount {
+   margin-top: 10px;
+}
+
 .login-form buttons {
    font-size: 18px;
    font-weight: bold;
@@ -52,11 +60,15 @@ body {
    border: 0;
 }
 
-.form buttons, a, input {
-   width: 150px;
-   text-align: left;
+.buttons {
+   text-align: center;
 }
 
-.inputs input{
+.buttons a {
+   color: white;
+   text-decoration: none;
+}
+
+.inputs input {
    margin: 10px 10px;
 }
