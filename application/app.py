@@ -1,61 +1,66 @@
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 from passlib.hash import sha256_crypt
-# from functools import wraps
 from flask_mysqldb import MySQL
 from classes import RegisterForm
 import db
 
 # from functools import wraps
-
-app = Flask(__name__, template_folder="templates", static_url_path='/static')
-
-# metadata = MetaData()
-# db = SQLAlchemy()
+app = Flask(__name__, template_folder="templates", static_url_path="/static")
 mysql = MySQL(app)
 
-@app.route('/')
+
+@app.route("/")
 def index():
-	return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/')
+
+@app.route("/")
 def login():
-	return render_template('login.html')
+    return render_template("login.html")
 
-@app.route('/register', methods=['GET','POST'])
-def register():
-	form = RegisterForm(request.form)
-	if request.method == 'POST' and form.validate():
-		name = form.name.data 
-		email = form.email.data
 
-		#email verifier	
-		# data = client.get(email) ##commented out for now
-		# if str(data.smtp_check) == 'False': ##commented out for now
-			# flash('Invalid email, please provide a valid email address','danger')
-			# return render_template('register.html', form=form)
+# @app.route('/register', methods=['GET','POST'])
+# def register():
+#     form = RegisterForm(request.form)
+#     if request.method == "POST" and form.validate():
+#         name = form.name.data
+#         email = form.email.data
 
-		# send_confirmation_email(email) ##not neaded yet.
+#         # email verifier
+#         # data = client.get(email) ##commented out for now
+#         # if str(data.smtp_check) == 'False': ##commented out for now
+#         # flash('Invalid email, please provide a valid email address','danger')
+#         # return render_template('register.html', form=form)
 
-		username = form.username.data
-		password = sha256_crypt.encrypt(str(form.password.data))
-		cur = mysql.connection.cursor()
-		cur.execute('INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)', (username, username, username, password))
-		mysql.connection.commit()
-		cur.close()
-		flash('Thanks for registering!  Please check your email to confirm your email address.', 'success')
-		return redirect(url_for('login')) 
-		# change in login function to redirect to warning page
+#         # send_confirmation_email(email) ##not neaded yet.
 
-	return render_template('register.html', form=form)
+#         username = form.username.data
+#         password = sha256_crypt.encrypt(str(form.password.data))
+#         cur = mysql.connection.cursor()
+#         cur.execute(
+#             "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
+#             (username, username, username, password),
+#         )
+#         mysql.connection.commit()
+#         cur.close()
+#         flash(
+#             "Thanks for registering!  Please check your email to confirm your email address.",
+#             "success",
+#         )
+#         return redirect(url_for("login"))
+#         # change in login function to redirect to warning page
 
-@app.route('/studDash.html')
+#     return render_template("register.html", form=form)
+
+
+@app.route("/studDash.html")
 def studDash():
-	return render_template('studDash.html')
+    return render_template("studDash.html")
 
-@app.route('/quiz')
+
+@app.route("/quiz")
 def quiz():
-	return render_template('quiz.html')
-
+    return render_template("quiz.html")
 
 
 # def is_logged(f):
@@ -68,7 +73,6 @@ def quiz():
 # 			return redirect(url_for('login'))
 # 	return wrap
 ##This is a function for checking login. This function is invokved at every point of something requiring login
-
 
 # Barebones for API Calls
 # refs
@@ -85,49 +89,17 @@ def quiz():
 # 		std_ans[request.form['$question num']] = request.form['$choice'].value
 # 		return redirect(url_for('quiz_page',question=question+1))
 
-app = Flask(__name__, template_folder="templates", static_url_path="/static")
 
-# def is_logged(f):
-# 	@wraps(f)
-# 	def wrap(*args, **kwargs):
-# 		if 'logged_in' in session:
-# 			return f(*args, **kwargs)
-# 		else:
-# 			flash('Unauthorized, Please login','danger')
-# 			return redirect(url_for('login'))
-# 	return wrap
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
-@app.route("/register")
-def register():
-    return render_template("register.html")
-
-
-@app.route("/studDash.html")
-def studDash():
-    return render_template("studDash.html")
-
-
-@app.route("/quiz")
-def quiz():
-    return render_template("quiz.html")
-
-
-# This list all the tables inside the database final
+## This list all the tables inside the database final
 print(f"Original List: {db.list_tables(db_table = 'final')}\n")
 
-# This creates a table named <var>
-db.create_table(new_name="testing_purpose")
-print(f"New List: {db.list_tables(db_table = 'final')}\n")
+## This creates a table named <var>
+# db.create_table(new_name="testing_purpose")
+# print(f"New List: {db.list_tables(db_table = 'final')}\n")
 
-# This deletes a table named <var>
-db.delete_table(target="testing_purpose")
-print(f"New List: {db.list_tables(db_table = 'final')}\n")
+## This deletes a table named <var>
+# db.delete_table(target="testing_purpose")
+# print(f"New List: {db.list_tables(db_table = 'final')}\n")
 
 
 if __name__ == "__main__":
