@@ -1,7 +1,7 @@
 import MySQLdb
 
 db_name = "final"
-## connectionpip
+## connection
 db = MySQLdb.connect(
     host="database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
     user="admin",  # your username

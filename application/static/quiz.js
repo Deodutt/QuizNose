@@ -1,10 +1,10 @@
 //Question bank
 
-{/* <script type="text/javascript">
+<script type="text/javascript">
             var question1 = { data.question }
             var choices = { data.choices }
             var ans = { data.ans }
-        </script> */}
+        </script>
 
 
 var questionBank = [{
@@ -34,7 +34,7 @@ var questionBank = [{
     }
 ]
 
-var question = document.getElementById('question1');
+var question = document.getElementById('question');
 var quizContainer = document.getElementById('quiz-container');
 var scorecard = document.getElementById('scorecard');
 var option0 = document.getElementById('option0');
