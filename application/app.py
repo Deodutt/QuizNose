@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
-from passlib.hash import sha256_crypt
+# from passlib.hash import sha256_crypt
 from flask_mysqldb import MySQL
 from classes import RegisterForm
 import db
@@ -57,10 +57,11 @@ def login():
 def studDash():
     return render_template("studDash.html")
 
+data = db.grab_question("q1")
 
 @app.route("/quiz")
 def quiz():
-    return render_template("quiz.html")
+    return render_template("quiz.html",data=data)
 
 
 # def is_logged(f):
