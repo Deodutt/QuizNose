@@ -1,8 +1,18 @@
 //Question bank
-var questionBank = [{
-        question: 'What are the key components of DevOps?',
-        option: ['Continuous Integration', 'Continuous Testing', 'Continuous Delivery', 'Continuous Monitoring'],
-        answer: 'Continuous Integration'
+<script type="text/javascript">
+            var question1 = { data.question }
+            var choices = { data.choices }
+            var ans = { data.ans }
+        </script>
+
+var questionBank = [
+    {
+        question: {question},
+        option: {choices},
+        answer: {ans}
+        // question: 'What are the key components of DevOps?',
+        // option: ['Continuous Integration', 'Continuous Testing', 'Continuous Delivery', 'Continuous Monitoring'],
+        // answer: 'Continuous Integration'
     },
     {
         question: 'Which of the following is an IAM Security Tool?',
