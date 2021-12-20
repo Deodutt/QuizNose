@@ -14,46 +14,46 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/")
+@app.route('/login', methods=['GET','POST'])
 def login():
     return render_template("login.html")
 
 
-# @app.route('/register', methods=['GET','POST'])
-# def register():
-#     form = RegisterForm(request.form)
-#     if request.method == "POST" and form.validate():
-#         name = form.name.data
-#         email = form.email.data
+@app.route('/register', methods=['GET','POST'])
+def register():
+    form = RegisterForm(request.form)
+    if request.method == "POST" and form.validate():
+        name = form.name.data
+        email = form.email.data
 
-#         # email verifier
-#         # data = client.get(email) ##commented out for now
-#         # if str(data.smtp_check) == 'False': ##commented out for now
-#         # flash('Invalid email, please provide a valid email address','danger')
-#         # return render_template('register.html', form=form)
+        # email verifier
+        # data = client.get(email) ##commented out for now
+        # if str(data.smtp_check) == 'False': ##commented out for now
+        # flash('Invalid email, please provide a valid email address','danger')
+        # return render_template('register.html', form=form)
 
-#         # send_confirmation_email(email) ##not neaded yet.
+        # send_confirmation_email(email) ##not neaded yet.
 
-#         username = form.username.data
-#         password = sha256_crypt.encrypt(str(form.password.data))
-#         cur = mysql.connection.cursor()
-#         cur.execute(
-#             "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
-#             (username, username, username, password),
-#         )
-#         mysql.connection.commit()
-#         cur.close()
-#         flash(
-#             "Thanks for registering!  Please check your email to confirm your email address.",
-#             "success",
-#         )
-#         return redirect(url_for("login"))
-#         # change in login function to redirect to warning page
+        username = form.username.data
+        password = sha256_crypt.encrypt(str(form.password.data))
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
+            (username, username, username, password),
+        )
+        mysql.connection.commit()
+        cur.close()
+        flash(
+            "Thanks for registering!  Please check your email to confirm your email address.",
+            "success",
+        )
+        return redirect(url_for("login"))
+        # change in login function to redirect to warning page
 
-#     return render_template("register.html", form=form)
+    return render_template("register.html", form=form)
 
 
-@app.route("/studDash.html")
+@app.route("/studDash")
 def studDash():
     return render_template("studDash.html")
 
