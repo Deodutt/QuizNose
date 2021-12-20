@@ -1,18 +1,16 @@
 //Question bank
-<script type="text/javascript">
+
+{/* <script type="text/javascript">
             var question1 = { data.question }
             var choices = { data.choices }
             var ans = { data.ans }
-        </script>
+        </script> */}
 
-var questionBank = [
-    {
-        question: {question},
-        option: {choices},
-        answer: {ans}
-        // question: 'What are the key components of DevOps?',
-        // option: ['Continuous Integration', 'Continuous Testing', 'Continuous Delivery', 'Continuous Monitoring'],
-        // answer: 'Continuous Integration'
+
+var questionBank = [{
+        question: 'What are the key components of DevOps?',
+        option: ['Continuous Integration', 'Continuous Testing', 'Continuous Delivery', 'Continuous Monitoring'],
+        answer: 'Continuous Integration'
     },
     {
         question: 'Which of the following is an IAM Security Tool?',
@@ -36,7 +34,7 @@ var questionBank = [
     }
 ]
 
-var question = document.getElementById('question');
+var question = document.getElementById('question1');
 var quizContainer = document.getElementById('quiz-container');
 var scorecard = document.getElementById('scorecard');
 var option0 = document.getElementById('option0');
