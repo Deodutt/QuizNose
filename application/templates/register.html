@@ -11,16 +11,18 @@
 </head>
 
 <body>
-  <form action="GET" class="login-form">
-    <h1>Login Form</h1>
+  <form action="POST" class="login-form">
+    <h1>Registration Form</h1>
     <div class="inputs">
+      <p>Email Address</p>
+      <input type="text" name="email" placeholder="Email Address"><br>
       <p>User name</p>
       <input type="text" name="user" placeholder="User Name"><br>
       <p>Password</p>
       <input type="password" name="password" placeholder="Password">
     </div>
     <div class="buttons">
-      <button id="login" class="btn btn-primary" type="button" onclick="window.location.href = 'studDash.html';">Log In</button><br>
+      <button id="login" class="btn btn-primary" type="button" onclick="window.location.href = 'studDash';">Register</button><br>
       <a href="#">Forgot password?</a>
       <div class="line"></div>
       <button class="newAccount btn btn-primary">Create new account</button>
