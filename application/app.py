@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
-# from passlib.hash import sha256_crypt
 from flask_mysqldb import MySQL
 from classes import RegisterForm
 import db
+import csv_parse
 
+# from passlib.hash import sha256_crypt
 # from functools import wraps
+
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 # mysql = MySQL(app) //question. if db already invokes the sql library. do we need to reinvoke here?
 
@@ -14,54 +16,75 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/login', methods=['GET','POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     return render_template("login.html")
 
 
-@app.route('/register', methods=['GET','POST'])
-def register():
-    form = RegisterForm(request.form)
-    if request.method == "POST" and form.validate():
-        name = form.name.data
-        email = form.email.data
+# @app.route('/register', methods=['GET','POST'])
+# def register():
+#     form = RegisterForm(request.form)
+#     if request.method == "POST" and form.validate():
+#         name = form.name.data
+#         email = form.email.data
 
-        # email verifier
-        # data = client.get(email) ##commented out for now
-        # if str(data.smtp_check) == 'False': ##commented out for now
-        # flash('Invalid email, please provide a valid email address','danger')
-        # return render_template('register.html', form=form)
+#         # email verifier
+#         # data = client.get(email) ##commented out for now
+#         # if str(data.smtp_check) == 'False': ##commented out for now
+#         # flash('Invalid email, please provide a valid email address','danger')
+#         # return render_template('register.html', form=form)
 
-        # send_confirmation_email(email) ##not neaded yet.
+#         # send_confirmation_email(email) ##not neaded yet.
 
-        username = form.username.data
-        password = sha256_crypt.encrypt(str(form.password.data))
-        cur = db.cursor()
-        cur.execute(
-            "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
-            (username, username, username, password),
-        )
-        db.commit()
-        cur.close()
-        flash(
-            "Thanks for registering!  Please check your email to confirm your email address.",
-            "success",
-        )
-        return redirect(url_for("login"))
-        # change in login function to redirect to warning page
+#         username = form.username.data
+#         password = sha256_crypt.encrypt(str(form.password.data))
+#         cur = db.cursor()
+#         cur.execute(
+#             "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
+#             (username, username, username, password),
+#         )
+#         db.commit()
+#         cur.close()
+#         flash(
+#             "Thanks for registering!  Please check your email to confirm your email address.",
+#             "success",
+#         )
+#         return redirect(url_for("login"))
+#         # change in login function to redirect to warning page
 
-    return render_template("register.html", form=form)
+#     return render_template("register.html", form=form)
 
 
 @app.route("/studDash")
 def studDash():
     return render_template("studDash.html")
 
-data = db.grab_question("q1")
 
 @app.route("/quiz")
 def quiz():
-    return render_template("quiz.html",data=data)
+    data = db.grab_question("q1")
+
+    question_prompt = data.get("question")[0]
+    option_a = data.get("choices")[0]
+    option_b = data.get("choices")[1]
+    option_c = data.get("choices")[2]
+    option_d = data.get("choices")[3]
+
+    return render_template(
+        "quiz.html",
+        question_prompt=question_prompt,
+        option_a=option_a,
+        option_b=option_b,
+        option_c=option_c,
+        option_d=option_d,
+    )
+
+
+# allows users to upload quiz
+# @app.route("/create-quiz")
+# def create_quiz():
+#     csv_parse.csv_reader("quiz1")
+#     return
 
 
 # def is_logged(f):
