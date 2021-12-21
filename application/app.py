@@ -6,7 +6,7 @@ import db
 
 # from functools import wraps
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
-mysql = MySQL(app)
+# mysql = MySQL(app) //question. if db already invokes the sql library. do we need to reinvoke here?
 
 
 @app.route("/")
@@ -36,12 +36,12 @@ def register():
 
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
-        cur = mysql.connection.cursor()
+        cur = db.cursor()
         cur.execute(
             "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
             (username, username, username, password),
         )
-        mysql.connection.commit()
+        db.commit()
         cur.close()
         flash(
             "Thanks for registering!  Please check your email to confirm your email address.",
