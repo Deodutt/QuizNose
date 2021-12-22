@@ -21,12 +21,12 @@ def login():
     return render_template("login.html")
 
 
-# @app.route('/register', methods=['GET','POST'])
-# def register():
-#     form = RegisterForm(request.form)
-#     if request.method == "POST" and form.validate():
-#         name = form.name.data
-#         email = form.email.data
+@app.route('/register', methods=['GET','POST'])
+def register():
+    form = RegisterForm(request.form)
+    if request.method == "POST" and form.validate():
+        name = form.name.data
+        email = form.email.data
 
 #         # email verifier
 #         # data = client.get(email) ##commented out for now
@@ -52,7 +52,7 @@ def login():
 #         return redirect(url_for("login"))
 #         # change in login function to redirect to warning page
 
-#     return render_template("register.html", form=form)
+    return render_template("register.html", form=form)
 
 
 @app.route("/studDash")

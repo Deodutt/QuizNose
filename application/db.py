@@ -119,10 +119,11 @@ def query_entire_table(table):
 
 
 # grab list of choices for variable question
+#need to think of a way to query the choices when we also query for the quiz. consider adding quiz_id to this table
 def query_choices(q_id):
     table_name = "choices"
     cur = db.cursor()
-    cur.execute(f"SELECT choice FROM {table_name} WHERE q_id ='{q_id}';")
+    cur.execute(f"SELECT choice FROM {table_name} where q_id = '{q_id}';")
     result = list(cur.fetchall())
     # print(f"First Entry fetch: {list(result[1])}")
     db.commit()
@@ -132,10 +133,16 @@ def query_choices(q_id):
         returnlist.append(result[i][0])
     return returnlist
 
+def choices_list():
+    returnlist =[]
+    q_num = ["q1","q2","q3","q4","q45","q6","q7","q8","q9","q10"]
+    for i in range (10):
+        returnlist.append(query_choices(q_num[i]))
+    return returnlist
 
-def query_question(q_id):
+def query_question(quiz_id):
     cur = db.cursor()
-    cur.execute(f"SELECT q FROM questions WHERE q_id ='{q_id}';")
+    cur.execute(f"SELECT q FROM questions WHERE quiz_id ='{quiz_id}';")
     result = list(cur.fetchall())
     returnlist = []
     for i in range(len(result)):
@@ -145,7 +152,7 @@ def query_question(q_id):
 
 def query_ans(q_id):
     cur = db.cursor()
-    cur.execute(f"SELECT ans FROM questions WHERE q_id ='{q_id}';")
+    cur.execute(f"SELECT ans FROM questions WHERE quiz_id ='{q_id}';")
     result = list(cur.fetchall())
     returnlist = []
     for i in range(len(result)):
@@ -157,8 +164,8 @@ def query_ans(q_id):
 # print("creating tables")
 # delete_table("questions")
 # delete_table("choices")
-create_questions_table()
-create_choices_table()
+# create_questions_table()
+# create_choices_table()
 # create_quizzes_table()
 # create_results_table()
 # print(f"Created Table List: {list_tables(db_table = db_name)}\n")
@@ -192,19 +199,23 @@ create_choices_table()
 # query_entire_table("results")
 
 # ## Query all choices on a specific question
-# query_choices("q1")
-# query_choices("q2")
+# for i in range(4):
+#     print(query_choices("q1")[i][0])
+# print(query_question("quiz1")[0])
 
 # creating dictionary output for html
-def grab_question(q_num):
+def grab_question(quiz_num):
     out = {"question": None, "choices": None, "ans": None}
-    out["question"] = query_question(q_num)
-    out["choices"] = query_choices(q_num)
-    out["ans"] = query_ans(q_num)
+    out["question"] = query_question(quiz_num)
+    out["choices"] = query_choices(quiz_num)
+    out["ans"] = query_ans(quiz_num)
     return out
 
+# print(grab_question("quiz1")["choices"])
 
 # print(grab_question("q1"))
+
+print(choices_list()[1])
 
 ## Delete a table
 # delete_table("questions")
