@@ -1,12 +1,13 @@
 //Question bank
 
-<script type="text/javascript">
-            var question1 = { data.question }
-            var choices = { data.choices }
-            var ans = { data.ans }
-        </script>
+// <script type="text/javascript">
+//             var question1 = { data.question }
+//             var choices = { data.choices }
+//             var ans = { data.ans }
+//         </script>
 
 
+//Question bank
 var questionBank = [{
         question: 'What are the key components of DevOps?',
         option: ['Continuous Integration', 'Continuous Testing', 'Continuous Delivery', 'Continuous Monitoring'],
@@ -72,37 +73,38 @@ function calcScore(e) {
     setTimeout(nextQuestion, 300);
 }
 
+function finishQuiz() {
+    points.innerHTML = score + '/' + questionBank.length;
+    quizContainer.style.display = 'none';
+    scoreboard.style.display = 'block'
+    clearInterval(cgtm);
+}
+
 //function to display next question
 function nextQuestion() {
     if (i < questionBank.length - 1) {
         i = i + 1;
         displayQuestion();
     } else {
-        points.innerHTML = score + '/' + questionBank.length;
-        quizContainer.style.display = 'none';
-        scoreboard.style.display = 'block'
-        clearInterval(nxtqst);
-        clearInterval(cgtm);
+        finishQuiz();
     }
 }
 
 //click events to next button
 next.addEventListener('click', nextQuestion);
 // setInterval(nextQuestion, 2000);
-let timeOut = 3000;
+let timeOut = questionBank.length * 15;
+timer.innerText = "Time left: " + timeOut + "s";
 
 function changeTime() {
-    timer.innerText = "Time left: " + timeOut / 1000 + "s";
-    timeOut -= 1000;
-    if (timeOut == 0) {
-        timeOut = 3000;
-    }
-    console.log("backgroundda ketomman");
-    
+    timer.innerText = "Time left: " + timeOut + "s";
+    timeOut -= 1;
+    if (timeOut < 0)
+        finishQuiz();
 }
 
-// show the next question
-var nxtqst = setInterval(nextQuestion, timeOut);
+// show  next question
+// var nxtqst = setInterval(nextQuestion, timeOut);
 // change the html element
 var cgtm = setInterval(changeTime, 1000);
 
