@@ -140,9 +140,9 @@ def choices_list():
         returnlist.append(query_choices(q_num[i]))
     return returnlist
 
-def query_question(quiz_id):
+def query_question(q_id):
     cur = db.cursor()
-    cur.execute(f"SELECT q FROM questions WHERE quiz_id ='{quiz_id}';")
+    cur.execute(f"SELECT q FROM questions WHERE quiz_id ='{q_id}';")
     result = list(cur.fetchall())
     returnlist = []
     for i in range(len(result)):
@@ -207,7 +207,7 @@ def query_ans(q_id):
 def grab_question(quiz_num):
     out = {"question": None, "choices": None, "ans": None}
     out["question"] = query_question(quiz_num)
-    out["choices"] = query_choices(quiz_num)
+    out["choices"] = choices_list()
     out["ans"] = query_ans(quiz_num)
     return out
 
