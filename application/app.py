@@ -3,8 +3,8 @@ from flask_mysqldb import MySQL
 from classes import RegisterForm
 import db
 import csv_parse
-
-# from passlib.hash import sha256_crypt
+from wtforms import Form, StringField,TextAreaField,PasswordField, validators, DateTimeLocalField, BooleanField, IntegerField, ValidationError
+from passlib.hash import sha256_crypt
 # from functools import wraps
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
@@ -21,8 +21,10 @@ def login():
     return render_template("login.html")
 
 
+
 @app.route('/register', methods=['GET','POST'])
 def register():
+    print(dir(db.db))
     form = RegisterForm(request.form)
     if request.method == "POST" and form.validate():
         name = form.name.data
@@ -36,21 +38,21 @@ def register():
 
 #         # send_confirmation_email(email) ##not neaded yet.
 
-#         username = form.username.data
-#         password = sha256_crypt.encrypt(str(form.password.data))
-#         cur = db.cursor()
-#         cur.execute(
-#             "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
-#             (username, username, username, password),
-#         )
-#         db.commit()
-#         cur.close()
-#         flash(
-#             "Thanks for registering!  Please check your email to confirm your email address.",
-#             "success",
-#         )
-#         return redirect(url_for("login"))
-#         # change in login function to redirect to warning page
+        username = form.username.data
+        password = sha256_crypt.encrypt(str(form.password.data))
+        cur = db.db.cursor()
+        cur.execute(
+            "INSERT INTO users(username,name,email, password,confirmed) values(%s,%s,%s,%s,0)",
+            (username, name, email, password),
+        )
+        db.db.commit()
+        cur.close()
+        flash(
+            "Thanks for registering!  Please check your email to confirm your email address.",
+            "success",
+        )
+        return redirect(url_for("login"))
+        # change in login function to redirect to warning page
 
     return render_template("register.html", form=form)
 
@@ -63,8 +65,7 @@ def studDash():
 @app.route("/quiz")
 def quiz():
     data = db.grab_question("q1")
-
-    question_prompt = data.get("question")[0]
+    question_prompt = data.get("choices")[0]
     option_a = data.get("choices")[0]
     option_b = data.get("choices")[1]
     option_c = data.get("choices")[2]
