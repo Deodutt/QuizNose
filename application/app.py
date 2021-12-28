@@ -1,15 +1,28 @@
-from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
+from flask import Flask, request, render_template, flash, redirect, url_for
 from flask_mysqldb import MySQL
 from classes import RegisterForm
 import db
-import csv_parse
-from wtforms import Form, StringField,TextAreaField,PasswordField, validators, DateTimeLocalField, BooleanField, IntegerField, ValidationError
+from upload_test import upload_test_blueprint
+from wtforms import (
+    Form,
+    StringField,
+    TextAreaField,
+    PasswordField,
+    validators,
+    DateTimeLocalField,
+    BooleanField,
+    IntegerField,
+    ValidationError,
+)
 from passlib.hash import sha256_crypt
+
 # from functools import wraps
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
-# mysql = MySQL(app) //question. if db already invokes the sql library. do we need to reinvoke here?
-app.secret_key= 'testkey'
+app.register_blueprint(upload_test_blueprint)
+
+app.secret_key = "testkey"
+
 
 @app.route("/")
 def index():
@@ -21,8 +34,7 @@ def login():
     return render_template("login.html")
 
 
-
-@app.route('/register', methods=['GET','POST'])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     print(dir(db.db))
     form = RegisterForm(request.form)
@@ -30,13 +42,13 @@ def register():
         name = form.name.data
         email = form.email.data
 
-#         # email verifier
-#         # data = client.get(email) ##commented out for now
-#         # if str(data.smtp_check) == 'False': ##commented out for now
-#         # flash('Invalid email, please provide a valid email address','danger')
-#         # return render_template('register.html', form=form)
+        #         # email verifier
+        #         # data = client.get(email) ##commented out for now
+        #         # if str(data.smtp_check) == 'False': ##commented out for now
+        #         # flash('Invalid email, please provide a valid email address','danger')
+        #         # return render_template('register.html', form=form)
 
-#         # send_confirmation_email(email) ##not neaded yet.
+        #         # send_confirmation_email(email) ##not neaded yet.
 
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
@@ -68,9 +80,9 @@ def quiz():
     # i = qnum
     # if i == 10:
     #     i = 0
-    # else: 
+    # else:
     #     i += 1
-    i=0
+    i = 0
     data = db.grab_question("quiz1")
     question_prompt = data.get("question")[i]
     option_a = data.get("choices")[i][0]

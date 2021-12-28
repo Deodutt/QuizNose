@@ -1,56 +1,39 @@
-{% extends 'layout.html' %}
-{% block head %}
-  <link rel="stylesheet" href="/static/create_test.css">
-{% endblock %}
-{% block body %}
-{% from "includes/_formhelpers.html" import render_field %}
-<div id="heading">
-  <div class="col">
-    <h1>Create Test</h1>
-  </div>
-</div>
-<div class="login-box well">
-  <form method="POST" action="" enctype="multipart/form-data">
-    <div class="form-group">
-      {{render_field(form.subject, class="form-control")}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizLette</title>
+
+    <!-- css file link -->
+    <link rel="stylesheet" href="../static/quiz.css">
+</head>
+<body>
+    <header>
+        <img src="../static/studCol1.png" alt="img" id="img" class="img">
+        <h1 id="title">Upload a Quiz</h1>
+    </header>
+
+
+    <!-- upload-container -->
+    <div id="upload-container">
+        <div class="questions">
+            <h2>Select one CSV file</h2>
+            <form method=post enctype=multipart/form-data>
+                <label for="csvfile">Select a file:</label>
+                <input type=file name=file>
+                <input type=submit value=Upload>
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-      {{render_field(form.topic, class="form-control")}}
+
+    <!-- status-container -->
+    <div id="status-container">
+        <div class="status">
+            <h1>{{status}}</h1>
+        </div>
     </div>
-    <div class="row">
-      <div class="form-group col-6">
-        {{render_field(form.start_date, class="form-control")}}
-      </div>
-      <div class="form-group col-6">
-        {{render_field(form.start_time, class="form-control")}}
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-6">
-        {{render_field(form.end_date, class="form-control")}}
-      </div>
-      <div class="form-group col-6">
-        {{render_field(form.end_time, class="form-control")}}
-      </div>
-    </div>
-    <div class="form-group">
-      {{render_field(form.duration, class="form-control")}}
-    </div>
-    <div class="form-group">
-      {{render_field(form.password, class="form-control")}}
-    </div>
-    <div class="form-group">
-    	{{form.hidden_tag()}}
-        {{render_field(form.doc, class="form-control-file")}}
-        <a href="static/template.docx" class="btn btn-primary" style="margin-top: 10px;">Download Template</a>
-    </div>
-    <div class="form-check">
-      {{render_field(form.show_result, class="form-check-input")}}
-    </div>
-    <div class="form-check">
-      {{render_field(form.neg_mark, class="form-check-input")}}
-    </div>
-    <p><input type="submit" class="btn btn-primary" value="Submit"></p>
-  </form>
-</div>
-{% endblock %}
+
+    <!-- javascript file source -->
+</body>
+</html>
