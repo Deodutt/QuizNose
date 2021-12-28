@@ -119,7 +119,7 @@ def query_entire_table(table):
 
 
 # grab list of choices for variable question
-#need to think of a way to query the choices when we also query for the quiz. consider adding quiz_id to this table
+# need to think of a way to query the choices when we also query for the quiz. consider adding quiz_id to this table
 def query_choices(q_id):
     table_name = "choices"
     cur = db.cursor()
@@ -133,12 +133,14 @@ def query_choices(q_id):
         returnlist.append(result[i][0])
     return returnlist
 
+
 def choices_list():
-    returnlist =[]
-    q_num = ["q1","q2","q3","q4","q45","q6","q7","q8","q9","q10"]
-    for i in range (10):
+    returnlist = []
+    q_num = ["q1", "q2", "q3", "q4", "q45", "q6", "q7", "q8", "q9", "q10"]
+    for i in range(10):
         returnlist.append(query_choices(q_num[i]))
     return returnlist
+
 
 def query_question(q_id):
     cur = db.cursor()
@@ -211,11 +213,12 @@ def grab_question(quiz_num):
     out["ans"] = query_ans(quiz_num)
     return out
 
+
 # print(grab_question("quiz1")["choices"])
 
 # print(grab_question("q1"))
 
-print(grab_question("quiz1")['question'][0])
+# print(grab_question("quiz1")["question"][0])
 
 ## Delete a table
 # delete_table("questions")
