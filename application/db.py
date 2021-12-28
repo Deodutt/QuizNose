@@ -215,7 +215,7 @@ def grab_question(quiz_num):
 
 # print(grab_question("q1"))
 
-print(choices_list()[1])
+print(grab_question("quiz1")['question'][0])
 
 ## Delete a table
 # delete_table("questions")

@@ -64,12 +64,20 @@ def studDash():
 
 @app.route("/quiz")
 def quiz():
-    data = db.grab_question("q1")
-    question_prompt = data.get("choices")[0]
-    option_a = data.get("choices")[0]
-    option_b = data.get("choices")[1]
-    option_c = data.get("choices")[2]
-    option_d = data.get("choices")[3]
+    # working on logic to loop thru the questions
+    # i = qnum
+    # if i == 10:
+    #     i = 0
+    # else: 
+    #     i += 1
+    i=0
+    data = db.grab_question("quiz1")
+    question_prompt = data.get("question")[i]
+    option_a = data.get("choices")[i][0]
+    option_b = data.get("choices")[i][1]
+    option_c = data.get("choices")[i][2]
+    option_d = data.get("choices")[i][3]
+    i += 1
 
     return render_template(
         "quiz.html",
