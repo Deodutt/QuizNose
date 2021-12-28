@@ -14,5 +14,6 @@ jobs:
         python-version: '3.7'
         cache: 'pip'
     - name: Install dependencies
-      run: pwd
-      run: pip install -r /application/requirements.txt
+      run:
+        pwd
+        pip install -r /application/requirements.txt
