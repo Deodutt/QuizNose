@@ -9,7 +9,7 @@ from passlib.hash import sha256_crypt
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 # mysql = MySQL(app) //question. if db already invokes the sql library. do we need to reinvoke here?
-
+app.secret_key= 'testkey'
 
 @app.route("/")
 def index():
