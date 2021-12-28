@@ -29,5 +29,5 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          /home/runner/work/Quizlette/Quizlette
-          pip install -r /application/requirements.txt
+          cd /home/runner/work/Quizlette/Quizlette/applications
+          pip install -r requirements.txt
