@@ -17,4 +17,4 @@ jobs:
       run: |
         pwd
         ls
-        pip install -r /application/requirements.txt
+        pip install -r ./application/requirements.txt
