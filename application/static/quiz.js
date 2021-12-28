@@ -8,32 +8,32 @@
 
 
 //Question bank
-var questionBank = [{
-        question: 'What are the key components of DevOps?',
-        option: ['Continuous Integration', 'Continuous Testing', 'Continuous Delivery', 'Continuous Monitoring'],
-        answer: 'Continuous Integration'
-    },
-    {
-        question: 'Which of the following is an IAM Security Tool?',
-        option: ['IAM Credentials Report', 'IAM Root Account Manager', 'IAM Service Report', 'IAM Security Advisor', ],
-        answer: 'IAM Credentials Report'
-    },
-    {
-        question: 'Which EC2 Purchasing Option can provide the biggest discount, but is not suitable for critical jobs or databases?',
-        option: ['Scheduled Instances', 'Convertible Instances', 'Dedicated Hosts', 'Spot Instances'],
-        answer: 'Spot Instances'
-    },
-    {
-        question: 'Which AWS offered Load Balancer should you use to handle hundreds of thousands of connections with low latency?',
-        option: ['Application Load Balancer', 'Network Load Balancer', 'Elastic Load Balancer ', 'N/A'],
-        answer: 'Network Load Balancer'
-    },
-    {
-        question: 'You want to create a decentralized blockchain on AWS. Which AWS service would you use?',
-        option: ['DocumentDB', 'QLDB', 'Managed Blockchain', 'QuickSight'],
-        answer: 'Managed Blockchain'
-    }
-]
+// var questionBank = [{
+//         question: 'What are the key components of DevOps?',
+//         option: ['Continuous Integration', 'Continuous Testing', 'Continuous Delivery', 'Continuous Monitoring'],
+//         answer: 'Continuous Integration'
+//     },
+//     {
+//         question: 'Which of the following is an IAM Security Tool?',
+//         option: ['IAM Credentials Report', 'IAM Root Account Manager', 'IAM Service Report', 'IAM Security Advisor', ],
+//         answer: 'IAM Credentials Report'
+//     },
+//     {
+//         question: 'Which EC2 Purchasing Option can provide the biggest discount, but is not suitable for critical jobs or databases?',
+//         option: ['Scheduled Instances', 'Convertible Instances', 'Dedicated Hosts', 'Spot Instances'],
+//         answer: 'Spot Instances'
+//     },
+//     {
+//         question: 'Which AWS offered Load Balancer should you use to handle hundreds of thousands of connections with low latency?',
+//         option: ['Application Load Balancer', 'Network Load Balancer', 'Elastic Load Balancer ', 'N/A'],
+//         answer: 'Network Load Balancer'
+//     },
+//     {
+//         question: 'You want to create a decentralized blockchain on AWS. Which AWS service would you use?',
+//         option: ['DocumentDB', 'QLDB', 'Managed Blockchain', 'QuickSight'],
+//         answer: 'Managed Blockchain'
+//     }
+// ]
 
 var question = document.getElementById('question');
 var quizContainer = document.getElementById('quiz-container');
@@ -82,7 +82,7 @@ function finishQuiz() {
 
 //function to display next question
 function nextQuestion() {
-    if (i < questionBank.length - 1) {
+    if (i < 10 - 1) {
         i = i + 1;
         displayQuestion();
     } else {
