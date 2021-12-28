@@ -16,4 +16,5 @@ jobs:
     - name: Install dependencies
       run: |
         pwd
+        ls
         pip install -r /application/requirements.txt
