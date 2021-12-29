@@ -1,0 +1,20 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        pwd
+        ls
+        pip install -r ./application/requirements.txt
