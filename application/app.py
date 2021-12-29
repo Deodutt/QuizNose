@@ -22,7 +22,7 @@ app = Flask(__name__, template_folder="templates", static_url_path="/static")
 app.register_blueprint(upload_test_blueprint)
 
 app.secret_key = "testkey"
-
+#needed for cookie sessions. add to secrets file later
 
 @app.route("/")
 def index():
