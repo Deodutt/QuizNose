@@ -36,7 +36,6 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    print(dir(db.db))
     form = RegisterForm(request.form)
     if request.method == "POST" and form.validate():
         name = form.name.data
