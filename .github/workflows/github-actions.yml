@@ -1,6 +1,6 @@
 name: Python package
 
-on: [push]
+on: [pull_request]
 
 # env:
 #   AWS_REGION: use-east-1                   # set this to your preferred AWS region, e.g. us-west-1
