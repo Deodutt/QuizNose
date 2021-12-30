@@ -22,7 +22,8 @@ app = Flask(__name__, template_folder="templates", static_url_path="/static")
 app.register_blueprint(upload_test_blueprint)
 
 app.secret_key = "testkey"
-#needed for cookie sessions. add to secrets file later
+# needed for cookie sessions. add to secrets file later
+
 
 @app.route("/")
 def index():
@@ -73,25 +74,115 @@ def studDash():
     return render_template("studDash.html")
 
 
-@app.route("/quiz")
+def display_question(quiz_id):
+    global question_prompt, option_a, option_b, option_c, option_d
+
+    max_questions = 10
+    current_question = int(db.get_current_question(123456, quiz_id))
+    if current_question < max_questions:
+        data = db.serve_question(quiz_id, current_question)
+        question_prompt = data.get("question")[0]
+        option_a = data.get("choices")[0]
+        option_b = data.get("choices")[1]
+        option_c = data.get("choices")[2]
+        option_d = data.get("choices")[3]
+        return question_prompt, option_a, option_b, option_c, option_d
+    else:
+        print("finished test")
+        return render_template("test_results.html")
+
+
+def update_session(quiz_id, current_question, user_answer):
+    current_question = int(db.get_current_question(123456, quiz_id))
+
+    # inserting answer and updating current question
+    db.insert_session_answer(
+        123456,
+        new_current_question,
+        user_answer,
+    )
+    return
+
+
+@app.route("/quiz", methods=["GET", "POST"])
 def quiz():
-    # working on logic to loop thru the questions
-    # i = qnum
-    # if i == 10:
-    #     i = 0
-    # else:
-    #     i += 1
-    i = 0
-    data = db.grab_question("quiz1")
-    question_prompt = data.get("question")[i]
-    option_a = data.get("choices")[i][0]
-    option_b = data.get("choices")[i][1]
-    option_c = data.get("choices")[i][2]
-    option_d = data.get("choices")[i][3]
-    i += 1
+    quiz = "quiz1"
+    session = 123456
+    max_questions = 10
+    current_question = int(db.get_current_question(session, quiz))
+    print(db.get_current_question(session, quiz))
+    print(f"current question -> {current_question}")
+    if current_question < max_questions:
+        data = db.serve_question(quiz, current_question)
+        question_prompt = data.get("question")[0]
+        option_a = data.get("choices")[0]
+        option_b = data.get("choices")[1]
+        option_c = data.get("choices")[2]
+        option_d = data.get("choices")[3]
+
+        if request.method == "POST" and "choice_a" in request.form["quiz_choice"]:
+            # update the question counter and record the answer user had
+            current_question = current_question + 1
+            db.insert_session_counter(session, current_question)
+            db.insert_session_answer(session, current_question, option_a)
+            return render_template(
+                "quiz.html",
+                current_question=current_question,
+                question_prompt=question_prompt,
+                option_a=option_a,
+                option_b=option_b,
+                option_c=option_c,
+                option_d=option_d,
+            )
+
+        elif request.method == "POST" and "choice_b" in request.form["quiz_choice"]:
+            current_question = current_question + 1
+            db.insert_session_counter(session, current_question)
+            db.insert_session_answer(session, current_question, option_a)
+            return render_template(
+                "quiz.html",
+                current_question=current_question,
+                question_prompt=question_prompt,
+                option_a=option_a,
+                option_b=option_b,
+                option_c=option_c,
+                option_d=option_d,
+            )
+
+        elif request.method == "POST" and "choice_c" in request.form["quiz_choice"]:
+            current_question = current_question + 1
+            db.insert_session_counter(session, current_question)
+            db.insert_session_answer(session, current_question, option_a)
+            return render_template(
+                "quiz.html",
+                current_question=current_question,
+                question_prompt=question_prompt,
+                option_a=option_a,
+                option_b=option_b,
+                option_c=option_c,
+                option_d=option_d,
+            )
+
+        elif request.method == "POST" and "choice_d" in request.form["quiz_choice"]:
+            current_question = current_question + 1
+            db.insert_session_counter(session, current_question)
+            db.insert_session_answer(session, current_question, option_a)
+            return render_template(
+                "quiz.html",
+                current_question=current_question,
+                question_prompt=question_prompt,
+                option_a=option_a,
+                option_b=option_b,
+                option_c=option_c,
+                option_d=option_d,
+            )
+    else:
+        print("finished test")
+        return render_template("tests_result.html")
 
     return render_template(
         "quiz.html",
+        current_question=current_question,
         question_prompt=question_prompt,
         option_a=option_a,
         option_b=option_b,
