@@ -1,59 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuizLette</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizLette</title>
 
-    <!-- css file link -->
-    <link rel="stylesheet" href="../static/quiz.css">
+  <!-- css file link -->
+  <link rel="stylesheet" href="../static/quiz.css">
 </head>
+
 <body>
-    <img src="../static/studCol1.png" alt="img" id="img" class="img">
-    <h1 id="title">Welcome to Quiz</h1>
+  <img src="../static/studCol1.png" alt="img" id="img" class="img">
+  <h1 id="title">Welcome to Quiz</h1>
 
-    <!-- quiz-container -->
+  <!-- quiz-container -->
+  <section class="questions-form">
     <div id="quiz-container">
-        <!-- question container -->
-        <div class="questions">
-            <h2 id="question">{{question_prompt}}</h2>
-            <ol type="A">
-                <li class="option">{{option_a}}<span id="option0" onclick="calcScore(this)"></span></li>
-                <li class="option">{{option_b}}<span id="option1" onclick="calcScore(this)"></span></li>
-                <li class="option">{{option_c}}<span id="option2" onclick="calcScore(this)"></span></li>
-                <li class="option">{{option_d}}<span id="option3" onclick="calcScore(this)"></span></li>
-            </ol>
-            <h4 id="stat"></h4>
-            <h4 id="timer">Time left: 300s</h4>
-        </div>
-
-        <div class="buttons">
-            <button type="button" class="next">Next</button>
-        </div>
-
+      <h2 id="question">{{current_question}}) {{question_prompt}}</h2>
+      <form id="serve-quiz" action="/quiz" method="POST">
+        <input type="radio" name="quiz_choice" value="choice_a">{{option_a}}</input>
+        <input type="radio" name="quiz_choice" value="choice_b">{{option_b}}</input>
+        <input type="radio" name="quiz_choice" value="choice_c">{{option_c}}</input>
+        <input type="radio" name="quiz_choice" value="choice_d">{{option_d}}</input>
+        <button class="btn next" type="submit" value="submit">Next Question</button>
+      </form>
     </div>
+  </section>
 
-    <!-- scoreboard section -->
-    <div id="scoreboard">
-        <img src="../static/studCol1.png" alt="">
-        <h2 id="score-title">Your Score</h2>
-        <h2 id="score"></h2>
-        <button type="button" id="score-btn" onclick="backToQuiz()">Back to Quiz</button>
-        <button type="button" id="check-answer" onclick="checkAnswer()">Check Answers</button>
-    </div>
 
-    <!-- answers section -->
-    <div id="answerBank">
-        <h2>Answers :</h2>
-        <ol type="1" id="answers">
+  <!-- scoreboard section -->
+  <div id="scoreboard">
+    <img src="../static/studCol1.png" alt="">
+    <h2 id="score-title">Your Score</h2>
+    <h2 id="score"></h2>
+    <button type="button" id="score-btn" onclick="backToQuiz()">Back to Quiz</button>
+    <button type="button" id="check-answer" onclick="checkAnswer()">Check Answers</button>
+  </div>
 
-        </ol>
-        <button type="button" id="score-btn" onclick="backToQuiz()">Back to Quiz</button>
-    </div>
+  <!-- answers section -->
+  <div id="answerBank">
+    <h2>Answers :</h2>
+    <ol type="1" id="answers">
 
-    <!-- javascript file source -->
-    <script src="../static/quiz.js"></script>
+    </ol>
+    <button type="button" id="score-btn" onclick="backToQuiz()">Back to Quiz</button>
+  </div>
+
+  <!-- javascript file source -->
+  <script src="../static/quiz.js"></script>
 </body>
+
 </html>
 
 
