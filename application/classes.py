@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, TextAreaField, PasswordField, validators, DateTimeField, BooleanField, IntegerField
+from wtforms import Form, StringField, PasswordField, validators
 
 class RegisterForm(Form):
 	name = StringField('Name', [validators.Length(min=3, max=30)])
@@ -11,7 +11,7 @@ class RegisterForm(Form):
 			validators.Regexp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", message="Password should contain min 8 characters including 1 letter and 1 number."),
 			validators.DataRequired(),
 			validators.EqualTo('confirm', message="Password do not match"),
-			validators.Length(min=8, max=20)
+			validators.Length(min=8, max=30)
 		])
 	confirm = PasswordField('Confirm Password')
 
