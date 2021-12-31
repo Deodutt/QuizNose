@@ -61,25 +61,23 @@ def csv_reader(filename):
         if header != None:
             # Iterate over each row after the header in the csv
             for row in csv_reader:
-                quiz_number = row[0]
-                question_number = f"q{num_rows}"
-                question_prompt = row[2]
-                choice_a = row[3]
-                choice_b = row[4]
-                choice_c = row[5]
-                choice_d = row[6]
-                answers = row[1]
+                quiz_id = row[0]
+                question_number = row[1]
+                question_prompt = row[3]
+                choice_a = row[4]
+                choice_b = row[5]
+                choice_c = row[6]
+                choice_d = row[7]
+                answer = row[2]
                 num_rows += 1
 
-                db.insert_questions(
-                    quiz_number, question_number, question_prompt, answers
+                db.insert_questions(quiz_id, question_number, question_prompt, answer)
+
+                db.insert_choice(
+                    quiz_id, question_number, choice_a, choice_b, choice_c, choice_d
                 )
 
-                db.insert_choice(question_number, choice_a)
-                db.insert_choice(question_number, choice_b)
-                db.insert_choice(question_number, choice_c)
-                db.insert_choice(question_number, choice_d)
-    return print("finished parsing")
+    return print("finished uploading to database!")
 
 
 # csv_reader("quiz1")

@@ -109,3 +109,13 @@ button:active{
 #answers{
     margin-top: 1rem;
 }
+
+#quiz-container{
+    padding: 2.5%;
+}
+
+form input{
+    font-size: 5rem;
+    display: block;
+    color: red;
+}
