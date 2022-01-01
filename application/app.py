@@ -21,6 +21,7 @@ from threading import Thread
 from random import randint
 import socket
 from functools import wraps
+import secretstuff
 
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
@@ -29,12 +30,12 @@ app.register_blueprint(serve_quiz_blueprint)
 
 app.config.update(
     DEBUG=True,
-    SECRET_KEY="testkey",  # needed for cookie sessions. add to secrets file later
-    MAIL_SERVER="smtp.gmail.com",
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME="nycazn724@gmail.com",
-    MAIL_PASSWORD="matnuplmsjpvbwnv",
+    SECRET_KEY= 'testkey', #needed for cookie sessions. add to secrets file later
+    MAIL_SERVER='smtp.gmail.com',
+	MAIL_PORT=465,
+	MAIL_USE_SSL=True,
+	MAIL_USERNAME = secretstuff.emailusername,
+	MAIL_PASSWORD = secretstuff.emailpassword
 )
 
 
@@ -45,6 +46,7 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
     return render_template("login.html")
 
 
@@ -54,15 +56,19 @@ def register():
     if request.method == "POST" and form.validate():
         fullname = form.name.data
         email = form.email.data
-
-        data = client.get(email)
-        if str(data.smtp_check) == "False":
-            flash("Invalid email, please provide a valid email address", "danger")
-            return render_template("register.html", form=form)
-
-        send_confirmation_email(email)
-
-        user_id = randint(0, 1000000)
+        teachercode = form.teachercode.data
+        
+        data = client.get(email) 
+        if str(data.smtp_check) == 'False': 
+            flash('Invalid email, please provide a valid email address','danger')
+            return render_template('register.html', form=form)
+            
+        send_confirmation_email(email) 
+        user_id = randint(0,900000)
+        if teachercode == "KURATEACH2022":
+            user_id = randint(900000,999999)
+        print(user_id)
+        
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
         cur = db.db.cursor()
