@@ -12,6 +12,7 @@ from threading import Thread
 from random import randint
 import socket
 from functools import wraps
+import secretstuff
 
 
 
@@ -24,8 +25,8 @@ app.config.update(
     MAIL_SERVER='smtp.gmail.com',
 	MAIL_PORT=465,
 	MAIL_USE_SSL=True,
-	MAIL_USERNAME = 'nycazn724@gmail.com',
-	MAIL_PASSWORD = 'matnuplmsjpvbwnv'
+	MAIL_USERNAME = secretstuff.emailusername,
+	MAIL_PASSWORD = secretstuff.emailpassword
 
 )
 
@@ -38,6 +39,7 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
     return render_template("login.html")
 
 
@@ -47,6 +49,7 @@ def register():
     if request.method == "POST" and form.validate():
         fullname = form.name.data
         email = form.email.data
+        teachercode = form.teachercode.data
         
         data = client.get(email) 
         if str(data.smtp_check) == 'False': 
@@ -54,8 +57,10 @@ def register():
             return render_template('register.html', form=form)
             
         send_confirmation_email(email) 
-        
-        user_id = randint(0,1000000)
+        user_id = randint(0,900000)
+        if teachercode == "KURATEACH2022":
+            user_id = randint(900000,999999)
+        print(user_id)
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
         cur = db.db.cursor()
