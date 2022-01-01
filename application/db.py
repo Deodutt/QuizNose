@@ -232,17 +232,44 @@ def query_entire_table(table):
 # delete_table("users")
 # delete_table("results")
 # delete_table("sessions")
-create_questions_table()
-create_choices_table()
-create_users_table()
-create_results_table()
-create_session_table()
+# create_questions_table()
+# create_choices_table()
+# create_users_table()
+# create_results_table()
+# create_session_table()
 
-##Insert once
+# Insert once
 # insert_users(
 #     1017, "ricardo", "Ricardo Deodutt", "RicardoDeodutt@gmail.com", "KuraLabs#123", 0
 # )
 # insert_results("ricardo", "quiz1", "", 123456, 0)
+# insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
+
+
+def testing():
+    delete_table("questions")
+    delete_table("choices")
+    delete_table("users")
+    delete_table("results")
+    delete_table("sessions")
+    create_questions_table()
+    create_choices_table()
+    create_users_table()
+    create_results_table()
+    create_session_table()
+    insert_users(
+        1017,
+        "ricardo",
+        "Ricardo Deodutt",
+        "RicardoDeodutt@gmail.com",
+        "KuraLabs#123",
+        0,
+    )
+    insert_results("ricardo", "quiz1", "", 123456, 0)
+    insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
+
+
+# testing()
 # insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
 
 
