@@ -10,33 +10,40 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="nav">
-                <div class="search">
-                    <input type="text" placeholder="Search..">
-                    <button type="submit" class="submit-btn"><img src="../static/search1.jpg" alt=""></button>
-                </div>
-                <div class="user">
-                    <a href="#" class="btn">Add New</a>
-                    <img src="../static/notif.png" alt="">
-                    <img src="../static/avatar.png" alt="">
-                </div>
+    <!-- <header>
+        <h2>
+            QuizLette
+        </h2>
+
+        <div class="search-wrapper">
+            <span class="las la-search"></span>
+            <input type="search" placeholder="Buscar aquí" />
+        </div>
+        <div class="user-wrapper">
+            <img src="../static/avatar.png" width="40px" height="40px" alt="">
+            <div>
+                <h4>Administrador</h4>
+                <small>Super Admin</small>
             </div>
         </div>
-    </div>
+    </header> -->
     <div class="superBox" style="display: flex;">
         <div class="side-menu">
             <div class="brand-name">
-                <h1>QuizLette</h1>
+                <h1><a href="index.html">QuizLette</a></h1>
+                <img src="../avatars/3.png" alt="" class="user-photo">
             </div>
             <ul>
-                <li><img src="../static/dash.png" alt="">&nbsp; Dashboard</li>
-                <li><img src="../static/students1.png" alt="">&nbsp; Students</li>
-                <!-- <li><img src="../static/teacher.png" alt="">&nbsp; Teachers</li> -->
-                <LI><img src="../static/course.png" alt="">&nbsp; Courses</LI>
-                <li><img src="../static/queation.png" alt="">&nbsp; Tests</li>
-                <LI><img src="../static/help.png" alt="">&nbsp; Feedbacks</LI>
+                <li>
+                    <a href="#">
+                        <img src="../static/dash.png" alt="">&nbsp;Dashboard
+                    </a>
+                </li>
+                <li><img src="../static/students1.png" alt="">&nbsp; My Scores</li>
+                <li><img src="../static/teacher.png" alt="">&nbsp; My Courses</li>
+                <LI><img src="../static/course.png" alt="">&nbsp; My Tests</LI>
+                <li><img src="../static/queation.png" alt="">&nbsp; Upload Tests</li>
+                <LI><img src="../static/help.png" alt="">&nbsp; Help</LI>
                 <LI><img src="../static/setting.png" alt="">&nbsp; Settings</LI>
             </ul>
         </div>
@@ -45,11 +52,11 @@
             <div class="cards">
                 <div class="card">
                     <div class="box">
-                        <h1>2194</h1>
+                        <h1>12</h1>
                         <h3>My Scores</h3>
                     </div>
                     <div class="icon-case">
-                        <img src="../static/studCol.png" alt="">
+                        <img src="../avatars/score.jpg" alt="">
                     </div>
                 </div>
 
@@ -65,33 +72,34 @@
 
                 <div class="card">
                     <div class="box">
-                        <h1>15</h1>
+                        <h1>5</h1>
                         <h3>My Courses</h3>
                     </div>
                     <div class="icon-case">
-                        <img src="../static/home.png" alt="">
+                        <img src="../avatars/courses.jpg" alt="">
                     </div>
                 </div>
 
                 <div class="card" onclick="window.location.href = 'quiz';">
                     <div class="box">
-                        <h1>102</h1>
+                        <h1>10</h1>
                         <h3>My Tests</h3>
                     </div>
                     <div class="icon-case">
-                        <img src="../static/undraw_student.svg" alt="">
+                        <img src="../avatars/lib.jpg" alt="">
                     </div>
                 </div>
 
                 <div class="card">
                     <a href="create_test">
-                    <div class="box">
-                        <h3>Upload Tests</h3>
-                    </div>
-                    <div class="icon-case">
-                        <img src="../static/upload.jpg" alt="upload_image">
-                    </div>
-                </a>
+                        <div class="box">
+                            <h1>Quiz</h1>
+                            <h3>Upload Tests</h3>
+                        </div>
+                        <div class="icon-case">
+                            <img src="../static/upload.jpg" alt="upload_image">
+                        </div>
+                    </a>
                 </div>
             </div>
 
@@ -151,4 +159,3 @@
 </body>
 
 </html>
-
