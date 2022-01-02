@@ -1,6 +1,5 @@
 from flask import (
     Flask,
-    config,
     render_template,
     render_template_string,
     request,
@@ -90,8 +89,13 @@ def send_email(recipients, html_body):
         return
 
 
-        
-# mail = Mail(app) ##unclear of this is needed since the function is invoked in app.py
+# def get_local_ip():
+# 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# 	s.connect(('8.8.8.8', 1))
+# 	local_ip_address = s.getsockname()[0]
+# 	return local_ip_address
+
+"""This here will grab the address of the host where it is hosting to create to be used in a url later on. IPBased commented out for now"""
 
 # @asynch   ##unclear of this is needed since the function is invoked in app.py
 # def send_async_email(app, msg):
@@ -119,6 +123,9 @@ def send_confirmation_email(user_email):
     html = render_template_string(htmlbody, confirm_url=confirm_url)
 
     send_email([user_email], html)
+
+# """This here salts the secret key and creates a token based off the user email added to secret key"""
+
 
 @registration_blueprint.route("/confirm/<token>")
 def confirm_email(token):

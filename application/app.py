@@ -3,35 +3,32 @@ from flask import (
     Flask,
     request,
     render_template,
-    flash,
+    # flash,
     redirect,
     url_for,
-    render_template_string,
-    session,
+    # session,
 )
 from flask_mail import Mail
 from flask_mysqldb import MySQL
-# from classes import RegisterForm
 import QUERYDB as db
 from upload_test import upload_test_blueprint
 from serve_quiz import serve_quiz_blueprint
 from registration import registration_blueprint
-from passlib.hash import sha256_crypt
-# from itsdangerous import URLSafeTimedSerializer
+from login import login_blueprint
+# from passlib.hash import sha256_crypt
 from functools import wraps
 from threading import Thread
-# from random import randint
-import socket
-# import secretstuff
-# from emailverifier import Client
+# import socket
 import os, config
-
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
 app.register_blueprint(upload_test_blueprint)
 app.register_blueprint(serve_quiz_blueprint)
 app.register_blueprint(registration_blueprint)
+app.register_blueprint(login_blueprint)
+
+mail = Mail(app)
 
 
 @app.route("/")
@@ -39,43 +36,41 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password_candidate = request.form['password']
-        cur = db.db.cursor()
-        results = cur.execute('SELECT * from users where username = %s' , [username])
-        if results > 0:
-            data = cur.fetchone()
-            password = data['password']
-            confirmed = data['confirmed']
-            fullname = data['fullname']
-            user_id = data['user_id']
-            if confirmed == 0:
-                error = 'Please confirm email before logging in'
-                return render_template('login.html', error=error)
-            elif sha256_crypt.verify(password_candidate, password) and user_id < 9000001:
-                session['logged_in'] = True
-                session['username'] = username
-                session['fullname'] = fullname
-                return redirect(url_for('studDash'))
-            elif sha256_crypt.verify(password_candidate, password) and user_id > 9000000:
-                session['logged_in'] = True
-                session['username'] = username
-                session['fullname'] = fullname
-                return redirect(url_for('teachDash'))
-                ##may need to add if statement for redirect here for teacher.  
-            else:
-                error = 'Invalid password'
-                return render_template('login.html', error=error)
-            cur.close()
-        else:
-            error = 'Username not found'
-            return render_template('login.html', error=error)
-    return render_template('login.html')
-
-
+# @app.route("/login", methods=["GET", "POST"])
+# def login():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password_candidate = request.form['password']
+#         cur = db.db.cursor()
+#         results = cur.execute('SELECT * from users where username = %s' , [username])
+#         if results > 0:
+#             data = cur.fetchone()
+#             password = data['password']
+#             confirmed = data['confirmed']
+#             fullname = data['fullname']
+#             user_id = data['user_id']
+#             if confirmed == 0:
+#                 error = 'Please confirm email before logging in'
+#                 return render_template('login.html', error=error)
+#             elif sha256_crypt.verify(password_candidate, password) and user_id < 9000001:
+#                 session['logged_in'] = True
+#                 session['username'] = username
+#                 session['fullname'] = fullname
+#                 return redirect(url_for('studDash'))
+#             elif sha256_crypt.verify(password_candidate, password) and user_id > 9000000:
+#                 session['logged_in'] = True
+#                 session['username'] = username
+#                 session['fullname'] = fullname
+#                 return redirect(url_for('teachDash'))
+#                 ##may need to add if statement for redirect here for teacher.  
+#             else:
+#                 error = 'Invalid password'
+#                 return render_template('login.html', error=error)
+#             cur.close()
+#         else:
+#             error = 'Username not found'
+#             return render_template('login.html', error=error)
+#     return render_template('login.html')
 
 
 @app.route("/studDash")
@@ -321,6 +316,7 @@ def quiz2():
 
     )
 
+
 # allows users to upload quiz
 # @app.route("/create-quiz")
 # def create_quiz():
@@ -365,10 +361,6 @@ def quiz2():
 ## This deletes a table named <var>
 # db.delete_table(target="testing_purpose")
 # print(f"New List: {db.list_tables(db_table = 'final')}\n")
-
-
-mail = Mail(app)
-
 
 def asynch(f):
     @wraps(f)

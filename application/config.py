@@ -1,5 +1,3 @@
-'''We are disregarding this for now.'''
-
 import os
 import secretstuff
 
@@ -12,6 +10,7 @@ class BaseConfig:
     MAIL_USE_SSL=True
     MAIL_USERNAME = secretstuff.emailusername
     MAIL_PASSWORD = secretstuff.emailpassword
+    UPLOAD_FOLDER = "UPLOAD_FOLDER"
 
 
 class DevelopementConfig(BaseConfig):
