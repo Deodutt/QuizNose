@@ -17,8 +17,7 @@
 }
 
 .loginlink{
-
-   color: #6a63dd !important;
+   color: #007bff !important;
 }
 
 h1{
@@ -26,7 +25,7 @@ h1{
    text-align: center;
    color: white;
 /*   margin-top:  100px; 
-   color:#6a63dd; 
+   color:#007bff; 
    height: 300px;
    width: 750px; */
 }
@@ -45,16 +44,16 @@ h1{
 
 .login-box{
    width: 600px;
-   border: #6a63dd solid 5px;
+   border: #007bff solid 5px;
    padding-top: 2%;
    border-radius: 0px 0px 20px 20px;
 }
 
 .row{
    border-radius: 20px 20px 0px 0px;
-   border: #6a63dd solid 5px;
+   border: #007bff solid 5px;
    width: 600px;
-   background-color: #6a63dd;
+   background-color: #007bff;
    /*padding-top: 20%; */ 
    margin-top: 200px;
 }
@@ -72,7 +71,7 @@ h1{
 }
 #register{
    margin: 3% 0px 0px 0px;
-   color: #6a63dd !important;
+   color: #007bff !important;
 }
 
 .icon {
@@ -81,4 +80,8 @@ h1{
    margin-top: -26px;
    position: relative;
    z-index: 2;
+}
+
+.signup {
+   color: white;
 }
