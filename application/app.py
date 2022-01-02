@@ -1,4 +1,4 @@
-from _typeshed import HasFileno
+# from _typeshed import HasFileno
 from flask import (
     Flask,
     request,
@@ -18,11 +18,9 @@ from serve_quiz import serve_quiz_blueprint
 from passlib.hash import sha256_crypt
 from itsdangerous import URLSafeTimedSerializer
 from functools import wraps
-# from emailverifier import Client
 from threading import Thread
 from random import randint
 import socket
-from functools import wraps
 import secretstuff
 from emailverifier import Client
 
@@ -120,7 +118,6 @@ def register():
 @app.route("/studDash")
 def studDash():
     return render_template("studDash.html")
-
 
 
 def display_question(quiz_id):
