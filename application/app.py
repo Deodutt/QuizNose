@@ -1,3 +1,4 @@
+from _typeshed import HasFileno
 from flask import (
     Flask,
     request,
@@ -6,6 +7,7 @@ from flask import (
     redirect,
     url_for,
     render_template_string,
+    session,
 )
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
@@ -22,6 +24,7 @@ from random import randint
 import socket
 from functools import wraps
 import secretstuff
+from emailverifier import Client
 
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
@@ -46,8 +49,34 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-
-    return render_template("login.html")
+	if request.method == 'POST':
+		username = request.form['username']
+		password_candidate = request.form['password']
+		cur = db.db.cursor()
+		results = cur.execute('SELECT * from users where username = %s' , [username])
+		if results > 0:
+			data = cur.fetchone()
+			password = data['password']
+			confirmed = data['confirmed']
+			fullname = data['fullname']
+			user_id = data['user_id']
+			if confirmed == 0:
+				error = 'Please confirm email before logging in'
+				return render_template('login.html', error=error)
+			if sha256_crypt.verify(password_candidate, password) and user_id < 9000001:
+				session['logged_in'] = True
+				session['username'] = username
+				session['fullname'] = fullname
+				return redirect(url_for('studDash'))
+                ##may need to add if statement for redirect here for teacher.  
+			else:
+				error = 'Invalid password'
+				return render_template('login.html', error=error)
+			cur.close()
+		else:
+			error = 'Username not found'
+			return render_template('login.html', error=error)
+	return render_template('login.html')
 
 
 @app.route("/register", methods=["GET", "POST"])
