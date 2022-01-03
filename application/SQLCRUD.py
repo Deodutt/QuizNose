@@ -214,3 +214,25 @@ def insert_session_counter(session_id, current_question):
     return print(
         f"The values '{current_question}', was successfully inserted into {session_id}!"
     )
+
+def insert_all_quiz_data(ans_dict):
+    cur = db.cursor()
+    session_id = 22222
+    for i in range(len(ans_dict)):
+        key = str(i+1)
+        ans = ans_dict[key]
+        col = 'answer_'+key
+        cur.execute(f"UPDATE sessions SET {col}= '{ans}' WHERE session_id = {session_id};")
+        db.commit()
+
+
+test_dict = {'1': 'test1', '2': 'test2', '3': 'test3', '4': 'test1', '5': 'test2', '6': 'test3'} 
+
+# insert_session(22222,"quiz1",'','','','','','','','','','','','','')
+# for i in range(3):
+#         key = str(i+1)
+#         ans = test_dict[key]
+#         print(key)
+
+insert_all_quiz_data(test_dict)
+

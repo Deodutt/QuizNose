@@ -198,7 +198,8 @@ def quiz():
 @app.route("/quiz2")
 def quiz2():
     data = db.grab_question2("quiz1")
-
+    crud.insert_session(22222,"quiz1")
+	
     i=0 #q1
     question_prompt1 = data.get("question")[i]
     option_1a = data.get("choices")[i][0]
