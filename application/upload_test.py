@@ -11,7 +11,7 @@ script_dir = os.path.dirname(__file__)
 rel_path = f"./questions/"
 UPLOAD_FOLDER = os.path.join(script_dir, rel_path)
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config.from_object(os.environ.get('config.DevelopementConfig'))
 
 ## allows users to upload quiz
 @upload_test_blueprint.route("/create_test", methods=["GET", "POST"])
