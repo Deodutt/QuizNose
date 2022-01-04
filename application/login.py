@@ -35,16 +35,16 @@ def login():
                 session['logged_in'] = True
                 session['username'] = username
                 session['fullname'] = fullname
-                return redirect(url_for('studDash.html'))
+                return redirect(url_for('studDash'))
             elif sha256_crypt.verify(password_candidate, password) and user_id > 9000000:
                 session['logged_in'] = True
                 session['username'] = username
                 session['fullname'] = fullname
-                return redirect(url_for('teachDash.html'))
+                return redirect(url_for('teachDash'))
                 ##may need to add if statement for redirect here for teacher.  
             else:
                 error = 'Invalid password'
-                return render_template('login', error=error)
+                return render_template('login.html', error=error)
             cur.close()
         else:
             error = 'Username not found'
