@@ -11,13 +11,17 @@ from flask import (
 )
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
-import QUERYDB as db
+
+# import QUERYDB as db
+import db
 from upload_test import upload_test_blueprint
 from serve_quiz import serve_quiz_blueprint
+
 # from registration import registration_blueprint
 from login import login_blueprint
 from functools import wraps
 from threading import Thread
+
 # import socket
 import os, config
 from itsdangerous import URLSafeTimedSerializer
@@ -27,9 +31,11 @@ from random import randint
 from classes import RegisterForm
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
-app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
+# app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
+app.config.from_object(os.environ.get("config.DevelopementConfig"))
 app.register_blueprint(upload_test_blueprint)
 app.register_blueprint(serve_quiz_blueprint)
+
 # app.register_blueprint(registration_blueprint)
 app.register_blueprint(login_blueprint)
 
@@ -67,7 +73,7 @@ def index():
 #                 session['username'] = username
 #                 session['fullname'] = fullname
 #                 return redirect(url_for('teachDash'))
-#                 ##may need to add if statement for redirect here for teacher.  
+#                 ##may need to add if statement for redirect here for teacher.
 #             else:
 #                 error = 'Invalid password'
 #                 return render_template('login.html', error=error)
@@ -83,183 +89,66 @@ def studDash():
     return render_template("studDash.html")
 
 
-def display_question(quiz_id):
-    global question_prompt, option_a, option_b, option_c, option_d
-
-    max_questions = 10
-    current_question = int(db.get_current_question(123456, quiz_id))
-    if current_question < max_questions:
-        data = db.serve_question(quiz_id, current_question)
-        question_prompt = data.get("question")[0]
-        option_a = data.get("choices")[0]
-        option_b = data.get("choices")[1]
-        option_c = data.get("choices")[2]
-        option_d = data.get("choices")[3]
-        return question_prompt, option_a, option_b, option_c, option_d
-    else:
-        print("finished test")
-        return render_template("test_results.html")
-
-
-def update_session(quiz_id, current_question, user_answer):
-    current_question = int(db.get_current_question(123456, quiz_id))
-
-    # inserting answer and updating current question
-    db.insert_session_answer(
-        123456,
-        new_current_question,
-        user_answer,
-    )
-    return
-
-
-@app.route("/quiz", methods=["GET", "POST"])
-def quiz():
-    quiz = "quiz1"
-    session = 123456
-    max_questions = 10
-    current_question = int(db.get_current_question(session, quiz))
-    print(db.get_current_question(session, quiz))
-    print(f"current question -> {current_question}")
-    if current_question < max_questions:
-        data = db.serve_question(quiz, current_question)
-        question_prompt = data.get("question")[0]
-        option_a = data.get("choices")[0]
-        option_b = data.get("choices")[1]
-        option_c = data.get("choices")[2]
-        option_d = data.get("choices")[3]
-
-        if request.method == "POST" and "choice_a" in request.form["quiz_choice"]:
-            # update the question counter and record the answer user had
-            current_question = current_question + 1
-            db.insert_session_counter(session, current_question)
-            db.insert_session_answer(session, current_question, option_a)
-            return render_template(
-                "quiz.html",
-                current_question=current_question,
-                question_prompt=question_prompt,
-                option_a=option_a,
-                option_b=option_b,
-                option_c=option_c,
-                option_d=option_d,
-            )
-
-        elif request.method == "POST" and "choice_b" in request.form["quiz_choice"]:
-            current_question = current_question + 1
-            db.insert_session_counter(session, current_question)
-            db.insert_session_answer(session, current_question, option_a)
-            return render_template(
-                "quiz.html",
-                current_question=current_question,
-                question_prompt=question_prompt,
-                option_a=option_a,
-                option_b=option_b,
-                option_c=option_c,
-                option_d=option_d,
-            )
-
-        elif request.method == "POST" and "choice_c" in request.form["quiz_choice"]:
-            current_question = current_question + 1
-            db.insert_session_counter(session, current_question)
-            db.insert_session_answer(session, current_question, option_a)
-            return render_template(
-                "quiz.html",
-                current_question=current_question,
-                question_prompt=question_prompt,
-                option_a=option_a,
-                option_b=option_b,
-                option_c=option_c,
-                option_d=option_d,
-            )
-
-        elif request.method == "POST" and "choice_d" in request.form["quiz_choice"]:
-            current_question = current_question + 1
-            db.insert_session_counter(session, current_question)
-            db.insert_session_answer(session, current_question, option_a)
-            return render_template(
-                "quiz.html",
-                current_question=current_question,
-                question_prompt=question_prompt,
-                option_a=option_a,
-                option_b=option_b,
-                option_c=option_c,
-                option_d=option_d,
-            )
-    else:
-        print("finished test")
-        return render_template("tests_result.html")
-
-    return render_template(
-        "quiz.html",
-        current_question=current_question,
-        question_prompt=question_prompt,
-        option_a=option_a,
-        option_b=option_b,
-        option_c=option_c,
-        option_d=option_d,
-    )
-
-
 @app.route("/quiz2")
 def quiz2():
     data = db.grab_question2("quiz1")
-    crud.insert_session(22222,"quiz1")
-	
-    i=0 #q1
+    crud.insert_session(22222, "quiz1")
+
+    i = 0  # q1
     question_prompt1 = data.get("question")[i]
     option_1a = data.get("choices")[i][0]
     option_1b = data.get("choices")[i][1]
     option_1c = data.get("choices")[i][2]
     option_1d = data.get("choices")[i][3]
-    i+=1 #q2
+    i += 1  # q2
     question_prompt2 = data.get("question")[i]
     option_2a = data.get("choices")[i][0]
     option_2b = data.get("choices")[i][1]
     option_2c = data.get("choices")[i][2]
     option_2d = data.get("choices")[i][3]
-    i+=1 #q3
+    i += 1  # q3
     question_prompt3 = data.get("question")[i]
     option_3a = data.get("choices")[i][0]
     option_3b = data.get("choices")[i][1]
     option_3c = data.get("choices")[i][2]
     option_3d = data.get("choices")[i][3]
-    i+=1 #q4
+    i += 1  # q4
     question_prompt4 = data.get("question")[i]
     option_4a = data.get("choices")[i][0]
     option_4b = data.get("choices")[i][1]
     option_4c = data.get("choices")[i][2]
     option_4d = data.get("choices")[i][3]
-    i+=1 #q5
+    i += 1  # q5
     question_prompt5 = data.get("question")[i]
     option_5a = data.get("choices")[i][0]
     option_5b = data.get("choices")[i][1]
     option_5c = data.get("choices")[i][2]
     option_5d = data.get("choices")[i][3]
-    i+=1 #q6
+    i += 1  # q6
     question_prompt6 = data.get("question")[i]
     option_6a = data.get("choices")[i][0]
     option_6b = data.get("choices")[i][1]
     option_6c = data.get("choices")[i][2]
     option_6d = data.get("choices")[i][3]
-    i+=1 #q7
+    i += 1  # q7
     question_prompt7 = data.get("question")[i]
     option_7a = data.get("choices")[i][0]
     option_7b = data.get("choices")[i][1]
     option_7c = data.get("choices")[i][2]
     option_7d = data.get("choices")[i][3]
-    i+=1 #q8
+    i += 1  # q8
     question_prompt8 = data.get("question")[i]
     option_8a = data.get("choices")[i][0]
     option_8b = data.get("choices")[i][1]
     option_8c = data.get("choices")[i][2]
     option_8d = data.get("choices")[i][3]
-    i+=1 #q9
+    i += 1  # q9
     question_prompt9 = data.get("question")[i]
     option_9a = data.get("choices")[i][0]
     option_9b = data.get("choices")[i][1]
     option_9c = data.get("choices")[i][2]
     option_9d = data.get("choices")[i][3]
-    i+=1 #q10
+    i += 1  # q10
     question_prompt10 = data.get("question")[i]
     option_10a = data.get("choices")[i][0]
     option_10b = data.get("choices")[i][1]
@@ -268,66 +157,80 @@ def quiz2():
 
     return render_template(
         "quiz-2.html",
-        question_prompt1="1. "+question_prompt1,
+        question_prompt1="1. " + question_prompt1,
         option_1a=option_1a,
         option_1b=option_1b,
         option_1c=option_1c,
         option_1d=option_1d,
-        question_prompt2="2. "+question_prompt2,
+        question_prompt2="2. " + question_prompt2,
         option_2a=option_2a,
         option_2b=option_2b,
         option_2c=option_2c,
         option_2d=option_2d,
-        question_prompt3="3. "+question_prompt3,
+        question_prompt3="3. " + question_prompt3,
         option_3a=option_3a,
         option_3b=option_3b,
         option_3c=option_3c,
         option_3d=option_3d,
-        question_prompt4="4. "+question_prompt4,
+        question_prompt4="4. " + question_prompt4,
         option_4a=option_4a,
         option_4b=option_4b,
         option_4c=option_4c,
         option_4d=option_4d,
-        question_prompt5="5. "+question_prompt5,
+        question_prompt5="5. " + question_prompt5,
         option_5a=option_5a,
         option_5b=option_5b,
         option_5c=option_5c,
         option_5d=option_5d,
-        question_prompt6="6. "+question_prompt6,
+        question_prompt6="6. " + question_prompt6,
         option_6a=option_6a,
         option_6b=option_6b,
         option_6c=option_6c,
         option_6d=option_6d,
-        question_prompt7="7. "+question_prompt7,
+        question_prompt7="7. " + question_prompt7,
         option_7a=option_7a,
         option_7b=option_7b,
         option_7c=option_7c,
         option_7d=option_7d,
-        question_prompt8="8. "+question_prompt8,
+        question_prompt8="8. " + question_prompt8,
         option_8a=option_8a,
         option_8b=option_8b,
         option_8c=option_8c,
         option_8d=option_8d,
-        question_prompt9="9. "+question_prompt9,
+        question_prompt9="9. " + question_prompt9,
         option_9a=option_9a,
         option_9b=option_9b,
         option_9c=option_9c,
         option_9d=option_9d,
-        question_prompt10="10. "+question_prompt10,
+        question_prompt10="10. " + question_prompt10,
         option_10a=option_10a,
         option_10b=option_10b,
         option_10c=option_10c,
         option_10d=option_10d,
-
-
     )
 
 
-# allows users to upload quiz
-# @app.route("/create-quiz")
-# def create_quiz():
-#     csv_parse.csv_reader("quiz1")
-#     return
+@app.route("/results")
+def results():
+    quiz = "quiz1"
+    session = 123456
+    max_question = 10
+    total_score = 0
+    db.update_total_score(session, quiz, total_score)
+
+    for number in range(1, max_question + 1):
+        # question_number = number
+        # question_prompt = db.query_question(quiz, number)[0]
+        user_answer = str(db.get_user_answer(session, quiz, number)).strip()
+        actual_answer = str(db.get_actual_answer(quiz, number)).strip()
+
+        if user_answer == actual_answer:
+            total_score += 1
+            db.update_total_score(session, quiz, total_score)
+        else:
+            print(f"{number} is incorrect!")
+
+    return render_template("tests_result.html", total_score=total_score)
 
 
 # def is_logged(f):
@@ -369,7 +272,6 @@ def quiz2():
 # print(f"New List: {db.list_tables(db_table = 'final')}\n")
 
 
-
 def asynch(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
@@ -383,6 +285,7 @@ def asynch(f):
 def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
+
 
 client = Client("at_rFxZz7zEX8CO8V5IDBfzexOe2fW8b")
 
@@ -398,6 +301,7 @@ activate your account:
 Questions? Comments? Email </p>
 """
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm(request.form)
@@ -405,18 +309,18 @@ def register():
         fullname = form.name.data
         email = form.email.data
         teachercode = form.teachercode.data
-        
-        data = client.get(email) 
-        if str(data.smtp_check) == 'False': 
-            flash('Invalid email, please provide a valid email address','danger')
-            return render_template('register.html', form=form)
-            
-        send_confirmation_email(email) 
-        user_id = randint(0,900000)
+
+        data = client.get(email)
+        if str(data.smtp_check) == "False":
+            flash("Invalid email, please provide a valid email address", "danger")
+            return render_template("register.html", form=form)
+
+        send_confirmation_email(email)
+        user_id = randint(0, 900000)
         if teachercode == "KURATEACH2022":
-            user_id = randint(900000,999999)
+            user_id = randint(900000, 999999)
         print(user_id)
-        
+
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
         cur = db.db.cursor()
@@ -434,6 +338,7 @@ def register():
         # change in login function to redirect to warning page
 
     return render_template("register.html", form=form)
+
 
 def send_email(recipients, html_body):
     try:
@@ -482,6 +387,7 @@ def send_confirmation_email(user_email):
 
     send_email([user_email], html)
 
+
 # """This here salts the secret key and creates a token based off the user email added to secret key"""
 
 
@@ -515,7 +421,6 @@ def confirm_email(token):
 
 
 """This here salts the secret key and creates a token based off the user email added to secret key"""
-
 
 
 if __name__ == "__main__":

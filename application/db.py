@@ -1,3 +1,4 @@
+from re import L
 import MySQLdb
 from datetime import datetime, timedelta
 
@@ -246,33 +247,6 @@ def query_entire_table(table):
 # insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
 
 
-def testing():
-    delete_table("questions")
-    delete_table("choices")
-    delete_table("users")
-    delete_table("results")
-    delete_table("sessions")
-    create_questions_table()
-    create_choices_table()
-    create_users_table()
-    create_results_table()
-    create_session_table()
-    insert_users(
-        1017,
-        "ricardo",
-        "Ricardo Deodutt",
-        "RicardoDeodutt@gmail.com",
-        "KuraLabs#123",
-        0,
-    )
-    insert_results("ricardo", "quiz1", "", 123456, 0)
-    insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
-
-
-# testing()
-# insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
-
-
 ## Creating tables
 # create_questions_table()
 ## insert_questions(quiz_id, question_num, question_prompt, answer)
@@ -404,3 +378,69 @@ def get_current_question(session_id, quiz_id):
 
 
 # print(get_current_question(123456, "quiz1"))
+
+
+def get_user_answer(session_id, quiz_id, question_number):
+    table_name = "sessions"
+    answer_column = f"answer_{question_number}"
+    cur = db.cursor()
+    cur.execute(
+        f"SELECT {answer_column} FROM {table_name} where session_id = '{session_id}' AND quiz_id = '{quiz_id}';"
+    )
+    result = list(cur.fetchall())
+    returnlist = []
+    for i in range(len(result)):
+        returnlist.append(result[i][0])
+    return returnlist[0]
+
+
+def get_actual_answer(quiz_id, question_number):
+    table_name = "questions"
+    cur = db.cursor()
+    cur.execute(
+        f"SELECT answer FROM {table_name} where question_num = '{question_number}' AND quiz_id = '{quiz_id}';"
+    )
+    result = list(cur.fetchall())
+    returnlist = []
+    for i in range(len(result)):
+        returnlist.append(result[i][0])
+    return returnlist[0]
+
+
+def update_total_score(session_id, quiz_id, total_score):
+    table_name = "results"
+    cur = db.cursor()
+    cur.execute(
+        f"UPDATE {table_name} SET score = '{total_score}' WHERE session_id = {session_id} AND quiz_id = '{quiz_id}';"
+    )
+    db.commit()
+    return print(
+        f"The values Score '{total_score}', was successfully inserted into {session_id}!"
+    )
+
+
+def testing():
+    delete_table("questions")
+    delete_table("choices")
+    delete_table("users")
+    delete_table("results")
+    delete_table("sessions")
+    create_questions_table()
+    create_choices_table()
+    create_users_table()
+    create_results_table()
+    create_session_table()
+    insert_users(
+        1017,
+        "ricardo",
+        "Ricardo Deodutt",
+        "RicardoDeodutt@gmail.com",
+        "KuraLabs#123",
+        0,
+    )
+    insert_results("ricardo", "quiz1", "", 123456, 0)
+    insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
+
+
+# testing()
+# insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")

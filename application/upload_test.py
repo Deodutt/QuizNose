@@ -9,9 +9,9 @@ upload_test_blueprint = Blueprint("upload_test", __name__)
 
 script_dir = os.path.dirname(__file__)
 rel_path = f"./questions/"
-UPLOAD_FOLDER = os.path.join(script_dir, rel_path)
+TEST_FOLDER = os.path.join(script_dir, rel_path)
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
-app.config.from_object(os.environ.get('config.DevelopementConfig'))
+app.config.from_object(os.environ.get("config.DevelopementConfig"))
 
 ## allows users to upload quiz
 @upload_test_blueprint.route("/create_test", methods=["GET", "POST"])
@@ -38,7 +38,8 @@ def upload_file():
 
         elif file and file_ext == ".csv":
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            # file.save(os.path.join(app.config["TEST_FOLDER"], filename))
+            file.save(os.path.join(TEST_FOLDER, filename))
             csv_reader(filename)
             status = "successful upload"
             return render_template("create_test.html", status=status)
