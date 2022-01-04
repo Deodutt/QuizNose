@@ -1,4 +1,6 @@
 from flask import request, render_template, Blueprint
+from flask.helpers import url_for
+from werkzeug.utils import redirect
 import db
 
 serve_quiz_blueprint = Blueprint("serve_quiz", __name__)
@@ -10,7 +12,7 @@ def quiz():
     session = 123456
     max_question = 10
     current_question = int(db.get_current_question(session, quiz))
-    print(f"current question -> {current_question}")
+    print(f"Current question -> {current_question}")
 
     if current_question <= max_question:
         current_question = int(db.get_current_question(session, quiz))
@@ -28,7 +30,7 @@ def quiz():
             db.insert_session_counter(session, current_question)
             if current_question > max_question:
                 print("finished test")
-                return render_template("tests_result.html")
+                return redirect(url_for("results"))
             else:
                 data = db.serve_question(quiz, current_question)
                 question_prompt = data.get("question")[0]
@@ -47,12 +49,12 @@ def quiz():
                 )
 
         elif request.method == "POST" and "choice_b" in request.form["quiz_choice"]:
-            db.insert_session_answer(session, current_question, option_a)
+            db.insert_session_answer(session, current_question, option_b)
             current_question = current_question + 1
             db.insert_session_counter(session, current_question)
             if current_question > max_question:
                 print("finished test")
-                return render_template("tests_result.html")
+                return redirect(url_for("results"))
             else:
                 data = db.serve_question(quiz, current_question)
                 question_prompt = data.get("question")[0]
@@ -71,12 +73,12 @@ def quiz():
                 )
 
         elif request.method == "POST" and "choice_c" in request.form["quiz_choice"]:
-            db.insert_session_answer(session, current_question, option_a)
+            db.insert_session_answer(session, current_question, option_c)
             current_question = current_question + 1
             db.insert_session_counter(session, current_question)
             if current_question > max_question:
                 print("finished test")
-                return render_template("tests_result.html")
+                return redirect(url_for("results"))
             else:
                 data = db.serve_question(quiz, current_question)
                 question_prompt = data.get("question")[0]
@@ -95,12 +97,12 @@ def quiz():
                 )
 
         elif request.method == "POST" and "choice_d" in request.form["quiz_choice"]:
-            db.insert_session_answer(session, current_question, option_a)
+            db.insert_session_answer(session, current_question, option_d)
             current_question = current_question + 1
             db.insert_session_counter(session, current_question)
             if current_question > max_question:
                 print("finished test")
-                return render_template("tests_result.html")
+                return redirect(url_for("results"))
             else:
                 data = db.serve_question(quiz, current_question)
                 question_prompt = data.get("question")[0]
@@ -120,7 +122,7 @@ def quiz():
 
     if current_question > max_question:
         print("finished test")
-        return render_template("tests_result.html")
+        return redirect(url_for("results"))
 
     return render_template(
         "quiz.html",
