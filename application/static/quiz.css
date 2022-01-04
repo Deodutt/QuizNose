@@ -1,26 +1,31 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-image: url("../static/quiz.test.jpeg");
 }
-body{
+
+body {
     font-family: sans-serif;
-    background: linear-gradient(115deg, rgba(7, 8, 8, 0.8),rgba(53, 166, 241, 0.5));
-    background-size: cover;
-    background-position: center;
+    background: url("../static/quizbg.jpg");
     background-repeat: no-repeat;
-    height: 100vh;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    height: 100%;
+    color: white;
 }
-img{
+
+img {
     width: 5.5rem;
     height: 5.2rem;
     border-radius: 50%;
 }
-.img{
+
+.img {
     position: fixed;
 }
-#title{
+
+#title {
     text-align: center;
     padding: 0.8rem 0;
     font-size: 3rem;
@@ -28,18 +33,21 @@ img{
     background: rgba(9, 103, 146, 0.55);
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
-.questions{
+
+.questions {
     margin: 3rem auto;
     width: 90vw;
     padding: 2rem;
-    /* background: rgba(0,255,221,0.45); */
+    /* background-image: url("../static/quiz.test.jpeg"); */
     cursor: default;
     border-radius: 1rem;
 }
-#question{
+
+#question {
     margin-bottom: 1rem;
 }
-.option{
+
+.option {
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
     border-bottom: solid 0.1rem blue;
@@ -47,44 +55,54 @@ img{
     background: lightblue;
     border-radius: 1rem;
 }
-.option:hover{
+
+.option:hover {
     color: white;
 }
-ol{
+
+ol {
     position: relative;
     padding: 0 1.5rem;
-    color: rgb(1,73,73);
+    color: rgb(1, 73, 73);
 }
-span{
+
+span {
     display: block;
     padding: 0.1rem 0.7rem;
     border-radius: 1rem;
 }
-#answer{
+
+#answer {
     margin-top: 2.5rem;
 }
-#stat{
+
+#stat {
     margin-top: 1.5rem;
-    color: rgb(6,17,168);
+    color: rgb(6, 17, 168);
 }
-.buttons{
+
+.buttons {
     text-align: center;
 }
-button{
+
+button {
     padding: 0.2rem 1.5rem;
     border: none;
     outline: none;
     font-size: 1.5rem;
     border-radius: 1.5rem;
-    color: rgba(93,53,156,0.98);
+    color: rgba(93, 53, 156, 0.98);
     background: rgba(19, 177, 161, 0.82);
 }
-button:active{
+
+button:active {
     background: lavender;
 }
-#scoreboard,#answerBank{
+
+#scoreboard,
+#answerBank {
     width: 20rem;
-    background: rgba(230,230,250,0.77);
+    background: rgba(230, 230, 250, 0.77);
     padding: 2rem;
     text-align: center;
     margin: auto;
@@ -92,20 +110,26 @@ button:active{
     top: 5rem;
     display: none;
 }
-#score-title{
+
+#score-title {
     margin: 1rem 0;
 }
-#score-btn,#check-answer{
+
+#score-btn,
+#check-answer {
     margin-top: 1rem;
 }
-#score{
+
+#score {
     font-size: 2.5rem;
 }
-#answerBank li{
+
+#answerBank li {
     text-align: left;
     margin-bottom: 0.2rem;
     font-size: larger;
 }
-#answers{
+
+#answers {
     margin-top: 1rem;
 }
