@@ -12,7 +12,8 @@ from flask import (
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
 
-# import QUERYDB as db
+import QUERYDB as db
+import SQLCRUD as crud
 import db
 from upload_test import upload_test_blueprint
 from serve_quiz import serve_quiz_blueprint
@@ -31,8 +32,7 @@ from random import randint
 from classes import RegisterForm
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
-# app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
-app.config.from_object(os.environ.get("config.DevelopementConfig"))
+app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
 app.register_blueprint(upload_test_blueprint)
 app.register_blueprint(serve_quiz_blueprint)
 
@@ -286,7 +286,6 @@ def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
-
 client = Client("at_rFxZz7zEX8CO8V5IDBfzexOe2fW8b")
 
 
@@ -301,7 +300,6 @@ activate your account:
 Questions? Comments? Email </p>
 """
 
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm(request.form)
@@ -309,18 +307,18 @@ def register():
         fullname = form.name.data
         email = form.email.data
         teachercode = form.teachercode.data
-
-        data = client.get(email)
-        if str(data.smtp_check) == "False":
-            flash("Invalid email, please provide a valid email address", "danger")
-            return render_template("register.html", form=form)
-
-        send_confirmation_email(email)
-        user_id = randint(0, 900000)
+        
+        data = client.get(email) 
+        if str(data.smtp_check) == 'False': 
+            flash('Invalid email, please provide a valid email address','danger')
+            return render_template('register.html', form=form)
+            
+        send_confirmation_email(email) 
+        user_id = randint(0,900000)
         if teachercode == "KURATEACH2022":
-            user_id = randint(900000, 999999)
+            user_id = randint(900000,999999)
         print(user_id)
-
+        
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
         cur = db.db.cursor()
@@ -338,7 +336,6 @@ def register():
         # change in login function to redirect to warning page
 
     return render_template("register.html", form=form)
-
 
 def send_email(recipients, html_body):
     try:
@@ -366,7 +363,7 @@ def send_email(recipients, html_body):
 
 
 def send_confirmation_email(user_email):
-    confirm_serializer = URLSafeTimedSerializer(config.BaseConfig.SECRET_KEY)
+    confirm_serializer = URLSafeTimedSerializer(config.DevelopementConfig.SECRET_KEY)
     print(user_email)
     print(confirm_serializer.dumps(user_email, salt="email-confirmation-salt"))
     ##https://stackoverflow.com/questions/34902378/where-do-i-get-a-secret-key-for-flask
@@ -387,14 +384,13 @@ def send_confirmation_email(user_email):
 
     send_email([user_email], html)
 
-
 # """This here salts the secret key and creates a token based off the user email added to secret key"""
 
 
 @app.route("/confirm/<token>")
 def confirm_email(token):
     try:
-        confirm_serializer = URLSafeTimedSerializer(config.BaseConfig.SECRET_KEY)
+        confirm_serializer = URLSafeTimedSerializer(config.DevelopementConfig.SECRET_KEY)
         email = confirm_serializer.loads(
             token, salt="email-confirmation-salt", max_age=3600
         )
@@ -421,7 +417,6 @@ def confirm_email(token):
 
 
 """This here salts the secret key and creates a token based off the user email added to secret key"""
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
