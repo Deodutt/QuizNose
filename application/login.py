@@ -19,15 +19,23 @@ login_blueprint = Blueprint("login_page", __name__)
 def login():
     if request.method == 'POST':
         username = request.form['username']
+        print(username)
         password_candidate = request.form['password']
+        print(password_candidate)
+        checkPlease = sha256_crypt.encrypt(str(password_candidate))
+        print(checkPlease)
+        print('this is the password')
         cur = db.db.cursor()
         results = cur.execute('SELECT * from users where username = %s' , [username])
+        print('complete')
         if results > 0:
+            print('hello again')
             data = cur.fetchone()
-            password = data['password']
-            confirmed = data['confirmed']
-            fullname = data['fullname']
-            user_id = data['user_id']
+            password = data[4]
+            print(password)
+            confirmed = data[5]
+            fullname = data[3]
+            user_id = data[0]
             if confirmed == 0:
                 error = 'Please confirm email before logging in'
                 return render_template('login.html', error=error)
@@ -40,12 +48,11 @@ def login():
                 session['logged_in'] = True
                 session['username'] = username
                 session['fullname'] = fullname
-                return redirect(url_for('teachDash'))
-                ##may need to add if statement for redirect here for teacher.  
+                return redirect(url_for('teachDash'))  
             else:
                 error = 'Invalid password'
                 return render_template('login.html', error=error)
-            cur.close()
+                cur.close()
         else:
             error = 'Username not found'
             return render_template('login.html', error=error)

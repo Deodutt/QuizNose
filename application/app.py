@@ -7,7 +7,7 @@ from flask import (
     flash,
     redirect,
     url_for,
-    # session,
+    session,
 )
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
@@ -31,6 +31,9 @@ from passlib.hash import sha256_crypt
 from random import randint
 from classes import RegisterForm
 
+from datetime import timedelta, datetime
+
+
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
 app.register_blueprint(upload_test_blueprint)
@@ -40,6 +43,23 @@ app.register_blueprint(serve_quiz_blueprint)
 app.register_blueprint(login_blueprint)
 
 mail = Mail(app)
+
+
+@app.before_request
+def make_session_permanent():
+	session.permanent = True
+	app.permanent_session_lifetime = timedelta(minutes=5)
+
+def is_logged(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			flash('Unauthorized, Please login','danger')
+			return redirect(url_for('login_page.login'))
+	return wrap
+
 
 
 @app.route("/")
@@ -85,6 +105,7 @@ def index():
 
 
 @app.route("/studDash", methods=["GET", "POST"])
+@is_logged
 def studDash():
     return render_template("studDash.html")
 
@@ -286,11 +307,11 @@ def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
-client = Client("at_rFxZz7zEX8CO8V5IDBfzexOe2fW8b")
+client = Client("at_zmz5m4BQ9kegkMqfGaTujPCCUD135") ##whoisxmlapikey
 
 
 htmlbody = """
-Your account on <b>The Best</b> Quiz App was successfully created.
+Your account on <b>QuizNose</b> Quiz App was successfully created.
 Please click the link below to confirm your email address and
 activate your account:
   
@@ -309,16 +330,19 @@ def register():
         teachercode = form.teachercode.data
         
         data = client.get(email) 
-        if str(data.smtp_check) == 'False': 
+        if str(data.smtp_check) == 'False':
             flash('Invalid email, please provide a valid email address','danger')
             return render_template('register.html', form=form)
             
         send_confirmation_email(email) 
+
         user_id = randint(0,900000)
+        ##code here add to check of that random value already present in db
+        #if so, reroll
         if teachercode == "KURATEACH2022":
             user_id = randint(900000,999999)
         print(user_id)
-        
+        ##same process here.
         username = form.username.data
         password = sha256_crypt.encrypt(str(form.password.data))
         cur = db.db.cursor()
@@ -332,9 +356,9 @@ def register():
             "Thanks for registering!  Please check your email to confirm your email address.",
             "success",
         )
-        return redirect(url_for("login_page.login"))
+        return redirect(url_for('login_page.login'))
         # change in login function to redirect to warning page
-
+    
     return render_template("register.html", form=form)
 
 def send_email(recipients, html_body):
