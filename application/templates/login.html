@@ -1,3 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="static/mylogin.css">
+{% endblock %}
+
+
+{% block body %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +28,7 @@
       </div>
     </div>
     <div class="login-box well">
-      <form action="studDash" method="POST">
+      <form action="" method="POST">
         <div class="form-group">
           <label id="up">Username</label>
           <input type="text" name="username" class="form-control" value="" , placeholder="eg. johnsmith">
@@ -55,3 +64,5 @@
 </body>
 
 </html>
+
+{% endblock %}

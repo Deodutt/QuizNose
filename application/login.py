@@ -19,7 +19,9 @@ login_blueprint = Blueprint("login_page", __name__)
 def login():
     if request.method == 'POST':
         username = request.form['username']
+        print(username)
         password_candidate = request.form['password']
+        print(password_candidate)
         cur = db.db.cursor()
         results = cur.execute('SELECT * from users where username = %s' , [username])
         if results > 0:
@@ -40,12 +42,11 @@ def login():
                 session['logged_in'] = True
                 session['username'] = username
                 session['fullname'] = fullname
-                return redirect(url_for('teachDash'))
-                ##may need to add if statement for redirect here for teacher.  
+                return redirect(url_for('teachDash'))  
             else:
                 error = 'Invalid password'
                 return render_template('login.html', error=error)
-            cur.close()
+                cur.close()
         else:
             error = 'Username not found'
             return render_template('login.html', error=error)
