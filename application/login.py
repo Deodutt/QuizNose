@@ -22,14 +22,20 @@ def login():
         print(username)
         password_candidate = request.form['password']
         print(password_candidate)
+        checkPlease = sha256_crypt.encrypt(str(password_candidate))
+        print(checkPlease)
+        print('this is the password')
         cur = db.db.cursor()
         results = cur.execute('SELECT * from users where username = %s' , [username])
+        print('complete')
         if results > 0:
+            print('hello again')
             data = cur.fetchone()
-            password = data['password']
-            confirmed = data['confirmed']
-            fullname = data['fullname']
-            user_id = data['user_id']
+            password = data[4]
+            print(password)
+            confirmed = data[5]
+            fullname = data[3]
+            user_id = data[0]
             if confirmed == 0:
                 error = 'Please confirm email before logging in'
                 return render_template('login.html', error=error)
