@@ -1,0 +1,58 @@
+resource "aws_instance" "development_ec2" {
+  ami           = "ami-083654bd07b5da81d"
+  instance_type = "t2.micro"
+  key_name      = var.application_name
+
+  # Userdata takes approx ~2minutes to complete script once EC2 starts
+  user_data = file("./userdata/development_ec2.sh")
+  network_interface {
+    network_interface_id = aws_network_interface.network_interface_dev_ec2.id
+    device_index         = 0 #first attached network interface
+  }
+  tags = {
+    Name = "Develpment EC2 Instance"
+  }
+}
+
+
+#Security Group for Development EC2 Instance
+resource "aws_security_group" "quiznose_development_ec2_sg" {
+  name        = "quiznose_dev_ec2_sg"
+  description = "security group for quiznose database"
+  vpc_id      = aws_vpc.main.id
+
+  tags = {
+    Name = "Quiznose Development EC2 Security Group"
+  }
+}
+
+resource "aws_security_group_rule" "dev_ec2_ingress" {
+  type              = "ingress"
+  description       = "Allow port 22 inbound traffic from any IPv4"
+  protocol          = "tcp"
+  from_port         = 22
+  to_port           = 22
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.quiznose_development_ec2_sg.id
+}
+
+resource "aws_security_group_rule" "dev_ec2_egress" {
+  type              = "egress"
+  description       = "All inbound traffic"
+  protocol          = "-1"
+  from_port         = 80
+  to_port           = 80
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.quiznose_development_ec2_sg.id
+}
+
+
+#Creating the network interface
+resource "aws_network_interface" "network_interface_dev_ec2" {
+  subnet_id       = aws_subnet.public1.id
+  security_groups = [aws_security_group.quiznose_development_ec2_sg.id]
+
+  tags = {
+    Name = "Network Interface for Development EC2"
+  }
+}
