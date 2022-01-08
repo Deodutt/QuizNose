@@ -40,25 +40,25 @@ app.register_blueprint(upload_test_blueprint)
 app.register_blueprint(serve_quiz_blueprint)
 
 # app.register_blueprint(registration_blueprint)
-app.register_blueprint(login_blueprint)
+# app.register_blueprint(login_blueprint)
 
-mail = Mail(app)
+# mail = Mail(app)
 
 
-@app.before_request
-def make_session_permanent():
-	session.permanent = True
-	app.permanent_session_lifetime = timedelta(minutes=5)
+# @app.before_request
+# def make_session_permanent():
+# 	session.permanent = True
+# 	app.permanent_session_lifetime = timedelta(minutes=5)
 
-def is_logged(f):
-	@wraps(f)
-	def wrap(*args, **kwargs):
-		if 'logged_in' in session:
-			return f(*args, **kwargs)
-		else:
-			flash('Unauthorized, Please login','danger')
-			return redirect(url_for('login_page.login'))
-	return wrap
+# def is_logged(f):
+# 	@wraps(f)
+# 	def wrap(*args, **kwargs):
+# 		if 'logged_in' in session:
+# 			return f(*args, **kwargs)
+# 		else:
+# 			flash('Unauthorized, Please login','danger')
+# 			return redirect(url_for('login_page.login'))
+# 	return wrap
 
 
 
@@ -105,7 +105,7 @@ def index():
 
 
 @app.route("/studDash", methods=["GET", "POST"])
-@is_logged
+# @is_logged
 def studDash():
     return render_template("studDash.html")
 
