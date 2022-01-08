@@ -1,10 +1,13 @@
 from flask import (
+	Flask,
     session,
     redirect,
     url_for,
     flash,
 )
 from functools import wraps
+
+# app = Flask(__name__, template_folder="templates", static_url_path="/static")
 
 
 def is_logged(f):

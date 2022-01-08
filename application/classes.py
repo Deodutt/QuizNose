@@ -1,7 +1,10 @@
 from wtforms import Form, StringField, PasswordField, validators
 
 class RegisterForm(Form):
-	name = StringField('Name', [validators.Length(min=3, max=30)])
+	name = StringField('Name', [
+		validators.Length(min=3, max=30),
+		# validators.Regexp("[\s-]", message = "Cannot include spaces")
+		])
 	username = StringField('Username', [validators.Length(min=4,max=30)])
 	teachercode = StringField('Teachercode',[validators.optional(True)])
 	email = StringField('Email', [

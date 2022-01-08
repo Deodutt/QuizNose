@@ -227,16 +227,6 @@ def quiz2():
 # https://pythonbasics.org/flask-http-methods/
 # https://stackoverflow.com/questions/40963401/flask-dynamic-data-update-without-reload-page/40964086
 
-# @app.route('/', methods = ["POST"])
-# def quiz_page():
-# 	if question == max:
-# 		if request.method == "POST":
-# 			return redirect(url_for('results_page')
-
-# 	if request.method == "POST":
-# 		std_ans[request.form['$question num']] = request.form['$choice'].value
-# 		return redirect(url_for('quiz_page',question=question+1))
-
 
 ## This list all the tables inside the database final
 # print(f"Original List: {db.list_tables(db_table = 'final')}\n")
