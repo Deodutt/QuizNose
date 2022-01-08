@@ -30,6 +30,7 @@ from emailverifier import Client
 from passlib.hash import sha256_crypt
 from random import randint
 from classes import RegisterForm
+from sessioncheck import is_logged
 
 from datetime import timedelta, datetime
 
@@ -52,15 +53,15 @@ def make_session_permanent():
 	session.permanent = True
 	app.permanent_session_lifetime = timedelta(minutes=5)
 
-def is_logged(f):
-	@wraps(f)
-	def wrap(*args, **kwargs):
-		if 'logged_in' in session:
-			return f(*args, **kwargs)
-		else:
-			flash('Unauthorized, Please login','danger')
-			return redirect(url_for('login_page.login'))
-	return wrap
+# def is_logged(f):
+# 	@wraps(f)
+# 	def wrap(*args, **kwargs):
+# 		if 'logged_in' in session:
+# 			return f(*args, **kwargs)
+# 		else:
+# 			flash('Unauthorized, Please login','danger')
+# 			return redirect(url_for('login_page.login'))
+# 	return wrap
 
 
 
@@ -196,27 +197,27 @@ def quiz2():
     )
 
 
-@app.route("/results")
-def results():
-    quiz = "quiz1"
-    session = 123456
-    max_question = 10
-    total_score = 0
-    db.update_total_score(session, quiz, total_score)
+# @app.route("/results")
+# def results():
+#     quiz = "quiz1"
+#     session_id = 123456
+#     max_question = 10
+#     total_score = 0
+#     db.update_total_score(session_id, quiz, total_score)
 
-    for number in range(1, max_question + 1):
-        # question_number = number
-        # question_prompt = db.query_question(quiz, number)[0]
-        user_answer = str(db.get_user_answer(session, quiz, number)).strip()
-        actual_answer = str(db.get_actual_answer(quiz, number)).strip()
+#     for number in range(1, max_question + 1):
+#         # question_number = number
+#         # question_prompt = db.query_question(quiz, number)[0]
+#         user_answer = str(db.get_user_answer(session_id, quiz, number)).strip()
+#         actual_answer = str(db.get_actual_answer(quiz, number)).strip()
 
-        if user_answer == actual_answer:
-            total_score += 1
-            db.update_total_score(session, quiz, total_score)
-        else:
-            print(f"{number} is incorrect!")
+#         if user_answer == actual_answer:
+#             total_score += 1
+#             db.update_total_score(session_id, quiz, total_score)
+#         else:
+#             print(f"{number} is incorrect!")
 
-    return render_template("tests_result.html", total_score=total_score)
+#     return render_template("tests_result.html", total_score=total_score)
 
 
 # Barebones for API Calls
