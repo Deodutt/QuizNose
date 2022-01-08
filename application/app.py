@@ -20,6 +20,7 @@ from serve_quiz import serve_quiz_blueprint
 
 # from registration import registration_blueprint
 from login import login_blueprint, logout_blueprint
+from results import results_blueprint
 from functools import wraps
 from threading import Thread
 
@@ -39,6 +40,7 @@ app = Flask(__name__, template_folder="templates", static_url_path="/static")
 app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
 app.register_blueprint(upload_test_blueprint)
 app.register_blueprint(serve_quiz_blueprint)
+app.register_blueprint(results_blueprint)
 
 
 # app.register_blueprint(registration_blueprint)

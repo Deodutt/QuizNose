@@ -15,6 +15,7 @@ import db
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 login_blueprint = Blueprint("login_page", __name__)
 logout_blueprint = Blueprint("logout_page", __name__)
+results_blueprint = Blueprint('results_page', __name__)
 
 
 @login_blueprint.route("/login", methods=["GET", "POST"])
