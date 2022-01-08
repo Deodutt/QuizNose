@@ -37,7 +37,7 @@ from datetime import timedelta, datetime
 
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
-app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
+app.config.from_object(os.environ.get("FLASK_ENV") or "config.DevelopementConfig")
 app.register_blueprint(upload_test_blueprint)
 app.register_blueprint(serve_quiz_blueprint)
 app.register_blueprint(results_blueprint)
@@ -52,8 +52,9 @@ mail = Mail(app)
 
 @app.before_request
 def make_session_permanent():
-	session.permanent = True
-	app.permanent_session_lifetime = timedelta(minutes=5)
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=5)
+
 
 # def is_logged(f):
 # 	@wraps(f)
@@ -64,7 +65,6 @@ def make_session_permanent():
 # 			flash('Unauthorized, Please login','danger')
 # 			return redirect(url_for('login_page.login'))
 # 	return wrap
-
 
 
 @app.route("/")
@@ -264,7 +264,8 @@ def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
-client = Client("at_zmz5m4BQ9kegkMqfGaTujPCCUD135") ##whoisxmlapikey
+
+client = Client("at_zmz5m4BQ9kegkMqfGaTujPCCUD135")  ##whoisxmlapikey
 
 
 htmlbody = """
@@ -278,6 +279,7 @@ activate your account:
 Questions? Comments? Email </p>
 """
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm(request.form)
@@ -285,19 +287,19 @@ def register():
         fullname = form.name.data
         email = form.email.data
         teachercode = form.teachercode.data
-        
-        data = client.get(email) 
-        if str(data.smtp_check) == 'False':
-            flash('Invalid email, please provide a valid email address','danger')
-            return render_template('register.html', form=form)
-            
-        send_confirmation_email(email) 
 
-        user_id = randint(0,900000)
+        data = client.get(email)
+        if str(data.smtp_check) == "False":
+            flash("Invalid email, please provide a valid email address", "danger")
+            return render_template("register.html", form=form)
+
+        send_confirmation_email(email)
+
+        user_id = randint(0, 900000)
         ##code here add to check of that random value already present in db
-        #if so, reroll
+        # if so, reroll
         if teachercode == "KURATEACH2022":
-            user_id = randint(900000,999999)
+            user_id = randint(900000, 999999)
         print(user_id)
         ##same process here.
         username = form.username.data
@@ -313,10 +315,11 @@ def register():
             "Thanks for registering!  Please check your email to confirm your email address.",
             "success",
         )
-        return redirect(url_for('login_page.login'))
+        return redirect(url_for("login_page.login"))
         # change in login function to redirect to warning page
-    
+
     return render_template("register.html", form=form)
+
 
 def send_email(recipients, html_body):
     try:
@@ -365,13 +368,16 @@ def send_confirmation_email(user_email):
 
     send_email([user_email], html)
 
+
 # """This here salts the secret key and creates a token based off the user email added to secret key"""
 
 
 @app.route("/confirm/<token>")
 def confirm_email(token):
     try:
-        confirm_serializer = URLSafeTimedSerializer(config.DevelopementConfig.SECRET_KEY)
+        confirm_serializer = URLSafeTimedSerializer(
+            config.DevelopementConfig.SECRET_KEY
+        )
         email = confirm_serializer.loads(
             token, salt="email-confirmation-salt", max_age=3600
         )

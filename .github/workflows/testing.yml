@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  push:
+    branches: [ricardo/new]
+    # workflow_dispatch allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v2
+      # - name: Installing cypress and dependencies
+      #   run: |
+      #     sudo apt-get update && sudo apt-get upgrade -y
+      #     sudo apt install openjdk-11-jre-headless -y
+      #     sudo apt install nodejs -y
+      #     sudo apt install npm -y
+      #     npm install cypress
+      #     npm install mocha
+      #     sudo apt install xvfb libatk1.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth -y
+
+      # - name: Building the front end application using NPM
+      #   run: |
+      #     ls
+      #     pwd
+      #     cd application/templates/
+
+      # - name: Test using pytest
+      #   run: |
+      #     ls
+      #     pwd
+      #     npx cypress run --spec ./cypress/test.spec.js
+
+      - name: Building the flask application and serving it in background
+        run: |
+          docker build -t rixardo/quiznose -f docker/Dockerfile .
+          docker run -d --rm -p 8080:5000 rixardo/quiznose
+          curl localhost:8080
