@@ -19,7 +19,7 @@ from upload_test import upload_test_blueprint
 from serve_quiz import serve_quiz_blueprint
 
 # from registration import registration_blueprint
-from login import login_blueprint
+from login import login_blueprint, logout_blueprint
 from functools import wraps
 from threading import Thread
 
@@ -39,26 +39,28 @@ app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig
 app.register_blueprint(upload_test_blueprint)
 app.register_blueprint(serve_quiz_blueprint)
 
+
 # app.register_blueprint(registration_blueprint)
-# app.register_blueprint(login_blueprint)
+app.register_blueprint(login_blueprint)
+app.register_blueprint(logout_blueprint)
 
-# mail = Mail(app)
+mail = Mail(app)
 
 
-# @app.before_request
-# def make_session_permanent():
-# 	session.permanent = True
-# 	app.permanent_session_lifetime = timedelta(minutes=5)
+@app.before_request
+def make_session_permanent():
+	session.permanent = True
+	app.permanent_session_lifetime = timedelta(minutes=5)
 
-# def is_logged(f):
-# 	@wraps(f)
-# 	def wrap(*args, **kwargs):
-# 		if 'logged_in' in session:
-# 			return f(*args, **kwargs)
-# 		else:
-# 			flash('Unauthorized, Please login','danger')
-# 			return redirect(url_for('login_page.login'))
-# 	return wrap
+def is_logged(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			flash('Unauthorized, Please login','danger')
+			return redirect(url_for('login_page.login'))
+	return wrap
 
 
 
@@ -67,45 +69,8 @@ def index():
     return render_template("index.html")
 
 
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password_candidate = request.form['password']
-#         cur = db.db.cursor()
-#         results = cur.execute('SELECT * from users where username = %s' , [username])
-#         if results > 0:
-#             data = cur.fetchone()
-#             password = data['password']
-#             confirmed = data['confirmed']
-#             fullname = data['fullname']
-#             user_id = data['user_id']
-#             if confirmed == 0:
-#                 error = 'Please confirm email before logging in'
-#                 return render_template('login.html', error=error)
-#             elif sha256_crypt.verify(password_candidate, password) and user_id < 9000001:
-#                 session['logged_in'] = True
-#                 session['username'] = username
-#                 session['fullname'] = fullname
-#                 return redirect(url_for('studDash'))
-#             elif sha256_crypt.verify(password_candidate, password) and user_id > 9000000:
-#                 session['logged_in'] = True
-#                 session['username'] = username
-#                 session['fullname'] = fullname
-#                 return redirect(url_for('teachDash'))
-#                 ##may need to add if statement for redirect here for teacher.
-#             else:
-#                 error = 'Invalid password'
-#                 return render_template('login.html', error=error)
-#             cur.close()
-#         else:
-#             error = 'Username not found'
-#             return render_template('login.html', error=error)
-#     return render_template('login.html')
-
-
 @app.route("/studDash", methods=["GET", "POST"])
-# @is_logged
+@is_logged
 def studDash():
     return render_template("studDash.html")
 
@@ -253,17 +218,6 @@ def results():
 
     return render_template("tests_result.html", total_score=total_score)
 
-
-# def is_logged(f):
-# 	@wraps(f)
-# 	def wrap(*args, **kwargs):
-# 		if 'logged_in' in session:
-# 			return f(*args, **kwargs)
-# 		else:
-# 			flash('Unauthorized, Please login','danger')
-# 			return redirect(url_for('login'))
-# 	return wrap
-##This is a function for checking login. This function is invokved at every point of something requiring login
 
 # Barebones for API Calls
 # refs

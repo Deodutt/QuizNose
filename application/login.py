@@ -6,6 +6,7 @@ from flask import (
     Blueprint,
     redirect,
     url_for,
+    flash,
 )
 from passlib.hash import sha256_crypt
 import db
@@ -13,6 +14,7 @@ import db
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 login_blueprint = Blueprint("login_page", __name__)
+logout_blueprint = Blueprint("logout_page", __name__)
 
 
 @login_blueprint.route("/login", methods=["GET", "POST"])
@@ -57,3 +59,9 @@ def login():
             error = 'Username not found'
             return render_template('login.html', error=error)
     return render_template('login.html')
+
+@logout_blueprint.route('/logout')
+def logout():
+	session.clear()
+	flash('Successfully logged out', 'success')
+	return redirect(url_for('index'))
