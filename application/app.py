@@ -69,6 +69,21 @@ def make_session_permanent():
 
 @app.route("/")
 def index():
+    cur = db.db.cursor()
+    usernames = "kawandg"
+    current_users = cur.execute('SELECT * from users where username = %s' , [usernames])
+    data = cur.fetchall()
+    # otheruser = "kawang"
+    # current_users = cur.execute("SELECT %s from final.users", [otheruser])
+    # comparedata = cur.fetchall()
+    cur.close()
+    # print(comparedata)
+    print(data)
+    # if current_users == data:
+    #     print("yes")
+'''currently using testing area to work on comparing user data registratio logic.'''
+    # if testuser in selected_user:
+    #     print("yes")
     return render_template("index.html")
 
 
@@ -274,6 +289,7 @@ Questions? Comments? Email </p>
 def register():
     form = RegisterForm(request.form)
     if request.method == "POST" and form.validate():
+        cur = db.db.cursor()
         fullname = form.name.data
         email = form.email.data
         teachercode = form.teachercode.data
@@ -293,8 +309,10 @@ def register():
         print(user_id)
         ##same process here.
         username = form.username.data
+        # current_users = cur.execute("SELECT %s from final.users", [username])
+        # print(current_users)
+
         password = sha256_crypt.encrypt(str(form.password.data))
-        cur = db.db.cursor()
         cur.execute(
             "INSERT INTO users(user_id, username,fullname,email, password,confirmed) values(%s,%s,%s,%s,%s,0)",
             (user_id, username, fullname, email, password),
