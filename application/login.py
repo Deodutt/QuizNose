@@ -12,10 +12,9 @@ from passlib.hash import sha256_crypt
 import db
 
 
-app = Flask(__name__, template_folder="templates", static_url_path="/static")
+# app = Flask(__name__, template_folder="templates", static_url_path="/static")
 login_blueprint = Blueprint("login_page", __name__)
 logout_blueprint = Blueprint("logout_page", __name__)
-results_blueprint = Blueprint('results_page', __name__)
 
 
 @login_blueprint.route("/login", methods=["GET", "POST"])
@@ -44,11 +43,13 @@ def login():
                 return render_template('login.html', error=error)
             elif sha256_crypt.verify(password_candidate, password) and user_id < 9000001:
                 session['logged_in'] = True
+                session['user_id'] = user_id
                 session['username'] = username
                 session['fullname'] = fullname
                 return redirect(url_for('studDash'))
             elif sha256_crypt.verify(password_candidate, password) and user_id > 9000000:
                 session['logged_in'] = True
+                session['user_id'] = user_id
                 session['username'] = username
                 session['fullname'] = fullname
                 return redirect(url_for('teachDash'))  
