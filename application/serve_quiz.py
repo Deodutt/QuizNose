@@ -40,7 +40,7 @@ def quiz(user_id):
                     option_c = data.get("choices")[2]
                     option_d = data.get("choices")[3]
                     return render_template(
-                        quiz.html,
+                        "quiz.html",
                         current_question=current_question,
                         question_prompt=question_prompt,
                         option_a=option_a,
