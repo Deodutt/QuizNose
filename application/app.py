@@ -71,7 +71,7 @@ def make_session_permanent():
 def index():
     cur = db.db.cursor()
     usernames = "kawandg"
-    current_users = cur.execute('SELECT * from users where username = %s' , [usernames])
+    current_users = cur.execute("SELECT * from users where username = %s", [usernames])
     data = cur.fetchall()
     # otheruser = "kawang"
     # current_users = cur.execute("SELECT %s from final.users", [otheruser])
@@ -81,9 +81,10 @@ def index():
     print(data)
     # if current_users == data:
     #     print("yes")
-'''currently using testing area to work on comparing user data registratio logic.'''
+    # '''currently using testing area to work on comparing user data registratio logic.'''
     # if testuser in selected_user:
     #     print("yes")
+
     return render_template("index.html")
 
 
