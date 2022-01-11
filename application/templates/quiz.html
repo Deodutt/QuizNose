@@ -18,7 +18,7 @@
     <section class="questions-form">
         <div id="quiz-container">
             <h2 id="question">{{current_question}}) {{question_prompt}}</h2>
-            <form id="serve-quiz" action="/quiz" method="POST">
+            <form id="serve-quiz" action="quiz" method="POST">
                 <ul>
                     <li><input type="radio" name="quiz_choice" value="choice_a">{{option_a}}</input></li>
                     <li><input type="radio" name="quiz_choice" value="choice_b">{{option_b}}</input></li>
