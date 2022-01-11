@@ -75,7 +75,7 @@ def quiz(user_id):
                 db.insert_session_counter(session_id, current_question)
                 if current_question > max_question:
                     print("finished test")
-                    return redirect(url_for(results.results_blueprint))
+                    return redirect(url_for("results.results_blueprint"))
                 else:
                     data = db.serve_question(quiz, current_question)
                     question_prompt = data.get("question")[0]
@@ -194,7 +194,7 @@ def quiz(user_id):
 
         if current_question > max_question:
             print("finished test")
-            return redirect(url_for("results"))
+            return redirect(url_for("results.results_blueprint"))
 
         return render_template(
             "quiz.html",
