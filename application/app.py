@@ -203,6 +203,10 @@ def quiz2():
         option_10d=option_10d,
     )
 
+@app.route("/results")
+def results():
+    return render_template('results.html')
+
 
 # @app.route("/results")
 # def results():
