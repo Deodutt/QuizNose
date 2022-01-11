@@ -17,7 +17,7 @@ jobs:
       - name: Official GitHub Action used to check-out a repository so a workflow can access it...
         uses: actions/checkout@v2
 
-      - name: Building the Flask Application and serving it in background
+      - name: Building the Flask Application and serving it in background...
         run: |
           docker build -t quiznose-app -f docker/Dockerfile .
           docker run -d --rm -p 8080:5000 quiznose-app
@@ -43,13 +43,13 @@ jobs:
         shell: bash
 
     steps:
-      - name: Official GitHub Action used to check-out a repository so a workflow can access it
+      - name: Official GitHub Action used to check-out a repository so a workflow can access it...
         uses: actions/checkout@v2
 
-      - name: Offical Terraform action which uses a JavaScript action that sets up Terraform CLI in your GitHub Actions workflow
+      - name: Offical Terraform action which uses a JavaScript action that sets up Terraform CLI in your GitHub Actions workflow...
         uses: hashicorp/setup-terraform@v1
 
-      - name: Provides a mechanism to configure AWS credential and region environment variables for use in other GitHub Actions
+      - name: Provides a mechanism to configure AWS credential and region environment variables for use in other GitHub Actions...
         uses: aws-actions/configure-aws-credentials@v1
         env:
           AWS_REGION: us-east-1
@@ -58,7 +58,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Terraform format, initialize, plan, and apply resources
+      - name: Terraform format, initialize, plan, and apply resources...
         run: |
           cd terraform
           terraform fmt -recursive
@@ -74,10 +74,10 @@ jobs:
         shell: bash
 
     steps:
-      - name: Official GitHub Action used to check-out a repository so a workflow can access it
+      - name: Official GitHub Action used to check-out a repository so a workflow can access it...
         uses: actions/checkout@v2
 
-      - name: Provides a mechanism to configure AWS credential and region environment variables for use in other GitHub Actions
+      - name: Provides a mechanism to configure AWS credential and region environment variables for use in other GitHub Actions...
         uses: aws-actions/configure-aws-credentials@v1
         env:
           AWS_REGION: us-east-1
@@ -86,11 +86,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Logs into Amazon ECR with the local Docker client.
+      - name: Logs into Amazon ECR with the local Docker client...
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Push successful image to ECR with specific environment variables.
+      - name: Push successful image to ECR with specific environment variables...
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
