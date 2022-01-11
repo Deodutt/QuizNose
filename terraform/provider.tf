@@ -14,9 +14,17 @@ provider "aws" {
   region = "us-east-1"
   default_tags {
     tags = {
-      Application  = var.application_name
+      Application  = "Quiznose"
       Team_Number  = "3"
       Organization = "Kura Labs"
     }
+  }
+}
+
+terraform {
+  backend "s3" {
+    bucket = "quiznose-s3"
+    key    = "terraform/terraform.tfstate"
+    region = "us-east-1"
   }
 }
