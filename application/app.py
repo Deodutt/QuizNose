@@ -71,6 +71,10 @@ def make_session_permanent():
 def index():
     return render_template("index.html")
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404error.html")
+
 
 @app.route("/studDash", methods=["GET", "POST"])
 @is_logged
@@ -79,6 +83,7 @@ def studDash():
 
 
 @app.route("/quiz2")
+@is_logged
 def quiz2():
     data = db.grab_question2("quiz1")
     crud.insert_session(22222, "quiz1")
