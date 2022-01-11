@@ -69,23 +69,11 @@ def make_session_permanent():
 
 @app.route("/")
 def index():
-    cur = db.db.cursor()
-    usernames = "kawandg"
-    current_users = cur.execute("SELECT * from users where username = %s", [usernames])
-    data = cur.fetchall()
-    # otheruser = "kawang"
-    # current_users = cur.execute("SELECT %s from final.users", [otheruser])
-    # comparedata = cur.fetchall()
-    cur.close()
-    # print(comparedata)
-    print(data)
-    # if current_users == data:
-    #     print("yes")
-    # '''currently using testing area to work on comparing user data registratio logic.'''
-    # if testuser in selected_user:
-    #     print("yes")
-
     return render_template("index.html")
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404error.html")
 
 
 @app.route("/studDash", methods=["GET", "POST"])
@@ -95,6 +83,7 @@ def studDash():
 
 
 @app.route("/quiz2")
+@is_logged
 def quiz2():
     data = db.grab_question2("quiz1")
     crud.insert_session(22222, "quiz1")
@@ -292,26 +281,44 @@ def register():
     if request.method == "POST" and form.validate():
         cur = db.db.cursor()
         fullname = form.name.data
+        username = form.username.data
+        checkUsername = cur.execute('SELECT * from users where username = %s' , [fullname])
+        usernameDataLength = len(cur.fetchall())
+        if usernameDataLength > 0:
+            flash("This username has already been taken, please choose another", "danger")
+            return render_template("register.html", form = form)
         email = form.email.data
+        checkEmailAddress = cur.execute('SELECT * from users where email = %s' , [email])
+        emailDataLength = len(cur.fetchall())
+        if emailDataLength > 0:
+            flash("This email has already registered an account, please choose another", "danger")
+            return render_template("register.html", form = form)
         teachercode = form.teachercode.data
-
-        data = client.get(email)
-        if str(data.smtp_check) == "False":
-            flash("Invalid email, please provide a valid email address", "danger")
-            return render_template("register.html", form=form)
-
-        send_confirmation_email(email)
-
         user_id = randint(0, 900000)
+        checkUserID = cur.execute('SELECT * from users where user_id = %s' , [user_id])
+        userIDDataLength = len(cur.fetchall())
+        while userIDDataLength == 1:
+            user_id = randint(0, 900000)
+            return user_id
         ##code here add to check of that random value already present in db
         # if so, reroll
         if teachercode == "KURATEACH2022":
             user_id = randint(900000, 999999)
+            checkUserID = cur.execute('SELECT * from users where user_id = %s' , [user_id])
+            userIDDataLength = len(cur.fetchall())
+            while userIDDataLength == 1:
+                user_id = randint(0, 900000)
+                return user_id
         print(user_id)
         ##same process here.
-        username = form.username.data
-        # current_users = cur.execute("SELECT %s from final.users", [username])
-        # print(current_users)
+
+        data = client.get(email)
+        if str(data.smtp_check) == "False":
+            flash("Invalid email, please provide a valid email address", "danger")
+            return render_template("register.html", form = form)
+
+
+        send_confirmation_email(email)
 
         password = sha256_crypt.encrypt(str(form.password.data))
         cur.execute(
