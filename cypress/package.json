@@ -1,0 +1,22 @@
+{
+  "name": "quiznose_cypress",
+  "version": "1.0.0",
+  "description": "Cypress testing for QuizNose application",
+  "main": "test.spec.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deodutt/QuizNose.git"
+  },
+  "author": "Ricardo Deodutt, Kawang Wong, Kenneth Tan, Dilobar Irisova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deodutt/QuizNose/issues"
+  },
+  "homepage": "https://github.com/Deodutt/QuizNose#readme",
+  "devDependencies": {
+    "cypress": "^9.2.0"
+  }
+}

@@ -1,85 +1,97 @@
-name: Python package
+name: QuizNose
 
-on: [pull_request]
-
-# env:
-#   AWS_REGION: use-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-#   ECR_REPOSITORY: MY_ECR_REPOSITORY           # set this to your Amazon ECR repository name
-#   ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-#   ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-#   ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-#                                                # file, e.g. .aws/task-definition.json
-#   CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
-#                                                # containerDefinitions section of your task definition
-
+on:
+  push:
+    branches: [main]
+    # workflow_dispatch allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build_and_test:
-
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.7'
-        cache: 'pip'
-    - name: Install dependencies
-      run: |
-        pwd
-        ls
-        pip install -r ./application/requirements.txt
-    - name: Install pytest
-      run: |
-        pip install pytest
-    - name: Testing pytest
-      run: |
-        # pytest tests.py we need a test file here
+      - name: Official GitHub Action used to check-out a repository so a workflow can access it
+        uses: actions/checkout@v2
 
-  # deployment:
+      - name: Building the Flask Application and serving it in background
+        run: |
+          docker build -t quiznose-app -f docker/Dockerfile .
+          docker run -d --rm -p 8080:5000 quiznose-app
 
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-  #     -name: Checkout
-  #      uses: actions/checkout@v2
+      - name: Install Cypress Dependencies
+        run: |
+          cd cypress
+          npm install
 
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: ${{ env.AWS_REGION }}
+      - name: Executing Cypress Test using official Cypress GitHub Action.
+        uses: cypress-io/github-action@v2
+        with:
+          wait-on: "http://localhost:8080"
+          browser: firefox
+          spec: ./cypress/integration/test.spec.js
+          working-directory: ./cypress
 
-  #     - name: Login to Amazon ECR
-  #       id: login-ecr
-  #       uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
+  provision_aws_resources:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
 
-  #     - name: Build, tag, and push image to Amazon ECR
-  #       id: build-image
-  #       env:
-  #         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-  #         IMAGE_TAG: ${{ github.sha }}
-  #       run: |
-  #         # Build a docker container and
-  #         # push it to ECR so that it can
-  #         # be deployed to ECS.
-  #         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-  #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-  #         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+    steps:
+      - name: Official GitHub Action used to check-out a repository so a workflow can access it
+        uses: actions/checkout@v2
 
-  #     - name: Fill in the new image ID in the Amazon ECS task definition
-  #       id: task-def
-  #       uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
-  #       with:
-  #         task-definition: ${{ env.ECS_TASK_DEFINITION }}
-  #         container-name: ${{ env.CONTAINER_NAME }}
-  #         image: ${{ steps.build-image.outputs.image }}
+      - name: Offical Terraform action which uses a JavaScript action that sets up Terraform CLI in your GitHub Actions workflow
+        uses: hashicorp/setup-terraform@v1
 
-  #     - name: Deploy Amazon ECS task definition
-  #       uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
-  #       with:
-  #         task-definition: ${{ steps.task-def.outputs.task-definition }}
-  #         service: ${{ env.ECS_SERVICE }}
-  #         cluster: ${{ env.ECS_CLUSTER }}
-  #         wait-for-service-stability: true
+      - name: Provides a mechanism to configure AWS credential and region environment variables for use in other GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform format, initialize, plan, and apply resources.
+        run: |
+          cd terraform
+          terraform fmt -recursive
+          terraform init
+          terraform plan
+          terraform apply -auto-approve
+
+  push_to_ecr:
+    needs: provision_aws_resources
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Official GitHub Action used to check-out a repository so a workflow can access it
+        uses: actions/checkout@v2
+
+      - name: Provides a mechanism to configure AWS credential and region environment variables for use in other GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        env:
+          AWS_REGION: us-east-1
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Logs into Amazon ECR with the local Docker client.
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Push successful image to ECR with specific environment variables.
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPO_NAME }}
+          IMAGE_TAG: latest
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/Dockerfile .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
