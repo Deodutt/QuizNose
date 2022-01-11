@@ -47,6 +47,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Offical Terraform action which uses a JavaScript action that sets up Terraform CLI in your GitHub Actions workflow
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Provides a mechanism to configure AWS credential and region environment variables for use in other GitHub Actions
         uses: aws-actions/configure-aws-credentials@v1
         env:
           AWS_REGION: us-east-1
