@@ -38,6 +38,7 @@ jobs:
   provision_aws_resources:
     needs: build_and_test
     runs-on: ubuntu-latest
+    environment: "production"
     defaults:
       run:
         shell: bash
