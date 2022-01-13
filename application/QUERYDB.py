@@ -1,4 +1,5 @@
 import MySQLdb
+import config, os
 
 db_name = "final"
 ## connection

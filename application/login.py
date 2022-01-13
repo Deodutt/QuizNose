@@ -9,7 +9,7 @@ from flask import (
     flash,
 )
 from passlib.hash import sha256_crypt
-import db
+import QUERYDB as db
 
 
 # app = Flask(__name__, template_folder="templates", static_url_path="/static")
