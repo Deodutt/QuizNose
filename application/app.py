@@ -12,7 +12,7 @@ from flask import (
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
 
-import QUERYDB as db
+# import QUERYDB as db //I am commenting this out because of the double call as same var.
 import SQLCRUD as crud
 import db
 from upload_test import upload_test_blueprint
@@ -203,9 +203,7 @@ def quiz2():
         option_10d=option_10d,
     )
 
-@app.route("/results")
-def results():
-    return render_template('results.html')
+
 
 
 # @app.route("/results")

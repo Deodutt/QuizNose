@@ -11,6 +11,10 @@ class BaseConfig:
     MAIL_USERNAME = secretstuff.emailusername
     MAIL_PASSWORD = secretstuff.emailpassword
     UPLOAD_FOLDER = "UPLOAD_FOLDER"
+    DB_HOST = "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
+    DB_USER = "admin"
+    DB_PASSWORD = "KuraLabs#123"
+    DB = "final"
 
 
 class DevelopementConfig(BaseConfig):
