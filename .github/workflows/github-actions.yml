@@ -103,7 +103,7 @@ jobs:
   send_status:
     needs: push_to_ecr
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Send Status Email
         if: always()
@@ -120,7 +120,6 @@ jobs:
           # email body as text
           body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
           # comma-separated string, send email to
-          to: johndoe@gmail.com,doejohn@gmail.com
           to: ${{ secrets.COLLABORATOR_EMAIL }}
           # from email name
           from: QuizNose
