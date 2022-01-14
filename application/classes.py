@@ -5,7 +5,10 @@ class RegisterForm(Form):
 		validators.Length(min=3, max=30),
 		validators.Regexp(r"^\w+$", message = "Cannot include spaces")
 		])
-	username = StringField('Username', [validators.Length(min=4,max=30)])
+	username = StringField('Username', [
+		validators.Length(min=4,max=30),
+		validators.Regexp(r"^\w+$", message = "Cannot include spaces")
+	])
 	teachercode = StringField('Teachercode',[validators.optional(True)])
 	email = StringField('Email', [
 		validators.Email(),
