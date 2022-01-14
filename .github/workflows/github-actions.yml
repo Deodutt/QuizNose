@@ -102,7 +102,8 @@ jobs:
 
   send_status:
     needs: push_to_ecr
-
+    runs-on: ubuntu-latest
+    
     steps:
       - name: Send Status Email
         if: always()
