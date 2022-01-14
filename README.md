@@ -118,6 +118,14 @@ To get a local copy up and running follow these simple steps.
 
 <br/>
 
+
+##Note
+
+1. If you are running this on Windows, make sure to comment out the socket function for get local ip. It's an issue that we have ran into on Windows, but works perfectly fine on Linux.
+2. Make sure to create a secretstuff.py file referencing the proper variables to get the email function working.
+
+    <br/><br/>
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
