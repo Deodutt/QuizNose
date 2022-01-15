@@ -69,6 +69,7 @@ def make_session_permanent():
 
 @app.route("/")
 def index():
+    session.clear()
     return render_template("index.html")
 
 @app.errorhandler(404)
