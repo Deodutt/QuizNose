@@ -1,7 +1,17 @@
 import os
 import secretstuff
+import boto3
 
 app_dir = os.path.abspath(os.path.dirname(__file__))
+
+def get_ssm_param(param_name: str):
+    """Returns SSM value given a parameter name"""
+    ssm = boto3.client("ssm")  # selecting what service
+
+    parameter = ssm.get_parameter(
+        Name=param_name, WithDecryption=True
+    )  # grabbing the paramaeter that has the name/prod/db/password
+    return parameter["Value"]
 
 class BaseConfig:
     SECRET_KEY= 'testkey' #needed for cookie sessions. add to secrets file later
@@ -11,9 +21,9 @@ class BaseConfig:
     MAIL_USERNAME = secretstuff.emailusername
     MAIL_PASSWORD = secretstuff.emailpassword
     UPLOAD_FOLDER = "UPLOAD_FOLDER"
-    DB_HOST = "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
+    DB_HOST = get_ssm_parameter("/QUIZNOSE/DB_ENDPOINT") #"database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
     DB_USER = "admin"
-    DB_PASSWORD = "KuraLabs#123"
+    DB_PASSWORD = get_ssm_parameter("/QUIZNOSE/DB_PASS")# "KuraLabs#123"
     DB = "final"
 
 
