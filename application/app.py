@@ -382,7 +382,7 @@ def send_confirmation_email(user_email):
         x = confirm_url.split("localhost:5000")
     else:
         x = confirm_url.split("127.0.0.1:5000")
-    confirm_url = x[0] + local_ip + ":5000" + x[1]
+    confirm_url = x[0] ##+ local_ip + ":5000" + x[1] unclear why commenting this out works. but we do run flask run --host=0.0.0.0 in the command
     html = render_template_string(htmlbody, confirm_url=confirm_url)
 
     send_email([user_email], html)
