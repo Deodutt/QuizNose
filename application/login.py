@@ -38,6 +38,7 @@ def login():
             confirmed = data[5]
             fullname = data[3]
             user_id = data[0]
+            username = data[1]
             if confirmed == 0:
                 error = 'Please confirm email before logging in'
                 return render_template('login.html', error=error)
