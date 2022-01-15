@@ -25,7 +25,16 @@ resource "aws_ecs_task_definition" "quiznose_task_definition" {
         "containerPort": 5000,
         "hostPort": 5000
     }
-    ]
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${aws_cloudwatch_log_group.quiznose_log_group.name}",
+        "awslogs-stream-prefix": "quiznose",
+        "awslogs-region": "us-east-1"
+      }
+    }
+
   }
 ]
 TASK_DEFINITION
