@@ -1,22 +1,13 @@
 import MySQLdb
 from datetime import datetime, timedelta
-import boto3
-
-def get_ssm_param(param_name: str):
-    """Returns SSM value given a parameter name"""
-    ssm = boto3.client("ssm")  # selecting what service
-
-    parameter = ssm.get_parameter(
-        Name=param_name, WithDecryption=True
-    )  # grabbing the paramaeter that has the name/prod/db/password
-    return parameter["Value"]
+import aws_param as aws
 
 db_name = "final"
 ## connection
 db = MySQLdb.connect(
-    host= get_ssm_parameter("/QUIZNOSE/DB_ENDPOINT") #"database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
+    host= aws.get_ssm_parameter("/QUIZNOSE/DB_ENDPOINT") #"database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
     user="admin",  # your username
-    passwd= get_ssm_parameter("/QUIZNOSE/DB_PASS")  #"KuraLabs#123",  # your password
+    passwd= aws.get_ssm_parameter("/QUIZNOSE/DB_PASS")  #"KuraLabs#123",  # your password
     db=db_name,
 )  # name of the data base
 
