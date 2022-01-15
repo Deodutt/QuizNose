@@ -375,7 +375,7 @@ def send_confirmation_email(user_email):
         _external=True,
     )
     print(confirm_url)
-    local_ip = 127.0.0.1 ##get_local_ip() ##changed for testing
+    local_ip = "127.0.0.1" ##get_local_ip() ##changed for testing
     print (local_ip)
     x = ""
     if "localhost" in confirm_url:
