@@ -136,7 +136,7 @@ jobs:
 
       - name: Saving the application URL as a variable
         id: application_url
-        run: echo "::set-output name=application_url::$(cat quiznose_url.txt)"
+        run: echo "::set-output name=application_url::$(cat quiznose_url.txt | head -2 | tail -1 | cut -d '"' -f  2)"
 
       - name: Send Status Email
         uses: dawidd6/action-send-mail@v2
@@ -155,8 +155,7 @@ jobs:
           Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}\n
-          Application URL: ${{ steps.application_url.outputs.application_url }}
-          "
+          Application URL: "http://${{ steps.application_url.outputs.application_url }}/"
 
           # comma-separated string with user emails
           to: ${{ secrets.COLLABORATOR_EMAIL }}
