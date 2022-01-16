@@ -2,7 +2,7 @@
 # https://medium.com/@bradford_hamilton/deploying-containers-on-amazons-ecs-using-fargate-and-terraform-part-2-2e6f6a3a957f
 #Security Group for Load Balancer
 resource "aws_security_group" "quiznose_load_balancer_sg" {
-  name        = "quiznose_lb_SG"
+  name        = "${var.application_name}_lb_SG"
   description = "security group for load balancer"
   vpc_id      = aws_vpc.main.id
   tags = {
@@ -32,13 +32,13 @@ resource "aws_security_group_rule" "quiznose_egress_lb" {
 
 
 resource "aws_alb" "quiznose_alb" {
-  name            = "quiznose-load-balancer"
+  name            = "${var.application_name}-load-balancer"
   subnets         = [aws_subnet.public1.id, aws_subnet.public2.id]
   security_groups = [aws_security_group.quiznose_load_balancer_sg.id]
 }
 
 resource "aws_alb_target_group" "quiznose_target_group" {
-  name        = "quiznosetargetgroup"
+  name        = "${var.application_name}-target-group"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -61,6 +61,7 @@ resource "aws_alb_listener" "quiznose_listener" {
   load_balancer_arn = aws_alb.quiznose_alb.id
   port              = 80
   protocol          = "HTTP"
+  depends_on        = [aws_alb_target_group.quiznose_target_group]
 
   default_action {
     target_group_arn = aws_alb_target_group.quiznose_target_group.id
