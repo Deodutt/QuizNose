@@ -419,7 +419,7 @@ def confirm_email(token):
             cur.close()
             flash("Thank you for confirming your email address!", "success")
             return redirect(url_for("login_page.login"))
-        return redirect(url_for("index"))
+        return redirect(url_for("/"))
 
 
 """This here salts the secret key and creates a token based off the user email added to secret key"""

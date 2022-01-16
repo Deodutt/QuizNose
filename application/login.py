@@ -22,13 +22,16 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         print(username)
+        print(type(username))
         password_candidate = request.form['password']
         print(password_candidate)
         checkPlease = sha256_crypt.encrypt(str(password_candidate))
         print(checkPlease)
         print('this is the password')
         cur = db.db.cursor()
-        results = cur.execute('SELECT * from users where username = %s' , [username])
+        db.db.commit()
+        results = cur.execute(f"SELECT * from users where username = '{username}'")
+        print(results)
         print('complete')
         if results > 0:
             print('hello again')
@@ -38,28 +41,32 @@ def login():
             confirmed = data[5]
             fullname = data[3]
             user_id = data[0]
-            username = data[1]
             if confirmed == 0:
                 error = 'Please confirm email before logging in'
+                cur.close()
                 return render_template('login.html', error=error)
             elif sha256_crypt.verify(password_candidate, password) and user_id < 9000001:
                 session['logged_in'] = True
                 session['user_id'] = user_id
                 session['username'] = username
                 session['fullname'] = fullname
+                cur.close()
                 return redirect(url_for('studDash'))
             elif sha256_crypt.verify(password_candidate, password) and user_id > 9000000:
                 session['logged_in'] = True
                 session['user_id'] = user_id
                 session['username'] = username
                 session['fullname'] = fullname
+                cur.close()
                 return redirect(url_for('teachDash'))  
             else:
                 error = 'Invalid password'
-                return render_template('login.html', error=error)
                 cur.close()
+                return render_template('login.html', error=error)
         else:
+            results = ''
             error = 'Username not found'
+            cur.close()
             return render_template('login.html', error=error)
     return render_template('login.html')
 
