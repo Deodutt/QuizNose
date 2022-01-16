@@ -156,10 +156,8 @@ jobs:
           Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}\n
-
           Application URL: hi
           "
-
 
           # comma-separated string with user emails
           to: ${{ secrets.COLLABORATOR_EMAIL }}
