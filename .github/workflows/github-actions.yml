@@ -38,6 +38,8 @@ jobs:
   provision_aws_resources:
     needs: build_and_test
     runs-on: ubuntu-latest
+    outputs:
+      QuizNose_URL: ${{ steps.terraform_outputs.outputs.application_url }}
     environment: "production"
     defaults:
       run:
@@ -72,10 +74,6 @@ jobs:
         run: |
           cd terraform
           echo "::set-output name=application_url::$(terraform output URL_TO_APPLICATION)"
-
-    outputs:
-      application_url: ${{ steps.terraform_outputs.outputs.application_url }}
-
 
   push_to_ecr:
     needs: provision_aws_resources
@@ -138,7 +136,8 @@ jobs:
           Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}\n
-          Application URL:  ${{ needs.terraform_outputs.outputs.application_url }}
+
+          Application URL: ${{ needs.provision_aws_resources.outputs.QuizNose_URL }} hi
           "
 
 
