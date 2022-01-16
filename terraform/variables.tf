@@ -16,8 +16,3 @@ variable "app_count" {
   description = "Number of docker containers to run"
   default     = 1
 }
-
-variable "container_image" {
-  description = "Docker image to run in the ECS cluster"
-  default     = "1.33"
-}

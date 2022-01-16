@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "quiznose_task_definition" {
   network_mode             = "awsvpc"
   cpu                      = 1024 #1gb 
   memory                   = 2048 #2gb
-  depends_on               = [aws_ecs_cluster.quiznose_cluster]
+  depends_on               = [aws_ecs_cluster.quiznose_cluster, aws_ecr_repository.quiznose_ecr]
 
   # This will use images pushed to ECR
   #Image is the URI
@@ -16,14 +16,14 @@ resource "aws_ecs_task_definition" "quiznose_task_definition" {
 [
   {
     "name": "quiznose-app",
-    "image": "252544977596.dkr.ecr.us-east-1.amazonaws.com/quiznose:latest",
+    "image": "${aws_ecr_repository.quiznose_ecr.repository_url}/${var.application_name}:latest",
     "cpu": 1024,
     "memory": 2048,
     "essential": true,
     "portMappings": [
     {
-        "containerPort": 5000,
-        "hostPort": 5000
+        "containerPort": ${var.app_port},
+        "hostPort": ${var.app_port}
     }
     ],
     "logConfiguration": {
