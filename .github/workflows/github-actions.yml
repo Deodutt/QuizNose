@@ -73,8 +73,8 @@ jobs:
           cd terraform
           echo "::set-output name=application_url::$(terraform output URL_TO_APPLICATION)"
 
-      outputs:
-        application_url: ${{ steps.terraform_outputs.outputs.application_url }}
+        outputs:
+          application_url: ${{ steps.terraform_outputs.outputs.application_url }}
 
 
   push_to_ecr:
