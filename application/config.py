@@ -17,7 +17,6 @@ class BaseConfig:
     DB_PASSWORD = aws.get_ssm_parameter("/QUIZNOSE/DB_PASS")# "KuraLabs#123"
     DB = "final"
 
-
 class DevelopementConfig(BaseConfig):
     DEBUG = True
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DEVELOPMENT_DATABASE_URI') or  \

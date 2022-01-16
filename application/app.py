@@ -24,7 +24,7 @@ from results import results_blueprint
 from functools import wraps
 from threading import Thread
 
-# import socket
+import socket
 import os, config
 from itsdangerous import URLSafeTimedSerializer
 from emailverifier import Client
@@ -69,6 +69,7 @@ def make_session_permanent():
 
 @app.route("/")
 def index():
+    session.clear()
     return render_template("index.html")
 
 @app.errorhandler(404)
@@ -354,11 +355,11 @@ def send_email(recipients, html_body):
         return
 
 
-# def get_local_ip():
-# 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# 	s.connect(('8.8.8.8', 1))
-# 	local_ip_address = s.getsockname()[0]
-# 	return local_ip_address
+def get_local_ip():
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	s.connect(('8.8.8.8', 1))
+	local_ip_address = s.getsockname()[0]
+	return local_ip_address
 
 """This here will grab the address of the host where it is hosting to create to be used in a url later on. IPBased commented out for now"""
 
@@ -374,13 +375,14 @@ def send_confirmation_email(user_email):
         _external=True,
     )
     print(confirm_url)
-    local_ip = "127.0.0.1"  # "get_local_ip() changed for testing
+    local_ip = "127.0.0.1" ##get_local_ip() ##changed for testing
+    print (local_ip)
     x = ""
     if "localhost" in confirm_url:
         x = confirm_url.split("localhost:5000")
     else:
         x = confirm_url.split("127.0.0.1:5000")
-    confirm_url = x[0] + local_ip + ":5000" + x[1]
+    confirm_url = x[0] ##+ local_ip + ":5000" + x[1] unclear why commenting this out works. but we do run flask run --host=0.0.0.0 in the command
     html = render_template_string(htmlbody, confirm_url=confirm_url)
 
     send_email([user_email], html)
