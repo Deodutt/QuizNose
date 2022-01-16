@@ -67,10 +67,15 @@ jobs:
           terraform plan
           terraform apply -auto-approve
 
-      - name: Display terraform outputs...
+      - name: Saving the URL_TO_APPLICATION variable
+        id: terraform_outputs
         run: |
           cd terraform
-          terraform output URL_TO_APPLICATION
+          echo "::set-output name=application_url::$(terraform output URL_TO_APPLICATION)"
+
+      outputs:
+        application_url: ${{ steps.terraform_outputs.outputs.application_url }}
+
 
   push_to_ecr:
     needs: provision_aws_resources
@@ -133,6 +138,7 @@ jobs:
           Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}
+          Application URL:  ${{ needs.provision_aws_resources.outputs.application_url }}
           "
 
 
