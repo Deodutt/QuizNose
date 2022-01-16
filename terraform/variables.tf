@@ -3,6 +3,11 @@ variable "application_name" {
   default = "quiznose"
 }
 
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
+
 variable "health_check_path" {
   default = "/"
 }

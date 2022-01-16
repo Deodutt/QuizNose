@@ -1,6 +1,6 @@
 # #creating task defintion
 resource "aws_ecs_task_definition" "quiznose_task_definition" {
-  family                   = "quiznose"
+  family                   = var.application_name
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = "arn:aws:iam::252544977596:role/ecsTaskExecutionRole"
   execution_role_arn       = "arn:aws:iam::252544977596:role/ecsTaskExecutionRole"
@@ -15,8 +15,8 @@ resource "aws_ecs_task_definition" "quiznose_task_definition" {
   container_definitions = <<TASK_DEFINITION
 [
   {
-    "name": "quiznose-app",
-    "image": "${aws_ecr_repository.quiznose_ecr.repository_url}/${var.application_name}:latest",
+    "name": "${var.application_name}-application",
+    "image": "${aws_ecr_repository.quiznose_ecr.repository_url}:latest",
     "cpu": 1024,
     "memory": 2048,
     "essential": true,
@@ -30,8 +30,8 @@ resource "aws_ecs_task_definition" "quiznose_task_definition" {
       "logDriver": "awslogs",
       "options": {
         "awslogs-group": "${aws_cloudwatch_log_group.quiznose_log_group.name}",
-        "awslogs-stream-prefix": "quiznose",
-        "awslogs-region": "us-east-1"
+        "awslogs-stream-prefix": "${var.application_name}",
+        "awslogs-region": "${var.region}"
       }
     }
 
