@@ -106,6 +106,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date)"
       - name: Send Status Email
         if: always()
         uses: dawidd6/action-send-mail@v2
@@ -117,7 +120,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           # email subject
-          subject: "QuizNose Job #${{ github.run_number }} result: ${{ job.status }} on ${{ date }}"
+          subject: "QuizNose Job #${{ github.run_number }} result: ${{ job.status }} on ${{ steps.date.outputs.date }}"
           # email body as text
           body: '''
           Initiated by ${{ github.actor }}
