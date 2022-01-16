@@ -102,31 +102,35 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   send_status:
+    if: always()
     needs: push_to_ecr
     runs-on: ubuntu-latest
 
     steps:
+      # https://stackoverflow.com/a/60942437/10756003
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%A, %B %d %Y at %R %Z')"
+        
       - name: Send Status Email
-        if: always()
         uses: dawidd6/action-send-mail@v2
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "QuizNose Job #${{ github.run_number }} || Result: ${{ job.status }} on ${{ steps.date.outputs.date }}"
-          body: "
-          Initiated by ${{ github.actor }}\n
+          subject: "QuizNose Job #${{ github.run_number }} || Result: ${{ job.status }} || ${{ steps.date.outputs.date }}"
+          body: "Initiated by ${{ github.actor }}\n
           Completed on ${{ steps.date.outputs.date }}\n
           Event Trigger: ${{ github.event_name }}\n
           Pull Request Title: ${{ github.event.pull_request.title }}\n
-          Job # ${{ github.job }}\n
+          Pull Request # ${{ github.event.pull_request.number }}\n
+          Run # ${{ github.run_number }}\n
+          Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}
           "
+
 
           # comma-separated string with user emails
           to: ${{ secrets.COLLABORATOR_EMAIL }}
