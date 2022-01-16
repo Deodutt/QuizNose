@@ -81,15 +81,6 @@ jobs:
           name: url_of_application
           path: terraform/quiznose_url.txt
 
-      - name: Download the Terraform Outputs File
-        uses: actions/download-artifact@v2
-        with:
-          name: url_of_application
-
-      - name: Display the Terraform Outputs File
-        run: |
-          value=`cat quiznose_url.txt`
-          echo The result is $value
 
   push_to_ecr:
     needs: provision_aws_resources
@@ -138,6 +129,15 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%A, %B %d %Y at %R %Z')"
 
+      - name: Download the Terraform Outputs File
+        uses: actions/download-artifact@v2
+        with:
+          name: url_of_application
+
+      - name: Display the Terraform Outputs File
+        run: |
+          QuizNose_URL=`cat quiznose_url.txt`
+
       - name: Send Status Email
         uses: dawidd6/action-send-mail@v2
         with:
@@ -155,7 +155,7 @@ jobs:
           Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}\n
-          Application URL: hi
+          Application URL: ${{ QuizNose_URL }} $QuizNose_URL
           "
 
           # comma-separated string with user emails
