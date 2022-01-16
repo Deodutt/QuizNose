@@ -117,9 +117,17 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           # email subject
-          subject: "QuizNose Job #${{ github.run_number }} was ${{ job.status }}"
+          subject: "QuizNose Job #${{ github.run_number }} result: ${{ job.status }} on ${{ date }}"
           # email body as text
-          body: "Initiated by ${{ github.actor }} - Event: ${{ github.event_name }} - Job # ${{ github.job }} - Workflow: ${{ github.workflow }}. View the status here -> ${{ github.server_url }}"
+          body: '''
+          Initiated by ${{ github.actor }}
+          Event Trigger: ${{ github.event_name }}
+          Pull Request Title: ${{ github.event.pull_request.title }}
+          Job # ${{ github.job }}
+          Workflow: ${{ github.workflow }}
+          View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}
+          '''
+
           # comma-separated string, send email to
           to: ${{ secrets.COLLABORATOR_EMAIL }}
           # from email name
