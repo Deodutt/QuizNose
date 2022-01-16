@@ -77,9 +77,9 @@ jobs:
 
       - name: Uploads the Terraform Outputs File
         uses: actions/upload-artifact@v2
-          with:
-            name: url_of_application
-            path: quiznose_url.txt
+        with:
+          name: url_of_application
+          path: quiznose_url.txt
 
   push_to_ecr:
     needs: provision_aws_resources
