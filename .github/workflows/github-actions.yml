@@ -72,7 +72,6 @@ jobs:
         run: |
           cd terraform
           echo "::set-output name=application_url::$(terraform output URL_TO_APPLICATION)"
-          export URL_TO_APPLICATION="${application_url}"
 
     outputs:
       application_url: ${{ steps.terraform_outputs.outputs.application_url }}
@@ -139,7 +138,7 @@ jobs:
           Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}\n
-          Application URL:  ${{ needs.provision_aws_resources.outputs.application_url }}
+          Application URL:  ${{ needs.terraform_outputs.outputs.application_url }}
           "
 
 
