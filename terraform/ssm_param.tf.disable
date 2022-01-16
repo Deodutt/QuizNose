@@ -1,9 +1,3 @@
-resource "aws_ssm_parameter" "db_endpoint" {
-  name  = "/QUIZNOSE/DB_ENDPOINT"
-  type  = "SecureString"
-  value = ${{DB_ENDPOINT}}
-}
-
 resource "aws_ssm_parameter" "db_pass" {
   name  = "/QUIZNOSE/DB_PASS"
   type  = "SecureString"
