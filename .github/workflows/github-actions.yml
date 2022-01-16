@@ -134,9 +134,9 @@ jobs:
         with:
           name: url_of_application
 
-      - name: Display the Terraform Outputs File
-        run: |
-          QuizNose_URL=`cat quiznose_url.txt`
+      - name: Saving the application URL as a variable
+        id: application_url
+        run: echo "::set-output name=application_url::$(cat quiznose_url.txt)"
 
       - name: Send Status Email
         uses: dawidd6/action-send-mail@v2
@@ -155,7 +155,7 @@ jobs:
           Run ID: ${{ github.run_id }}\n
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}\n
-          Application URL: ${{ QuizNose_URL }} $QuizNose_URL
+          Application URL: ${{ steps.application_url.outputs.application_url }}
           "
 
           # comma-separated string with user emails
