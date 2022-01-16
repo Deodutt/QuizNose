@@ -66,6 +66,10 @@ jobs:
           terraform init
           terraform plan
           terraform apply -auto-approve
+
+      - name: Display terraform outputs...
+        run: |
+          cd terraform
           terraform output URL_TO_APPLICATION
 
   push_to_ecr:
