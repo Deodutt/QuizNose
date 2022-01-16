@@ -77,10 +77,9 @@ jobs:
 
       - name: Uploads the Terraform Outputs File
         uses: actions/upload-artifact@v2
-        working-directory: terraform
         with:
           name: url_of_application
-          path: quiznose_url.txt
+          path: terraform/quiznose_url.txt
 
       - name: Download the Terraform Outputs File
         uses: actions/download-artifact@v2
