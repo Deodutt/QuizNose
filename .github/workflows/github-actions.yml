@@ -69,11 +69,17 @@ jobs:
           terraform plan
           terraform apply -auto-approve
 
-      - name: Saving the URL_TO_APPLICATION variable
+      - name: Saving the URL_TO_APPLICATION variable as a file
         id: terraform_outputs
         run: |
           cd terraform
-          echo "::set-output name=application_url::$(terraform output URL_TO_APPLICATION)"
+          terraform output URL_TO_APPLICATION > quiznose_url.txt
+
+      - name: Uploads the Terraform Outputs File
+        uses: actions/upload-artifact@v2
+          with:
+            name: url_of_application
+            path: quiznose_url.txt
 
   push_to_ecr:
     needs: provision_aws_resources
@@ -112,12 +118,23 @@ jobs:
     if: always()
     needs: push_to_ecr
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
 
     steps:
       # https://stackoverflow.com/a/60942437/10756003
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%A, %B %d %Y at %R %Z')"
+
+      - name: Download the Terraform Outputs File
+        uses: actions/download-artifact@v2
+        with:
+          name: url_of_application
+        run: |
+          value=`cat quiznose_url.txt`
+          echo The result is $value
         
       - name: Send Status Email
         uses: dawidd6/action-send-mail@v2
@@ -137,7 +154,7 @@ jobs:
           Workflow: ${{ github.workflow }}\n
           View the status here -> ${{ github.server_url }}/${{github.repository}}/actions/runs/${{github.run_id}}\n
 
-          Application URL: ${{ needs.provision_aws_resources.outputs.QuizNose_URL }} hi
+          Application URL: hi
           "
 
 
