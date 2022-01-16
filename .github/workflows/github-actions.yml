@@ -19,8 +19,8 @@ jobs:
 
       - name: Building the Flask Application and serving it in background...
         run: |
-          docker build -t quiznose-app -f docker/Dockerfile .
-          docker run -d --rm -p 8080:5000 quiznose-app
+          docker build -t quiznose-application -f docker/Dockerfile .
+          docker run -d --rm -p 8080:5000 quiznose-application
 
       - name: Install Cypress Dependencies
         run: |
@@ -66,6 +66,7 @@ jobs:
           terraform init
           terraform plan
           terraform apply -auto-approve
+          terraform output URL_TO_APPLICATION
 
   push_to_ecr:
     needs: provision_aws_resources
@@ -116,9 +117,9 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           # email subject
-          subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+          subject: "QuizNose Job #${{ github.run_number }} was ${{ job.status }}"
           # email body as text
-          body: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+          body: "Initiated by ${{ github.actor }} - Event: ${{ github.event_name }} - Job # ${{ github.job }} - Workflow: ${{ github.workflow }}. View the status here -> ${{ github.server_url }}"
           # comma-separated string, send email to
           to: ${{ secrets.COLLABORATOR_EMAIL }}
           # from email name

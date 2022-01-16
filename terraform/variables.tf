@@ -3,6 +3,11 @@ variable "application_name" {
   default = "quiznose"
 }
 
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
+
 variable "health_check_path" {
   default = "/"
 }
@@ -15,9 +20,4 @@ variable "app_port" {
 variable "app_count" {
   description = "Number of docker containers to run"
   default     = 1
-}
-
-variable "container_image" {
-  description = "Docker image to run in the ECS cluster"
-  default     = "1.33"
 }
