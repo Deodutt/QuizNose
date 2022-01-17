@@ -72,6 +72,7 @@ def index():
     session.clear()
     return render_template("index.html")
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404error.html")
@@ -205,8 +206,6 @@ def quiz2():
     )
 
 
-
-
 # @app.route("/results")
 # def results():
 #     quiz = "quiz1"
@@ -263,7 +262,9 @@ def send_async_email(app, msg):
         mail.send(msg)
 
 
-client = Client(aws.get_ssm_parameter("/QUIZNOSE/API_KEY")) #("at_zmz5m4BQ9kegkMqfGaTujPCCUD135")  ##whoisxmlapikey
+client = Client(
+    aws.get_ssm_parameter("/QUIZNOSE/API_KEY")
+)  # ("at_zmz5m4BQ9kegkMqfGaTujPCCUD135")  ##whoisxmlapikey
 
 htmlbody = """
 Your account on <b>QuizNose</b> Quiz App was successfully created.
@@ -284,20 +285,27 @@ def register():
         cur = db.db.cursor()
         fullname = form.name.data
         username = form.username.data
-        checkUsername = cur.execute('SELECT * from users where username = %s' , [fullname])
+        checkUsername = cur.execute(
+            "SELECT * from users where username = %s", [fullname]
+        )
         usernameDataLength = len(cur.fetchall())
         if usernameDataLength > 0:
-            flash("This username has already been taken, please choose another", "danger")
-            return render_template("register.html", form = form)
+            flash(
+                "This username has already been taken, please choose another", "danger"
+            )
+            return render_template("register.html", form=form)
         email = form.email.data
-        checkEmailAddress = cur.execute('SELECT * from users where email = %s' , [email])
+        checkEmailAddress = cur.execute("SELECT * from users where email = %s", [email])
         emailDataLength = len(cur.fetchall())
         if emailDataLength > 0:
-            flash("This email has already registered an account, please choose another", "danger")
-            return render_template("register.html", form = form)
+            flash(
+                "This email has already registered an account, please choose another",
+                "danger",
+            )
+            return render_template("register.html", form=form)
         teachercode = form.teachercode.data
         user_id = randint(0, 900000)
-        checkUserID = cur.execute('SELECT * from users where user_id = %s' , [user_id])
+        checkUserID = cur.execute("SELECT * from users where user_id = %s", [user_id])
         userIDDataLength = len(cur.fetchall())
         while userIDDataLength == 1:
             user_id = randint(0, 900000)
@@ -306,7 +314,9 @@ def register():
         # if so, reroll
         if teachercode == "KURATEACH2022":
             user_id = randint(900000, 999999)
-            checkUserID = cur.execute('SELECT * from users where user_id = %s' , [user_id])
+            checkUserID = cur.execute(
+                "SELECT * from users where user_id = %s", [user_id]
+            )
             userIDDataLength = len(cur.fetchall())
             while userIDDataLength == 1:
                 user_id = randint(0, 900000)
@@ -317,8 +327,7 @@ def register():
         data = client.get(email)
         if str(data.smtp_check) == "False":
             flash("Invalid email, please provide a valid email address", "danger")
-            return render_template("register.html", form = form)
-
+            return render_template("register.html", form=form)
 
         send_confirmation_email(email)
 
@@ -356,10 +365,11 @@ def send_email(recipients, html_body):
 
 
 def get_local_ip():
-	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	s.connect(('8.8.8.8', 1))
-	local_ip_address = s.getsockname()[0]
-	return local_ip_address
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 1))
+    local_ip_address = s.getsockname()[0]
+    return local_ip_address
+
 
 """This here will grab the address of the host where it is hosting to create to be used in a url later on. IPBased commented out for now"""
 
@@ -375,14 +385,16 @@ def send_confirmation_email(user_email):
         _external=True,
     )
     print(confirm_url)
-    local_ip = "127.0.0.1" ##get_local_ip() ##changed for testing
-    print (local_ip)
+    local_ip = "127.0.0.1"  ##get_local_ip() ##changed for testing
+    print(local_ip)
     x = ""
     if "localhost" in confirm_url:
         x = confirm_url.split("localhost:5000")
     else:
         x = confirm_url.split("127.0.0.1:5000")
-    confirm_url = x[0] ##+ local_ip + ":5000" + x[1] unclear why commenting this out works. but we do run flask run --host=0.0.0.0 in the command
+    confirm_url = x[
+        0
+    ]  ##+ local_ip + ":5000" + x[1] unclear why commenting this out works. but we do run flask run --host=0.0.0.0 in the command
     html = render_template_string(htmlbody, confirm_url=confirm_url)
 
     send_email([user_email], html)
