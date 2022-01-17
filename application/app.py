@@ -85,7 +85,7 @@ def studDash():
 
 
 @app.route("/quiz2")
-@is_logged
+# @is_logged
 def quiz2():
     data = db.grab_question2("quiz1")
     crud.insert_session(22222, "quiz1")
