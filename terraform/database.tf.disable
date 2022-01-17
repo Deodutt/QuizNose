@@ -3,7 +3,7 @@ resource "aws_db_instance" "database" {
   instance_class      = "db.t2.micro"
   name                = "quiznose_mysql"
   username            = "admin"
-  password            = "abc123abc"
+  password            = aws_ssm_parameter.db_pass.value
   identifier          = "quiznose"
   publicly_accessible = true
 
@@ -16,6 +16,10 @@ resource "aws_db_instance" "database" {
   tags = {
     "Name" = "Quiznose Database"
   }
+}
+
+resource "aws_ssm_parameter" "db_pass" {
+  name  = "/QUIZNOSE/DB_PASS"
 }
 
 resource "aws_db_subnet_group" "database_subnet_groups" {

@@ -34,7 +34,7 @@ from classes import RegisterForm
 from sessioncheck import is_logged
 
 from datetime import timedelta, datetime
-
+import aws_param as aws
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 app.config.from_object(os.environ.get("FLASK_ENV") or "config.DevelopementConfig")
@@ -263,8 +263,7 @@ def send_async_email(app, msg):
         mail.send(msg)
 
 
-client = Client("at_zmz5m4BQ9kegkMqfGaTujPCCUD135")  ##whoisxmlapikey
-
+client = Client(aws.get_ssm_parameter("/QUIZNOSE/API_KEY")) #("at_zmz5m4BQ9kegkMqfGaTujPCCUD135")  ##whoisxmlapikey
 
 htmlbody = """
 Your account on <b>QuizNose</b> Quiz App was successfully created.

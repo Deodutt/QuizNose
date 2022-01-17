@@ -1,12 +1,13 @@
 import MySQLdb
 import config, os
+import aws_param as aws
 
 db_name = "final"
 ## connection
 db = MySQLdb.connect(
-    host="database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
+    host=  "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost #aws.get_ssm_parameter("/QUIZNOSE/DB_ENDPOINT")
     user="admin",  # your username
-    passwd="KuraLabs#123",  # your password
+    passwd= "KuraLabs#123",  # your password #aws.get_ssm_parameter("/QUIZNOSE/DB_PASS")
     db=db_name,
 )  # name of the data base
 
