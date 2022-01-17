@@ -12,7 +12,7 @@ from flask import (
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
 
-# import QUERYDB as db //I am commenting this out because of the double call as same var.
+import QUERYDB as db2
 import SQLCRUD as crud
 import db
 from upload_test import upload_test_blueprint
@@ -87,8 +87,10 @@ def studDash():
 @app.route("/quiz2")
 # @is_logged
 def quiz2():
-    data = db.grab_question2("quiz1")
-    crud.insert_session(22222, "quiz1")
+    data = db2.grab_question2("quiz1")
+    crud.insert_session(
+        22222, "quiz1", "", "", "", "", "", "", "", "", "", "", "", "", ""
+    )
 
     i = 0  # q1
     question_prompt1 = data.get("question")[i]
