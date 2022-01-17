@@ -5,4 +5,3 @@ resource "aws_ssm_parameter" "db_endpoint" {
   # "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
   # value = ${{DB_PASS}}
 }
-

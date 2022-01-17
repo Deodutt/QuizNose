@@ -204,12 +204,14 @@ def insert_session_answer(session_id, current_question, answer):
     db.commit()
     return print(f"The values '{answer}', was successfully inserted into {session_id}!")
 
+
 def update_curr_question(questionnum):
     session_id = 123456
     cur = db.cursor()
     cur.execute(
         f"UPDATE sessions SET current_question = {questionnum} WHERE session_id = {session_id};"
     )
+
 
 def insert_session_counter(session_id, current_question):
     table_name = "sessions"

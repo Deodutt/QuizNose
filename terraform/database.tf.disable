@@ -47,13 +47,13 @@ resource "aws_security_group" "quiznose_database_sg" {
 }
 
 resource "aws_security_group_rule" "quiznose_database_ingress" {
-  type                     = "ingress"
-  description              = "Allow inbound traffic from Development EC2"
-  protocol                 = "tcp"
-  from_port                = 3306
-  to_port                  = 3306
-  security_group_id        = aws_security_group.quiznose_database_sg.id
-  source_security_group_id = aws_security_group.quiznose_development_ec2_sg.id
+  type              = "ingress"
+  description       = "Allow inbound traffic from Development EC2"
+  protocol          = "tcp"
+  from_port         = 3306
+  to_port           = 3306
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.quiznose_database_sg.id
 }
 
 resource "aws_security_group_rule" "quiznose_database_egress" {
