@@ -11,13 +11,13 @@ resource "aws_ssm_parameter" "api_key" {
 }
 
 resource "aws_ssm_parameter" "email_user" {
-  name  = "/QUIZNOSE/EMAIL_USER"
+  name  = "/QUIZNOSE/MAIL_USER"
   type  = "SecureString"
   value = "Kuralabs123"
 }
 
 resource "aws_ssm_parameter" "email_pass" {
-  name  = "/QUIZNOSE/EMAIL_PASS"
+  name  = "/QUIZNOSE/MAIL_PASS"
   type  = "SecureString"
   value = "quiznose.notification@gmail.com"
 }
