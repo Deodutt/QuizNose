@@ -1,3 +1,9 @@
+resource "aws_ssm_parameter" "db_user" {
+  name  = "/QUIZNOSE/DB_USER"
+  type  = "SecureString"
+  value = "admin"
+}
+
 resource "aws_ssm_parameter" "db_pass" {
   name  = "/QUIZNOSE/DB_PASS"
   type  = "SecureString"
