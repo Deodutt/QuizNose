@@ -1,13 +1,16 @@
 from re import L
 import MySQLdb
 from datetime import datetime, timedelta
+import aws_param as aws
 
-db_name = "final"
+db_name = "quiznose_mysql"
 ## connection
 db = MySQLdb.connect(
-    host="database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost
-    user="admin",  # your username
-    passwd="KuraLabs#123",  # your password
+    host=aws.get_ssm_parameter(
+        "/QUIZNOSE/DB_ENDPOINT"
+    ),  # your host, usually localhost #"database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
+    user=aws.get_ssm_parameter("/QUIZNOSE/DB_USER"),  # your username
+    passwd=aws.get_ssm_parameter("/QUIZNOSE/DB_PASS"),  # your password #"KuraLabs#123"
     db=db_name,
 )  # name of the data base
 
@@ -204,7 +207,10 @@ def insert_session_answer(session_id, current_question, answer):
     db.commit()
     return print(f"The values '{answer}', was successfully inserted into {session_id}!")
 
-'''Line 208 to 226'''
+
+"""Line 208 to 226"""
+
+
 def update_curr_question(questionnum):
     session_id = 123456
     cur = db.cursor()
@@ -307,6 +313,8 @@ def query_entire_table(table):
 # query_entire_table("sessions")
 
 """Found in QUERYDB"""
+
+
 def query_answer(quiz_id, question_num):
     table_name = "questions"
     cur = db.cursor()
@@ -427,26 +435,24 @@ def update_total_score(session_id, quiz_id, total_score):
     )
 
 
-def testing():
-    delete_table("questions")
-    delete_table("choices")
-    delete_table("users")
-    delete_table("results")
-    delete_table("sessions")
-    create_questions_table()
-    create_choices_table()
-    create_users_table()
-    create_results_table()
-    create_session_table()
-    insert_users(
-        1017,
-        "ricardo",
-        "Ricardo Deodutt",
-        "RicardoDeodutt@gmail.com",
-        "KuraLabs#123",
-        0,
-    )
-    insert_results("ricardo", "quiz1", "", 123456, 0)
-    insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
-
-    
+# def testing():
+#     delete_table("questions")
+#     delete_table("choices")
+#     delete_table("users")
+#     delete_table("results")
+#     delete_table("sessions")
+#     create_questions_table()
+#     create_choices_table()
+#     create_users_table()
+#     create_results_table()
+#     create_session_table()
+#     # insert_users(
+#     #     1017,
+#     #     "ricardo",
+#     #     "Ricardo Deodutt",
+#     #     "RicardoDeodutt@gmail.com",
+#     #     "KuraLabs#123",
+#     #     0,
+#     # )
+#     insert_results("ricardo", "quiz1", "", 123456, 0)
+#     insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
