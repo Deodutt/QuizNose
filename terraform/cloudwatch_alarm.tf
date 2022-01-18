@@ -50,7 +50,7 @@ resource "aws_cloudwatch_metric_alarm" "quiznose_rds_cpu_alarm" {
   alarm_actions       = [aws_sns_topic.quiznose_sns.arn]
 
   dimensions = {
-    DBInstanceIdentifier = "database-1" #need to change to terraform
+    DBInstanceIdentifier = aws_db_instance.database.name #need to change to terraform
   }
 }
 
@@ -67,7 +67,7 @@ resource "aws_cloudwatch_metric_alarm" "quiznose_rds_read_alarm" {
   alarm_actions       = [aws_sns_topic.quiznose_sns.arn]
 
   dimensions = {
-    DBInstanceIdentifier = "database-1" #need to change to terraform
+    DBInstanceIdentifier = aws_db_instance.database.name #need to change to terraform
   }
 }
 
@@ -84,7 +84,7 @@ resource "aws_cloudwatch_metric_alarm" "quiznose_rds_write_alarm" {
   alarm_actions       = [aws_sns_topic.quiznose_sns.arn]
 
   dimensions = {
-    DBInstanceIdentifier = "database-1" #need to change to terraform
+    DBInstanceIdentifier = aws_db_instance.database.name #need to change to terraform
   }
 }
 
