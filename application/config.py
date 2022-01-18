@@ -18,7 +18,7 @@ class BaseConfig:
     )  # "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
     DB_USER = aws.get_ssm_parameter("/QUIZNOSE/DB_USER")
     DB_PASSWORD = aws.get_ssm_parameter("/QUIZNOSE/DB_PASS")  # "KuraLabs#123"
-    DB = "final"
+    DB = "quiznose_mysql"
 
 
 class DevelopementConfig(BaseConfig):

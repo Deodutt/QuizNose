@@ -20,16 +20,17 @@ resource "aws_ssm_parameter" "api_key" {
 }
 
 resource "aws_ssm_parameter" "email_user" {
-  name      = "/QUIZNOSE/MAIL_USER"
-  type      = "SecureString"
-  value     = "Kuralabs123"
+  name  = "/QUIZNOSE/MAIL_USER"
+  type  = "SecureString"
+  value = "quiznose.notification@gmail.com"
+
   overwrite = true
 }
 
 resource "aws_ssm_parameter" "email_pass" {
   name      = "/QUIZNOSE/MAIL_PASS"
   type      = "SecureString"
-  value     = "quiznose.notification@gmail.com"
+  value     = "Kuralabs123"
   overwrite = true
 }
 
