@@ -33,7 +33,7 @@ from random import randint
 from classes import RegisterForm
 from sessioncheck import is_logged
 
-from datetime import timedelta, datetime
+from datetime import timedelta
 import aws_param as aws
 
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
@@ -43,7 +43,7 @@ app.register_blueprint(serve_quiz_blueprint)
 app.register_blueprint(results_blueprint)
 
 
-# app.register_blueprint(registration_blueprint)
+# app.register_blueprint(registration_blueprint) //not in use for current deployment, will be in use in future after decouple.
 app.register_blueprint(login_blueprint)
 app.register_blueprint(logout_blueprint)
 
@@ -54,17 +54,6 @@ mail = Mail(app)
 def make_session_permanent():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=5)
-
-
-# def is_logged(f):
-# 	@wraps(f)
-# 	def wrap(*args, **kwargs):
-# 		if 'logged_in' in session:
-# 			return f(*args, **kwargs)
-# 		else:
-# 			flash('Unauthorized, Please login','danger')
-# 			return redirect(url_for('login_page.login'))
-# 	return wrap
 
 
 @app.route("/")
@@ -266,7 +255,7 @@ def send_async_email(app, msg):
 
 client = Client(
     aws.get_ssm_parameter("/QUIZNOSE/API_KEY")
-)  # ("at_zmz5m4BQ9kegkMqfGaTujPCCUD135")  ##whoisxmlapikey
+)  ###whoisxmlapikey for email verification
 
 htmlbody = """
 Your account on <b>QuizNose</b> Quiz App was successfully created.
@@ -387,7 +376,7 @@ def send_confirmation_email(user_email):
         _external=True,
     )
     print(confirm_url)
-    local_ip = "127.0.0.1"  ##get_local_ip() ##changed for testing
+    local_ip = "127.0.0.1"  ##get_local_ip() ##hard coded in to ensure works in local testing ENV
     print(local_ip)
     x = ""
     if "localhost" in confirm_url:

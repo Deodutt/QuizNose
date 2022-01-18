@@ -204,7 +204,7 @@ def insert_session_answer(session_id, current_question, answer):
     db.commit()
     return print(f"The values '{answer}', was successfully inserted into {session_id}!")
 
-
+'''Line 208 to 226'''
 def update_curr_question(questionnum):
     session_id = 123456
     cur = db.cursor()
@@ -225,7 +225,7 @@ def insert_session_counter(session_id, current_question):
     )
 
 
-# query all tables
+# query all tables found in SQLCRUD
 def query_entire_table(table):
     cur = db.cursor()
     cur.execute(f"SELECT * FROM {table};")
@@ -306,7 +306,7 @@ def query_entire_table(table):
 # query_entire_table("results")
 # query_entire_table("sessions")
 
-
+"""Found in QUERYDB"""
 def query_answer(quiz_id, question_num):
     table_name = "questions"
     cur = db.cursor()
@@ -449,6 +449,4 @@ def testing():
     insert_results("ricardo", "quiz1", "", 123456, 0)
     insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
 
-
-# testing()
-# insert_session(123456, "quiz1", "", "", 1, "", "", "", "", "", "", "", "", "", "")
+    
