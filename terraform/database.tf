@@ -1,10 +1,3 @@
-resource "aws_ssm_parameter" "db_pass" {
-  name  = "/QUIZNOSE/DB_PASS"
-  type  = "SecureString"
-  value = "KuraLabs#123"
-  # value = ${{DB_PASS}}
-}
-
 resource "aws_db_instance" "database" {
   multi_az            = true
   instance_class      = "db.t2.micro"
@@ -23,6 +16,8 @@ resource "aws_db_instance" "database" {
   tags = {
     "Name" = "Quiznose Database"
   }
+
+  depends_on = [aws_ssm_parameter.db_user, aws_ssm_parameter.db_pass, aws_ssm_parameter.api_key, aws_ssm_parameter.email_user, aws_ssm_parameter.email_pass, aws_db_subnet_group.database_subnet_groups, aws_security_group.quiznose_database_sg]
 }
 
 

@@ -13,7 +13,9 @@ class BaseConfig:
     MAIL_USERNAME = aws.get_ssm_parameter("/QUIZNOSE/MAIL_USER")
     MAIL_PASSWORD = aws.get_ssm_parameter("/QUIZNOSE/MAIL_PASS")
     UPLOAD_FOLDER = "UPLOAD_FOLDER"
-    DB_HOST = aws.get_ssm_parameter("/QUIZNOSE/DB_ENPOINT")  # "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
+    DB_HOST = aws.get_ssm_parameter(
+        "/QUIZNOSE/DB_ENDPOINT"
+    )  # "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
     DB_USER = aws.get_ssm_parameter("/QUIZNOSE/DB_USER")
     DB_PASSWORD = aws.get_ssm_parameter("/QUIZNOSE/DB_PASS")  # "KuraLabs#123"
     DB = "final"
