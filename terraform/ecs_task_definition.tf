@@ -2,8 +2,8 @@
 resource "aws_ecs_task_definition" "quiznose_task_definition" {
   family                   = var.application_name
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = "arn:aws:iam::252544977596:role/ecsTaskExecutionRole"
-  execution_role_arn       = "arn:aws:iam::252544977596:role/ecsTaskExecutionRole"
+  task_role_arn            = aws_iam_role.quiznose_task_execution_role.arn
+  execution_role_arn       = aws_iam_role.quiznose_task_execution_role.arn
   network_mode             = "awsvpc"
   cpu                      = 1024 #1gb 
   memory                   = 2048 #2gb
