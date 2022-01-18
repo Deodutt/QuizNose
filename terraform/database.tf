@@ -43,7 +43,7 @@ resource "aws_security_group" "quiznose_database_sg" {
 
 resource "aws_security_group_rule" "quiznose_database_ingress" {
   type              = "ingress"
-  description       = "Allow inbound traffic from Development EC2"
+  description       = "Allow inbound traffic from port 3306"
   protocol          = "tcp"
   from_port         = 3306
   to_port           = 3306
