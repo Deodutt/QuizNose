@@ -38,6 +38,7 @@ from sessioncheck import is_logged
 from datetime import timedelta
 import aws_param as aws
 
+
 app = Flask(__name__, template_folder="templates", static_url_path="/static")
 app.config.from_object(os.environ.get("FLASK_ENV") or "config.DevelopementConfig")
 app.register_blueprint(upload_test_blueprint)

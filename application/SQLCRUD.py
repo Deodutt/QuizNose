@@ -2,12 +2,14 @@ import MySQLdb
 from datetime import datetime, timedelta
 import aws_param as aws
 
-db_name = "final"
+db_name = "quiznose_mysql"
 ## connection
 db = MySQLdb.connect(
-    host= "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com",  # your host, usually localhost #aws.get_ssm_parameter("/QUIZNOSE/DB_ENDPOINT") 
-    user="admin",  # your username
-    passwd= "KuraLabs#123",  # your password #aws.get_ssm_parameter("/QUIZNOSE/DB_PASS") 
+    host=aws.get_ssm_parameter(
+        "/QUIZNOSE/DB_ENDPOINT"
+    ),  # your host, usually localhost #"database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
+    user=aws.get_ssm_parameter("/QUIZNOSE/DB_USER"),  # your username
+    passwd=aws.get_ssm_parameter("/QUIZNOSE/DB_PASS"),  # your password #"KuraLabs#123"
     db=db_name,
 )  # name of the data base
 
@@ -216,18 +218,28 @@ def insert_session_counter(session_id, current_question):
         f"The values '{current_question}', was successfully inserted into {session_id}!"
     )
 
+
 def insert_all_quiz_data(ans_dict):
     cur = db.cursor()
     session_id = 22222
     for i in range(len(ans_dict)):
-        key = str(i+1)
+        key = str(i + 1)
         ans = ans_dict[key]
-        col = 'answer_'+key
-        cur.execute(f"UPDATE sessions SET {col}= '{ans}' WHERE session_id = {session_id};")
+        col = "answer_" + key
+        cur.execute(
+            f"UPDATE sessions SET {col}= '{ans}' WHERE session_id = {session_id};"
+        )
         db.commit()
 
 
-test_dict = {'1': 'test1', '2': 'test2', '3': 'test3', '4': 'test1', '5': 'test2', '6': 'test3'} 
+test_dict = {
+    "1": "test1",
+    "2": "test2",
+    "3": "test3",
+    "4": "test1",
+    "5": "test2",
+    "6": "test3",
+}
 
 # insert_session(22222,"quiz1",'','','','','','','','','','','','','')
 # for i in range(3):
@@ -235,5 +247,4 @@ test_dict = {'1': 'test1', '2': 'test2', '3': 'test3', '4': 'test1', '5': 'test2
 #         ans = test_dict[key]
 #         print(key)
 
-insert_all_quiz_data(test_dict)
-
+# insert_all_quiz_data(test_dict)

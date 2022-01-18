@@ -21,3 +21,18 @@ variable "app_count" {
   description = "Number of docker containers to run"
   default     = 1
 }
+
+variable "cluster_name" {
+  type    = string
+  default = "quiznose_cluster"
+}
+
+variable "service_name" {
+  type    = string
+  default = "quiznose_service"
+}
+
+variable "error_code" {
+  type    = string
+  default = "QuizNose_Error_Code"
+}
