@@ -10,11 +10,11 @@ class BaseConfig:
     MAIL_SERVER = "smtp.gmail.com"
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = secretstuff.emailusername
-    MAIL_PASSWORD = secretstuff.emailpassword
+    MAIL_USERNAME = aws.get_ssm_parameter("/QUIZNOSE/MAIL_USER")
+    MAIL_PASSWORD = aws.get_ssm_parameter("/QUIZNOSE/MAIL_PASS")
     UPLOAD_FOLDER = "UPLOAD_FOLDER"
-    DB_HOST = "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"  # "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
-    DB_USER = "admin"
+    DB_HOST = aws.get_ssm_parameter("/QUIZNOSE/DB_ENPOINT")  # "database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
+    DB_USER = aws.get_ssm_parameter("/QUIZNOSE/DB_USER")
     DB_PASSWORD = aws.get_ssm_parameter("/QUIZNOSE/DB_PASS")  # "KuraLabs#123"
     DB = "final"
 
