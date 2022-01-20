@@ -35,27 +35,16 @@ img {
 }
 
 .questions {
-    list-style: none;
-    font-size: 18px;
-}
-
-.questions li {
-    margin: 8px 0;
-}
-
-.questions li input {
-    margin-right: 5px;
-}
-
-.questions-form {
-    width: 700px;
-    margin: 35px auto 0 auto;
+    margin: 3rem auto;
+    width: 90vw;
+    padding: 2rem;
+    /* background-image: url("../static/quiz.test.jpeg"); */
+    cursor: default;
+    border-radius: 1rem;
 }
 
 #question {
-    margin-bottom: 20px;
-    font-size: 30px;
-
+    margin-bottom: 1rem;
 }
 
 .option {
@@ -102,14 +91,12 @@ button {
     outline: none;
     font-size: 1.5rem;
     border-radius: 1.5rem;
-    color: white;
+    color: rgba(93, 53, 156, 0.98);
     background: rgba(19, 177, 161, 0.82);
-    cursor: pointer;
-    transition: all .1s ease-out;
 }
 
-button:hover {
-    background: rgba(13, 141, 128, 0.82);
+button:active {
+    background: lavender;
 }
 
 #scoreboard,

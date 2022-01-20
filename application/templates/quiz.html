@@ -17,21 +17,22 @@
     <!-- quiz-container -->
     <section class="questions-form">
         <div id="quiz-container">
-            <h1 id="question">{{current_question}}) {{question_prompt}}</h1>
+            <h2 id="question">{{current_question}}) {{question_prompt}}</h2>
             <form id="serve-quiz" action="quiz" method="POST">
-                <ul class="questions">
+                <ul>
                     <li><input type="radio" name="quiz_choice" value="choice_a">{{option_a}}</input></li>
                     <li><input type="radio" name="quiz_choice" value="choice_b">{{option_b}}</input></li>
                     <li><input type="radio" name="quiz_choice" value="choice_c">{{option_c}}</input></li>
                     <li><input type="radio" name="quiz_choice" value="choice_d">{{option_d}}</input></li>
                     <br>
+                    <li><button class ="btn next" type="submit" value="submit">Next Question</button></li>
+               
                 </ul>
-                <button class="btn next" type="submit" value="submit">Next Question</button>
             </form>
-            <form method=GET name="back" style="margin-top: 15px;">
-                <button>Back</button>
+            <form method=GET name="back">
+                <li><button >Back</button></li>
             </form>
-
+            
         </div>
     </section>
 
