@@ -2,12 +2,14 @@ import MySQLdb
 import config, os
 import aws_param as aws
 
-db_name = "final"
+db_name = "quiznose_mysql"
 ## connection
 db = MySQLdb.connect(
-    host= aws.get_ssm_parameter("/QUIZNOSE/DB_ENDPOINT") ,  # your host, usually localhost #"database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
-    user= aws.get_ssm_parameter("/QUIZNOSE/DB_USER"),  # your username
-    passwd= aws.get_ssm_parameter("/QUIZNOSE/DB_PASS"),  # your password #"KuraLabs#123"
+    host=aws.get_ssm_parameter(
+        "/QUIZNOSE/DB_ENDPOINT"
+    ),  # your host, usually localhost #"database-1.cet4jo0trfys.us-east-1.rds.amazonaws.com"
+    user=aws.get_ssm_parameter("/QUIZNOSE/DB_USER"),  # your username
+    passwd=aws.get_ssm_parameter("/QUIZNOSE/DB_PASS"),  # your password #"KuraLabs#123"
     db=db_name,
 )  # name of the data base
 
@@ -104,7 +106,7 @@ def get_current_question(session_id, quiz_id):
 ########## For loading all questions at once #############
 
 # grab list of choices for variable question
-#need to think of a way to query the choices when we also query for the quiz. consider adding quiz_id to this table
+# need to think of a way to query the choices when we also query for the quiz. consider adding quiz_id to this table
 def query_choices2(q_id):
     table_name = "choices"
     cur = db.cursor()
@@ -117,6 +119,7 @@ def query_choices2(q_id):
     # for i in range(len(result)):
     #     returnlist.append(result[i][0])
     return result
+
 
 def query_question2(q_id):
     cur = db.cursor()
@@ -137,10 +140,10 @@ def query_ans2(q_id):
         returnlist.append(result[i][0])
     return returnlist
 
+
 def grab_question2(quiz_num):
     out = {"question": None, "choices": None, "ans": None}
     out["question"] = query_question2(quiz_num)
     out["choices"] = query_choices2(quiz_num)
     out["ans"] = query_ans2(quiz_num)
     return out
-
