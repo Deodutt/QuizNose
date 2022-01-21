@@ -73,6 +73,10 @@ def page_not_found(e):
 def studDash():
     return render_template("studDash.html")
 
+@app.route("/teachDash", methods=["GET", "POST"])
+@is_logged
+def teachDash():
+    return render_template("teachDash.html")
 
 @app.route("/quiz2")
 # @is_logged
