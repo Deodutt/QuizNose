@@ -27,4 +27,3 @@ resource "aws_iam_role_policy_attachment" "quiznose_ssm-read-policy-attachment" 
   role       = aws_iam_role.quiznose_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
 }
-

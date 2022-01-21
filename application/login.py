@@ -47,14 +47,14 @@ def login():
                 error = 'Please confirm email before logging in'
                 cur.close()
                 return render_template('login.html', error=error)
-            elif sha256_crypt.verify(password_candidate, password) and user_id < 9000001:
+            elif sha256_crypt.verify(password_candidate, password) and user_id < 900001:
                 session['logged_in'] = True
                 session['user_id'] = user_id
                 session['username'] = username
                 session['fullname'] = fullname
                 cur.close()
                 return redirect(url_for('studDash'))
-            elif sha256_crypt.verify(password_candidate, password) and user_id > 9000000:
+            elif sha256_crypt.verify(password_candidate, password) and user_id > 900000:
                 session['logged_in'] = True
                 session['user_id'] = user_id
                 session['username'] = username
