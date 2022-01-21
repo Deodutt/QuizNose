@@ -9,7 +9,7 @@ from flask import (
     url_for,
     session,
 )
-from flask_limiter import Limiter
+# from flask_limiter import Limiter
 # from flask_limiter.full import get_remote_address
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
