@@ -10,7 +10,7 @@ from flask import (
 )
 from passlib.hash import sha256_crypt
 import QUERYDB as db
-from app import limiter
+# from app import limiter
 
 
 # app = Flask(__name__, template_folder="templates", static_url_path="/static")
@@ -19,7 +19,7 @@ logout_blueprint = Blueprint("logout_page", __name__)
 
 
 @login_blueprint.route("/login", methods=["GET", "POST"])
-@limiter.limit("3 per minute")
+# @limiter.limit("3 per minute")
 def login():
     if request.method == 'POST':
         username = request.form['username']

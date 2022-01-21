@@ -10,7 +10,7 @@ from flask import (
     session,
 )
 from flask_limiter import Limiter
-from flask_limiter.full import get_remote_address
+# from flask_limiter.full import get_remote_address
 from flask_mail import Mail, Message
 from flask_mysqldb import MySQL
 
@@ -52,11 +52,11 @@ app.register_blueprint(logout_blueprint)
 
 mail = Mail(app)
 
-limiter = Limiter(
-    app,
-    key_func=get_remote_address,
-    default_limits=["20 per hour"]
-)
+# limiter = Limiter(
+#     app,
+#     key_func=get_remote_address,
+#     default_limits=["20000 per hour"]
+# )
 
 
 
@@ -280,7 +280,7 @@ Questions? Comments? Email </p>
 
 
 @app.route("/register", methods=["GET", "POST"])
-@limiter.limit("3 per minute")
+# @limiter.limit("3 per minute")
 def register():
     form = RegisterForm(request.form)
     if request.method == "POST" and form.validate():
