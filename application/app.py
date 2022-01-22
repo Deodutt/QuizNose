@@ -408,7 +408,6 @@ def send_confirmation_email(user_email):
 
 # """This here salts the secret key and creates a token based off the user email added to secret key"""
 
-
 @app.route("/confirm/<token>")
 def confirm_email(token):
     try:
